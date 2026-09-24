@@ -1,0 +1,399 @@
+"""
+Core data cleaning module for BizKit.
+Zero-friction spreadsheet and business data hygiene.
+"""
+
+from typing import Any, Dict, List, Optional, Set, Tuple
+import re
+import unicodedata
+import warnings
+import numpy as np
+import pandas as pd
+
+# Default placeholder strings commonly found in business spreadsheets representing null/missing data
+DEFAULT_NULL_STRINGS: Set[str] = {
+    "",
+    "-",
+    "—",
+    "–",
+    "n/a",
+    "na",
+    "null",
+    "none",
+    "nil",
+    "#n/a",
+    "#value!",
+    "#ref!",
+    "#num!",
+    "#div/0!",
+    ".",
+    "nan",
+    "?",
+}
+
+# Currency symbols to detect and strip
+CURRENCY_SYMBOLS: List[str] = ["$", "€", "£", "¥", "₹", "₩", "CHF", "USD", "EUR", "GBP"]
+
+# Keywords indicating summary/total rows at the bottom of a sheet
+TOTAL_ROW_KEYWORDS: List[str] = [
+    "total",
+    "grand total",
+    "subtotal",
+    "average",
+    "avg",
+    "summary",
+    "totals",
+]
+
+
+def clean_headers(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Standardize DataFrame column names to clean, snake_case identifiers.
+    - Strips whitespace
+    - Lowercases all characters
+    - Replaces spaces, slashes, dashes, and periods with underscores
+    - Removes punctuation and special characters
+    - Deduplicates identical column names (e.g. 'sales', 'sales_1')
+    """
+    df = df.copy()
+    new_cols: List[str] = []
+    seen: Dict[str, int] = {}
+
+    for idx, col in enumerate(df.columns):
+        col_str = str(col)
+        # Normalize unicode
+        normalized = unicodedata.normalize("NFKD", col_str).encode("ascii", "ignore").decode("utf-8")
+        # Strip and lower
+        cleaned = normalized.strip().lower()
+        # Replace spaces, dashes, slashes, and periods with underscores
+        cleaned = re.sub(r"[\s\-\/\.]+", "_", cleaned)
+        # Remove special characters
+        cleaned = re.sub(r"[^a-z0-9_]", "", cleaned)
+        # Collapse multiple underscores
+        cleaned = re.sub(r"_+", "_", cleaned).strip("_")
+
+        if not cleaned:
+            cleaned = f"col_{idx}"
+
+        # Handle duplicates
+        if cleaned in seen:
+            seen[cleaned] += 1
+            new_col = f"{cleaned}_{seen[cleaned]}"
+        else:
+            seen[cleaned] = 0
+            new_col = cleaned
+
+        new_cols.append(new_col)
+
+    df.columns = new_cols
+    return df
+
+
+def drop_empty(df: pd.DataFrame, drop_rows: bool = True, drop_cols: bool = True) -> pd.DataFrame:
+    """
+    Drop completely blank rows and/or columns (all NaN).
+    """
+    df = df.copy()
+    if drop_rows:
+        df = df.dropna(how="all")
+    if drop_cols:
+        df = df.dropna(axis=1, how="all")
+    return df.reset_index(drop=True)
+
+
+def strip_totals(
+    df: pd.DataFrame,
+    keywords: Optional[List[str]] = None,
+    max_rows: int = 3,
+) -> pd.DataFrame:
+    """
+    Detect and strip summary/total/subtotal rows commonly found at the bottom of spreadsheets.
+    Stores any removed rows in df.attrs['totals'].
+    """
+    df = df.copy()
+    if len(df) == 0:
+        return df
+
+    target_keywords = [k.lower() for k in (keywords or TOTAL_ROW_KEYWORDS)]
+    rows_to_drop: List[int] = []
+
+    # Check the last max_rows rows
+    tail_indices = df.index[-max_rows:].tolist()
+    for idx in reversed(tail_indices):
+        row_vals = df.loc[idx].astype(str).str.lower().str.strip()
+        # Check first column or any cell in the row for a total keyword
+        is_total = False
+        for val in row_vals:
+            # Check if cell begins with or matches total keywords
+            val_clean = re.sub(r"[:\-\*]", "", val).strip()
+            if val_clean in target_keywords:
+                is_total = True
+                break
+
+        if is_total:
+            rows_to_drop.append(idx)
+        else:
+            # Once we hit a non-total row from the bottom, stop
+            break
+
+    if rows_to_drop:
+        totals_records = df.loc[rows_to_drop].to_dict(orient="records")
+        df = df.drop(index=rows_to_drop).reset_index(drop=True)
+        if "totals" not in df.attrs:
+            df.attrs["totals"] = totals_records
+        else:
+            df.attrs["totals"].extend(totals_records)
+
+    return df
+
+
+def clean_strings(
+    df: pd.DataFrame,
+    null_values: Optional[Set[str]] = None,
+) -> pd.DataFrame:
+    """
+    Clean string columns:
+    - Strips leading/trailing whitespace and hidden non-breaking spaces
+    - Converts common business null placeholders ('-', 'N/A', '#VALUE!', 'None') to np.nan
+    """
+    df = df.copy()
+    targets = {s.lower() for s in (null_values or DEFAULT_NULL_STRINGS)}
+
+    for col in df.columns:
+        if df[col].dtype == object or pd.api.types.is_string_dtype(df[col]):
+            # Clean string values
+            def _clean_str(val):
+                if val is None or pd.isna(val):
+                    return np.nan
+                if not isinstance(val, str):
+                    val = str(val)
+                # Strip non-breaking spaces and regular spaces
+                s = val.replace("\xa0", " ").replace("\u200b", "").strip()
+                if s.lower() in targets:
+                    return np.nan
+                return s
+
+            df[col] = df[col].map(_clean_str)
+
+    return df
+
+
+def _is_id_column(col_name: str, series: pd.Series) -> bool:
+    """
+    Check if a column is likely an Identifier (e.g. ZIP code, Account Number, Phone, SSN)
+    that should preserve leading zeros and avoid numeric casting.
+    """
+    name_lower = col_name.lower()
+    id_suffixes = ("_id", "_code", "_num", "_no", "id", "zip", "zipcode", "ssn", "ein", "phone", "account")
+    for suffix in id_suffixes:
+        if name_lower == suffix or name_lower.endswith(suffix):
+            return True
+
+    # Check for leading zeros in non-null strings
+    non_nulls = series.dropna().astype(str).tolist()
+    if not non_nulls:
+        return False
+
+    leading_zero_count = sum(1 for val in non_nulls if len(val) > 1 and val.startswith("0") and val.isdigit())
+    if leading_zero_count / len(non_nulls) >= 0.2:
+        return True
+
+    return False
+
+
+def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Optional[float], Optional[str]]:
+    """
+    Attempt to parse a messy business string into a float.
+    Handles:
+    - Normal numbers: '1250.50', '1,250'
+    - Currency: '$1,250.00', '€ 500', '£45'
+    - Accounting negatives: '(1,234.50)', '($1,234.50)', '$ (1,234.50)'
+    - Negatives: '-$50.00', '-50.00', '50.00-'
+    - Percentages: '15.4%', '(2.5%)'
+    """
+    if pd.isna(val) or val is None:
+        return np.nan, None
+
+    s = str(val).strip()
+    if not s:
+        return np.nan, None
+
+    detected_type = "number"
+    is_negative = False
+
+    # Check accounting parentheses: e.g. (1,234), ($1,234), $ (1,234)
+    if "(" in s and ")" in s:
+        left_paren = s.find("(")
+        right_paren = s.rfind(")")
+        if left_paren < right_paren:
+            outside = (s[:left_paren] + s[right_paren + 1:]).strip()
+            # If outside has no digits, it's an accounting negative number
+            if not any(ch.isdigit() for ch in outside):
+                is_negative = True
+                detected_type = "accounting"
+                s = s[:left_paren] + s[left_paren + 1:right_paren] + s[right_paren + 1:]
+                s = s.strip()
+
+    # Check percentage
+    if s.endswith("%"):
+        detected_type = "percentage"
+        s = s[:-1].strip()
+
+    # Check for currency symbols anywhere
+    for sym in CURRENCY_SYMBOLS:
+        if sym in s:
+            detected_type = "currency"
+            s = s.replace(sym, "")
+
+    # Check for negative/positive signs
+    s = s.strip()
+    if s.startswith("-"):
+        is_negative = True
+        s = s[1:].strip()
+    elif s.endswith("-"):
+        is_negative = True
+        s = s[:-1].strip()
+    elif s.startswith("+"):
+        s = s[1:].strip()
+
+    # Clean commas and any inner spaces
+    s = s.replace(",", "").strip()
+
+    try:
+        num = float(s)
+        if is_negative:
+            num = -num
+        if detected_type == "percentage" and percent_as_ratio:
+            num = num / 100.0
+        return num, detected_type
+    except (ValueError, TypeError):
+        return None, None
+
+
+def clean_types(
+    df: pd.DataFrame,
+    percent_as_ratio: bool = True,
+    threshold: float = 0.85,
+    date_threshold: float = 0.85,
+) -> pd.DataFrame:
+    """
+    Auto-detect and convert dirty business columns to their proper dtypes:
+    - Currency strings ('$1,250.00', '€500') -> float64
+    - Accounting negatives ('(450.00)', '($1,200)') -> float64 (negative)
+    - Percentages ('15.4%', '(2.1%)') -> float64 (0.154 or 15.4)
+    - Dates ('2024-01-15', '01/15/2024') -> datetime64[ns]
+    - Booleans ('Y/N', 'yes/no', 'true/false') -> boolean
+    - Protects ID and Zip code columns with leading zeros intact.
+
+    Stores original formatting metadata in df.attrs['_biz_formats'] for later presentation.
+    """
+    df = df.copy()
+    formats_meta: Dict[str, str] = {}
+
+    for col in df.columns:
+        # Only inspect object or string columns
+        if not (df[col].dtype == object or pd.api.types.is_string_dtype(df[col])):
+            continue
+
+        # Skip protected ID columns
+        if _is_id_column(col, df[col]):
+            continue
+
+        non_null_series = df[col].dropna()
+        if len(non_null_series) == 0:
+            continue
+
+        # Sample values for fast heuristic evaluation
+        sample = non_null_series.sample(min(len(non_null_series), 200), random_state=42)
+
+        # 1. Test for Business Numeric (Currency, Accounting, Percent, Number)
+        numeric_count = 0
+        type_votes: Dict[str, int] = {}
+        for val in sample:
+            num, d_type = _parse_business_number(val, percent_as_ratio=percent_as_ratio)
+            if num is not None:
+                numeric_count += 1
+                type_votes[d_type] = type_votes.get(d_type, 0) + 1
+
+        match_ratio = numeric_count / len(sample)
+        if match_ratio >= threshold:
+            # Determine dominant type
+            dominant_type = max(type_votes.items(), key=lambda x: x[1])[0] if type_votes else "number"
+            formats_meta[col] = dominant_type
+
+            # Coerce the entire column
+            def _coerce(val):
+                num, _ = _parse_business_number(val, percent_as_ratio=percent_as_ratio)
+                return num if num is not None else np.nan
+
+            df[col] = df[col].map(_coerce).astype(float)
+            continue
+
+        # 2. Test for Boolean Columns (e.g. Y/N, Yes/No, True/False)
+        lower_vals = sample.astype(str).str.lower().str.strip()
+        bool_map = {
+            "y": True, "yes": True, "true": True, "t": True,
+            "n": False, "no": False, "false": False, "f": False,
+        }
+        unique_lower = set(lower_vals.unique())
+        if unique_lower.issubset(bool_map.keys()) and len(unique_lower) > 0:
+            df[col] = df[col].astype(str).str.lower().str.strip().map(bool_map).astype("boolean")
+            formats_meta[col] = "boolean"
+            continue
+
+        # 3. Test for Datetime
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=UserWarning)
+                parsed_dates = pd.to_datetime(sample, errors="coerce")
+                date_ratio = parsed_dates.notna().sum() / len(sample)
+                if date_ratio >= date_threshold:
+                    df[col] = pd.to_datetime(df[col], errors="coerce")
+                    formats_meta[col] = "datetime"
+                    continue
+        except Exception:
+            pass
+
+    # Save format metadata in df.attrs
+    if "_biz_formats" not in df.attrs:
+        df.attrs["_biz_formats"] = {}
+    df.attrs["_biz_formats"].update(formats_meta)
+
+    return df
+
+
+def clean(
+    df: pd.DataFrame,
+    headers: bool = True,
+    strings: bool = True,
+    totals: bool = True,
+    empty: bool = True,
+    types: bool = True,
+    percent_as_ratio: bool = True,
+) -> pd.DataFrame:
+    """
+    The master all-in-one cleaning function.
+    Takes a messy DataFrame and produces a clean, analysis-ready DataFrame in one line.
+
+    Steps performed:
+    1. Standardizes headers (lowercase, snake_case, no special chars)
+    2. Drops completely blank rows and columns
+    3. Strips trailing 'Grand Total' summary rows (saves them to df.attrs['totals'])
+    4. Cleans strings (strips whitespace, converts '-', 'N/A' to true np.nan)
+    5. Auto-coerces types (currencies, accounting negatives, percentages, dates, booleans)
+       while preserving ID and ZIP codes with leading zeros.
+    """
+    df = df.copy()
+
+    if headers:
+        df = clean_headers(df)
+    if empty:
+        df = drop_empty(df)
+    if totals:
+        df = strip_totals(df)
+    if strings:
+        df = clean_strings(df)
+    if types:
+        df = clean_types(df, percent_as_ratio=percent_as_ratio)
+
+    return df
