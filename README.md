@@ -27,6 +27,7 @@
 [![Core Dependencies](https://img.shields.io/badge/dependencies-zero%20heavy%20(pandas%20%2B%20numpy)-success.svg)]()
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=sudheer-050/bizpack&branch=master&mainModule=app.py)
 
 [What It Does & Doesn't Do](#-overview-what-bizpack-does-vs-what-it-doesnt-do) • [Benefits](#-benefits-of-using-bizpack) • [Use Cases](#-what-you-can-do-with-bizpack) • [Who Is This For?](#-who-is-this-for) • [Quickstart](#-quickstart-in-4-lines) • [The 5 Disasters](#-why-bizpack-the-5-silent-disasters-of-raw-pandas) • [Two-Tier Date Engine](#-flagship-1-two-tier-hierarchical-date-engine) • [API Reference](#-api-reference)
 

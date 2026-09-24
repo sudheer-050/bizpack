@@ -50,7 +50,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sidebar
-st.sidebar.image("assets/banner.png", use_container_width=True)
+banner_path = os.path.join(os.path.dirname(__file__), "assets", "banner.png")
+if os.path.exists(banner_path):
+    st.sidebar.image(banner_path, use_container_width=True)
+elif os.path.exists("assets/banner.png"):
+    st.sidebar.image("assets/banner.png", use_container_width=True)
+
 st.sidebar.title("⚡ BizPack Controls")
 st.sidebar.markdown("Zero-friction spreadsheet cleaning + business math for Python.")
 
@@ -100,7 +105,9 @@ if uploaded_file is not None:
     except Exception as e:
         st.error(f"Error reading file: {e}")
 elif use_sample or df_raw is None:
-    sample_path = os.path.join("examples", "dirty_data.csv")
+    sample_path = os.path.join(os.path.dirname(__file__), "examples", "dirty_data.csv")
+    if not os.path.exists(sample_path):
+        sample_path = os.path.join("examples", "dirty_data.csv")
     if os.path.exists(sample_path):
         df_raw = bp.read_csv(sample_path, clean=False)
         st.info("Loaded realistic 100-row sample dataset containing mixed currencies (₹, $, €, £), two-tier dates, accounting brackets, and empty columns.")
