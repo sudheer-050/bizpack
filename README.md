@@ -24,11 +24,80 @@
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-[Quickstart](#-quickstart-in-4-lines) • [The 5 Silent Disasters](#-why-bizpack-the-5-silent-disasters-of-raw-pandas) • [Two-Tier Date Engine](#-flagship-1-two-tier-hierarchical-date-engine) • [Multi-Currency Normalizer](#-flagship-2-multi-currency-normalization--interactive-prompt) • [Business Formulas](#-flagship-4-pythonic-business-math) • [Benchmarks](#-performance--benchmarks) • [API Reference](#-api-reference)
+[What It Does & Doesn't Do](#-overview-what-bizpack-does-vs-what-it-doesnt-do) • [Benefits](#-benefits-of-using-bizpack) • [Use Cases](#-what-you-can-do-with-bizpack) • [Quickstart](#-quickstart-in-4-lines) • [The 5 Disasters](#-why-bizpack-the-5-silent-disasters-of-raw-pandas) • [Two-Tier Date Engine](#-flagship-1-two-tier-hierarchical-date-engine) • [API Reference](#-api-reference)
 
 ---
 
 </div>
+
+## 🎯 Overview: What BizPack Does vs. What It Doesn't Do
+
+To build trustworthy data infrastructure, developers and business analysts need to know **exactly** what a library handles—and what boundaries it respects.
+
+### ✅ What BizPack Does
+
+* **Automated Ingestion Hygiene:** Converts messy, human-formatted spreadsheet exports (CSV, TSV, Excel) into standardized, type-safe `pandas.DataFrame` objects in a single line.
+* **Contextual Two-Tier Date Resolution:** Deduces `DD/MM/YYYY` vs `MM/DD/YYYY` by combining column frequency heuristics with row-level partner signals (currency symbols, country/region names), achieving **0 dropped `NaT` rows**.
+* **Intelligent Multi-Currency Normalization:** Detects mixed international currencies (`₹`, `$`, `€`, `£`, `Rs.`), accounting negatives `($1,200)`, and European decimal notations (`41.392,35`), prompting interactively or applying configurable FX matrices.
+* **Full Audit Trail Transparency:** Preserves conversion history, applied exchange rates, and discarded footer rows in non-destructive DataFrame metadata (`df.attrs`).
+* **Leading Zero & ID Protection:** Protects critical identifiers (ZIP codes, account numbers, SKUs like `00124` or `07001`) from being mangled into truncated integers.
+* **Pythonic Excel Business Math:** Vectorized, intuitive implementations of standard analyst routines: `bp.xlookup()`, `bp.pareto()` (80/20 distribution with auto-narrative), `bp.growth()` (MoM/YoY), and `bp.run_rate()` (quota pacing).
+* **Boardroom Display Formatter:** Instantly converts calculation-ready floats back into executive presentation strings (`$ 1,250.00`, `(9.8%)`, `33.3%`).
+
+### ❌ What BizPack Does NOT Do
+
+* **Does NOT Impute or Hallucinate Missing Data:** BizPack never invents numbers or fills empty cells with arbitrary guesses. Blanks and spreadsheet error strings (`#REF!`, `#N/A`, `-`) become true `np.nan`.
+* **Does NOT Lock You Into a Proprietary Data Structure:** BizPack does not create a wrapper object. It accepts standard `pandas.DataFrame` and returns standard `pandas.DataFrame`.
+* **Does NOT Overwrite Source Files:** `clean_file()` never overwrites your original input CSV in-place; all writes go to a designated output destination.
+* **Does NOT Require Heavy Compilers or Cloud Runtimes:** No JVM, Spark, Docker, C++ toolchains, or mandatory network calls. Runs 100% locally with pure `pandas` and `numpy`.
+* **Does NOT Try to Be an Orchestrator:** BizPack is not Airflow, dbt, or Spark. It is a focused data preparation and business analysis engine.
+
+---
+
+## 🏆 Benefits of Using BizPack
+
+| Benefit Pillar | The Raw Pandas / Manual Way | The BizPack Advantage |
+| :--- | :--- | :--- |
+| **⚡ 90% Less Boilerplate** | 30–50 lines of brittle regex, `.str.replace()`, `lambda` functions, and `pd.to_datetime()` try/except blocks per script. | **1 line:** `df = bp.clean(df)` or `df = bp.read_csv("data.csv")`. |
+| **🛡️ Financial Accuracy** | Stripping currency symbols blindly sums `$100 + ₹8,900 = 9000`, causing multi-million-dollar ledger errors. Accounting brackets `($1,200)` become positive. | Mixed currencies are converted via real exchange rates. Accounting brackets become true negative numbers (`-1200.0`). |
+| **📅 Zero Dropped Dates** | Mixed `DD/MM` vs `MM/DD` dates fail `pd.to_datetime()` or silently invert months, dropping rows to `NaT`. | **Two-Tier Engine** uses row context (country/currency) to correctly parse mixed formats with **0% data loss**. |
+| **🔍 Audit Transparency** | Custom cleaning scripts leave zero record of what exchange rates or heuristics were applied. | All conversions, FX rates, and extracted total rows are logged to `df.attrs` for automated audit compliance. |
+| **🚀 Native Interoperability** | Complex custom classes break standard Pandas workflows. | Works directly as a Pandas accessor (`df.biz.clean()`) and returns standard Pandas DataFrames. |
+| **📦 Zero Bloat** | Modern data packages often pull in hundreds of megabytes of heavy C++ dependencies. | **Pure Python + Pandas + NumPy**. Installs in seconds, runs everywhere. |
+
+---
+
+## 💼 What You Can Do With BizPack
+
+BizPack is purpose-built for analytics engineers, financial analysts, operations leaders, and Python developers:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────┐
+│                           REAL-WORLD APPLICATIONS                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ 1. Multinational Revenue Consolidation                                         │
+│    Unify regional sales extracts (APAC ₹, EMEA €, US $) into 1 corporate base   │
+│    currency with real FX rates in seconds.                                     │
+│                                                                                │
+│ 2. Bulletproof Ingestion for Dashboards (Streamlit, Dash, PowerBI)             │
+│    Prevent downstream crashes caused by string numbers, accounting brackets,   │
+│    or mixed date formats before data reaches visualizations.                   │
+│                                                                                │
+│ 3. Automated Executive Pareto (80/20) Concentration Audits                    │
+│    Instantly identify the top 20% of customer accounts driving 80% of quarterly│
+│    revenue with auto-generated executive commentary.                          │
+│                                                                                │
+│ 4. Cross-System ERP & CRM Reconciliation                                       │
+│    Join disparate tables via clean `bp.xlookup()` without messy multi-line     │
+│    `df.merge()` key management and suffix collisions.                          │
+│                                                                                │
+│ 5. Sales Pacing & Run-Rate Projections                                         │
+│    Track month-to-date and quarter-to-date performance against sales quotas,    │
+│    projecting month-end finish with zero manual date math.                     │
+└────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## 🚨 Why BizPack? The 5 Silent Disasters of Raw Pandas
 
