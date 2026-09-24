@@ -71,6 +71,33 @@ def test_clean_types_currency_and_accounting():
     assert cleaned["zip_code"].iloc[1] == "00421"
 
 
+def test_clean_international_currencies():
+    df = pd.DataFrame({
+        "euro_standard": ["1.250,50 €", "€ 500,00", "(1.250,50 €)", "1 250,50 EUR"],
+        "mixed_currency": ["$1,000.50", "£ 2,500.00", "CHF 1'250.50", "¥ 150,000"],
+        "euro_decimals": ["1250,50", "45,99", "1.000.000", "0,75"]
+    })
+    cleaned = cleaner.clean_types(df)
+
+    # European Euro column
+    assert cleaned["euro_standard"].iloc[0] == 1250.5
+    assert cleaned["euro_standard"].iloc[1] == 500.0
+    assert cleaned["euro_standard"].iloc[2] == -1250.5
+    assert cleaned["euro_standard"].iloc[3] == 1250.5
+
+    # Mixed currencies
+    assert cleaned["mixed_currency"].iloc[0] == 1000.5
+    assert cleaned["mixed_currency"].iloc[1] == 2500.0
+    assert cleaned["mixed_currency"].iloc[2] == 1250.5
+    assert cleaned["mixed_currency"].iloc[3] == 150000.0
+
+    # Euro decimals without currency symbol
+    assert cleaned["euro_decimals"].iloc[0] == 1250.5
+    assert cleaned["euro_decimals"].iloc[1] == 45.99
+    assert cleaned["euro_decimals"].iloc[2] == 1000000.0
+    assert cleaned["euro_decimals"].iloc[3] == 0.75
+
+
 def test_clean_types_booleans():
     df = pd.DataFrame({
         "is_active": ["Y", "N", "Yes", "No"],

@@ -31,8 +31,15 @@ DEFAULT_NULL_STRINGS: Set[str] = {
     "?",
 }
 
-# Currency symbols to detect and strip
-CURRENCY_SYMBOLS: List[str] = ["$", "€", "£", "¥", "₹", "₩", "CHF", "USD", "EUR", "GBP"]
+# Comprehensive list of global currency symbols and ISO codes (sorted by length descending)
+CURRENCY_SYMBOLS: List[str] = [
+    # Multi-character codes & symbols
+    "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "BRL", "MXN",
+    "SGD", "HKD", "NZD", "SEK", "NOK", "DKK", "ZAR", "PLN", "CZK", "HUF", "ILS",
+    "R$", "kr", "zł", "Kč", "Ft",
+    # Single-character symbols
+    "$", "€", "£", "¥", "₹", "₩", "₺", "₽", "₴", "₫", "฿", "₱", "₪",
+]
 
 # Keywords indicating summary/total rows at the bottom of a sheet
 TOTAL_ROW_KEYWORDS: List[str] = [
@@ -201,14 +208,59 @@ def _is_id_column(col_name: str, series: pd.Series) -> bool:
     return False
 
 
+def _normalize_number_string(s: str) -> str:
+    """
+    Normalize international numeric strings into standard Python float format (e.g. '1234.56'):
+    - European formatting: '1.250,50' -> '1250.50', '1250,50' -> '1250.50'
+    - US/UK formatting: '1,250.50' -> '1250.50', '1250.50' -> '1250.50'
+    - Swiss apostrophe separator: "1'250.50" -> '1250.50'
+    - Space thousands separator: '1 250,50' or '1 250.50' -> '1250.50'
+    - Multiple European dots: '1.000.000' -> '1000000'
+    """
+    # 1. Remove Swiss apostrophe thousands separator: e.g. 1'250.50 -> 1250.50
+    s = s.replace("'", "")
+
+    # 2. Remove spaces between digits: e.g. "1 250,50" -> "1250,50"
+    s = re.sub(r"(?<=\d)\s+(?=\d)", "", s)
+
+    has_comma = "," in s
+    has_dot = "." in s
+
+    if has_comma and has_dot:
+        last_comma = s.rfind(",")
+        last_dot = s.rfind(".")
+        if last_comma > last_dot:
+            # European style: 1.250,50 or 1.250.000,50 -> dot is thousand, comma is decimal
+            s = s.replace(".", "").replace(",", ".")
+        else:
+            # US/UK style: 1,250.50 or 1,250,000.50 -> comma is thousand, dot is decimal
+            s = s.replace(",", "")
+    elif has_comma and not has_dot:
+        # Only comma exists: e.g. "1250,50", "45,99", or "1,250"
+        # If comma is followed by 1 or 2 digits at the end: European decimal!
+        if re.search(r",\d{1,2}$", s):
+            s = s.replace(",", ".")
+        else:
+            # Standard thousands separator: e.g. 1,000
+            s = s.replace(",", "")
+    elif has_dot and not has_comma:
+        # Only dot exists: e.g. "1250.50", "1.000.000"
+        if s.count(".") > 1:
+            # Multiple dots e.g. 1.000.000 -> European thousands separator
+            s = s.replace(".", "")
+
+    return s
+
+
 def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Optional[float], Optional[str]]:
     """
     Attempt to parse a messy business string into a float.
     Handles:
     - Normal numbers: '1250.50', '1,250'
-    - Currency: '$1,250.00', '€ 500', '£45'
-    - Accounting negatives: '(1,234.50)', '($1,234.50)', '$ (1,234.50)'
-    - Negatives: '-$50.00', '-50.00', '50.00-'
+    - European numbers: '1.250,50', '1250,50', '1 250,50 €'
+    - Global Currencies: '$', '€', '£', '¥', 'CHF', 'R$', 'kr', 'EUR', 'USD', etc.
+    - Accounting negatives: '(1,234.50)', '($1,234.50)', '(1.250,50 €)'
+    - Negatives: '-$50.00', '-50.00', '-€ 1.250,50', '50.00-'
     - Percentages: '15.4%', '(2.5%)'
     """
     if pd.isna(val) or val is None:
@@ -221,7 +273,7 @@ def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Opt
     detected_type = "number"
     is_negative = False
 
-    # Check accounting parentheses: e.g. (1,234), ($1,234), $ (1,234)
+    # Check accounting parentheses: e.g. (1,234), ($1,234), (1.250,50 €)
     if "(" in s and ")" in s:
         left_paren = s.find("(")
         right_paren = s.rfind(")")
@@ -239,7 +291,7 @@ def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Opt
         detected_type = "percentage"
         s = s[:-1].strip()
 
-    # Check for currency symbols anywhere
+    # Check for currency symbols anywhere (prefix, suffix, or mid-string)
     for sym in CURRENCY_SYMBOLS:
         if sym in s:
             detected_type = "currency"
@@ -256,8 +308,8 @@ def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Opt
     elif s.startswith("+"):
         s = s[1:].strip()
 
-    # Clean commas and any inner spaces
-    s = s.replace(",", "").strip()
+    # Normalize international number formatting (European commas/periods, Swiss apostrophes, spaces)
+    s = _normalize_number_string(s).strip()
 
     try:
         num = float(s)
