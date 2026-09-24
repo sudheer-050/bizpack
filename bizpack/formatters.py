@@ -15,16 +15,20 @@ def format_currency(
 ) -> pd.Series:
     """
     Format a numeric Series as currency strings with thousands separators.
-    Example: 1250000.5 -> '$1,250,000.50'
+    Accepts currency symbols ('$', '€', '₹', '£') or ISO codes ('USD', 'INR', 'EUR', 'GBP').
+    Example: 1250000.5 -> '$1,250,000.50' or '₹1,250,000.50'
     """
+    from bizpack.currency import CODE_TO_SYMBOL
+    active_symbol = CODE_TO_SYMBOL.get(symbol.upper().strip(), symbol)
+
     def _fmt(val):
         if pd.isna(val) or val is None:
             return ""
         try:
             num = float(val)
             if num < 0:
-                return f"-{symbol}{abs(num):,.{decimals}f}"
-            return f"{symbol}{num:,.{decimals}f}"
+                return f"-{active_symbol}{abs(num):,.{decimals}f}"
+            return f"{active_symbol}{num:,.{decimals}f}"
         except (ValueError, TypeError):
             return str(val)
 
@@ -62,10 +66,13 @@ def format_accounting(
 ) -> pd.Series:
     """
     Format a numeric Series in standard corporate accounting format:
-    - Negatives in parentheses: ($1,250.00)
-    - Positives: $1,250.00
-    - Zeros: - (if dash_for_zero=True)
+    - Negatives in parentheses: ($1,250.00) or (₹1,250.00)
+    - Positives: $1,250.00 or ₹1,250.00
+    - Zeros: — (if dash_for_zero=True)
     """
+    from bizpack.currency import CODE_TO_SYMBOL
+    active_symbol = CODE_TO_SYMBOL.get(symbol.upper().strip(), symbol)
+
     def _fmt(val):
         if pd.isna(val) or val is None:
             return ""
@@ -74,8 +81,8 @@ def format_accounting(
             if dash_for_zero and abs(num) < 1e-9:
                 return "—"
             if num < 0:
-                return f"({symbol}{abs(num):,.{decimals}f})"
-            return f"{symbol}{num:,.{decimals}f}"
+                return f"({active_symbol}{abs(num):,.{decimals}f})"
+            return f"{active_symbol}{num:,.{decimals}f}"
         except (ValueError, TypeError):
             return str(val)
 

@@ -25,8 +25,12 @@ class BizAccessor:
         empty: bool = True,
         types: bool = True,
         percent_as_ratio: bool = True,
+        target_currency: Optional[str] = None,
+        rates: Optional[Dict[str, float]] = None,
+        prompt_currency: bool = True,
+        keep_currency_col: bool = False,
     ) -> pd.DataFrame:
-        """One-line data cleaning."""
+        """One-line data cleaning with optional currency standardization."""
         return cleaner.clean(
             self._obj,
             headers=headers,
@@ -35,6 +39,10 @@ class BizAccessor:
             empty=empty,
             types=types,
             percent_as_ratio=percent_as_ratio,
+            target_currency=target_currency,
+            rates=rates,
+            prompt_currency=prompt_currency,
+            keep_currency_col=keep_currency_col,
         )
 
     def clean_headers(self) -> pd.DataFrame:
@@ -100,4 +108,25 @@ class BizAccessor:
             metric_col=metric_col,
             target=target,
             period=period,
+        )
+
+    def standardize_currency(
+        self,
+        columns: Optional[Union[str, List[str]]] = None,
+        target_currency: Optional[str] = None,
+        rates: Optional[Dict[str, float]] = None,
+        prompt_if_interactive: bool = True,
+        keep_currency_col: bool = False,
+    ) -> pd.DataFrame:
+        """
+        Standardize currency columns across the DataFrame into a single unified currency (e.g. 'USD', 'INR', 'EUR').
+        """
+        from bizpack.currency import standardize_currency_df
+        return standardize_currency_df(
+            self._obj,
+            columns=columns,
+            target_currency=target_currency,
+            rates=rates,
+            prompt_if_interactive=prompt_if_interactive,
+            keep_currency_col=keep_currency_col,
         )

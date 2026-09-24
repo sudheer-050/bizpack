@@ -36,7 +36,7 @@ CURRENCY_SYMBOLS: List[str] = [
     # Multi-character codes & symbols
     "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "BRL", "MXN",
     "SGD", "HKD", "NZD", "SEK", "NOK", "DKK", "ZAR", "PLN", "CZK", "HUF", "ILS",
-    "R$", "kr", "zł", "Kč", "Ft",
+    "US$", "CA$", "AU$", "NZ$", "C$", "A$", "R$", "RS.", "Rs.", "RS", "Rs", "kr", "zł", "Kč", "Ft",
     # Single-character symbols
     "$", "€", "£", "¥", "₹", "₩", "₺", "₽", "₴", "₫", "฿", "₱", "₪",
 ]
@@ -327,10 +327,16 @@ def clean_types(
     percent_as_ratio: bool = True,
     threshold: float = 0.85,
     date_threshold: float = 0.85,
+    target_currency: Optional[str] = None,
+    rates: Optional[Dict[str, float]] = None,
+    prompt_currency: bool = True,
+    keep_currency_col: bool = False,
 ) -> pd.DataFrame:
     """
     Auto-detect and convert dirty business columns to their proper dtypes:
-    - Currency strings ('$1,250.00', '€500') -> float64
+    - Currency strings ('$1,250.00', '€500', '₹9,000') -> float64
+      If multiple currencies are present, converts all amounts into target_currency
+      (or prompts user interactively) to prevent math/financial errors.
     - Accounting negatives ('(450.00)', '($1,200)') -> float64 (negative)
     - Percentages ('15.4%', '(2.1%)') -> float64 (0.154 or 15.4)
     - Dates ('2024-01-15', '01/15/2024') -> datetime64[ns]
@@ -369,11 +375,40 @@ def clean_types(
 
         match_ratio = numeric_count / len(sample)
         if match_ratio >= threshold:
-            # Determine dominant type
             dominant_type = max(type_votes.items(), key=lambda x: x[1])[0] if type_votes else "number"
             formats_meta[col] = dominant_type
 
-            # Coerce the entire column
+            # Check if this column represents currency data
+            from bizpack.currency import (
+                standardize_currency_series,
+                detect_currency,
+                detect_header_currency,
+            )
+            has_currency = (
+                (dominant_type == "currency")
+                or (type_votes.get("currency", 0) > 0)
+                or any(detect_currency(v) is not None for v in sample.head(25))
+                or (detect_header_currency(str(col)) is not None)
+            )
+
+            if has_currency:
+                converted_series, orig_curr_series, audit = standardize_currency_series(
+                    df[col],
+                    target_currency=target_currency,
+                    rates=rates,
+                    col_name=str(col),
+                    prompt_if_interactive=prompt_currency,
+                )
+                df[col] = converted_series
+                if "currency_conversions" not in df.attrs:
+                    df.attrs["currency_conversions"] = {}
+                df.attrs["currency_conversions"][col] = audit
+
+                if keep_currency_col:
+                    df[f"{col}_original_currency"] = orig_curr_series
+                continue
+
+            # Standard numeric column (e.g. quantity, percentages, clean floats)
             def _coerce(val):
                 num, _ = _parse_business_number(val, percent_as_ratio=percent_as_ratio)
                 return num if num is not None else np.nan
@@ -422,6 +457,10 @@ def clean(
     empty: bool = True,
     types: bool = True,
     percent_as_ratio: bool = True,
+    target_currency: Optional[str] = None,
+    rates: Optional[Dict[str, float]] = None,
+    prompt_currency: bool = True,
+    keep_currency_col: bool = False,
 ) -> pd.DataFrame:
     """
     The master all-in-one cleaning function.
@@ -434,6 +473,8 @@ def clean(
     4. Cleans strings (strips whitespace, converts '-', 'N/A' to true np.nan)
     5. Auto-coerces types (currencies, accounting negatives, percentages, dates, booleans)
        while preserving ID and ZIP codes with leading zeros.
+    6. Standardizes mixed currencies (e.g. USD, EUR, INR) into target_currency so financial
+       calculations and aggregations are mathematically accurate.
     """
     df = df.copy()
 
@@ -446,7 +487,14 @@ def clean(
     if strings:
         df = clean_strings(df)
     if types:
-        df = clean_types(df, percent_as_ratio=percent_as_ratio)
+        df = clean_types(
+            df,
+            percent_as_ratio=percent_as_ratio,
+            target_currency=target_currency,
+            rates=rates,
+            prompt_currency=prompt_currency,
+            keep_currency_col=keep_currency_col,
+        )
     return df
 
 
@@ -454,6 +502,7 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     """
     Read a CSV file safely and automatically clean it with BizPack.
     Preserves leading zeros in IDs and ZIP codes by reading strings before type coercion.
+    Supports currency standardization via target_currency='USD' or 'INR'.
     """
     clean_kwargs = {
         "headers": kwargs.pop("headers", True),
@@ -462,6 +511,10 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "empty": kwargs.pop("empty", True),
         "types": kwargs.pop("types", True),
         "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
+        "target_currency": kwargs.pop("target_currency", None),
+        "rates": kwargs.pop("rates", None),
+        "prompt_currency": kwargs.pop("prompt_currency", True),
+        "keep_currency_col": kwargs.pop("keep_currency_col", False),
     }
     if "dtype" not in kwargs:
         kwargs["dtype"] = str
@@ -473,6 +526,7 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
 def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     """
     Read an Excel file safely and automatically clean it with BizPack.
+    Supports currency standardization via target_currency='USD' or 'INR'.
     """
     clean_kwargs = {
         "headers": kwargs.pop("headers", True),
@@ -481,6 +535,10 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "empty": kwargs.pop("empty", True),
         "types": kwargs.pop("types", True),
         "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
+        "target_currency": kwargs.pop("target_currency", None),
+        "rates": kwargs.pop("rates", None),
+        "prompt_currency": kwargs.pop("prompt_currency", True),
+        "keep_currency_col": kwargs.pop("keep_currency_col", False),
     }
     df = pd.read_excel(filepath_or_buffer, **kwargs)
     return clean(df, **clean_kwargs)

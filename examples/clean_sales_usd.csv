@@ -1,0 +1,1001 @@
+customer_name_client,account,order_date_utc,region_territory,gross_revenue,unit_cost,profit_margin,active_subscription,customer_notes_log
+Dunder Mifflin,00115,2024-01-07,APAC,18744.44,17001.21,0.09300000000000001,True,Standard order
+Umbrella Corp,00239,2024-05-09,North America,54160.33,21791.07,0.485,True,Fast shipping requested
+Cyberdyne Systems,00349,2024-03-12,EMEA,16540.88,12868.8,0.222,True,Fast shipping requested
+Soylent Corp,00550,2024-02-01,LATAM,6370.61,4210.97,0.33899999999999997,True,Fast shipping requested
+Umbrella Corp,00792,2024-03-15,North America,64221.17,55808.2,0.131,True,Fast shipping requested
+Dunder Mifflin,00664,2024-01-19,EMEA,40293.42,25384.85,0.37,False,
+Pied Piper,00795,2024-01-15,EMEA,61724.29,41108.38,0.33399999999999996,False,Fast shipping requested
+Soylent Corp,00406,2024-06-13,LATAM,11143.93,7332.71,0.342,True,Customer asked for $50 discount
+Umbrella Corp,00142,2024-05-10,LATAM,7272.75,4436.38,0.39,True,VIP client priority support
+Hooli Inc,00480,2024-05-15,APAC,72845.34,41886.07,0.425,False,Standard order
+Wayne Enterprises,00446,2024-02-10,LATAM,741.78,665.38,0.10300000000000001,False,Quarterly renewal
+Stark Industries,00781,2024-02-11,North America,-48731.08,37450.74,-0.17,False,Account upgrade pending
+Globex Inc,00088,2024-05-04,North America,93900.6,49517.89,0.325,True,Quarterly renewal
+Massive Dynamic,00774,2024-06-25,EMEA,57903.88,37047.76,0.309,False,Standard order
+Stark Industries,00022,2024-05-30,EMEA,-44338.79,40614.33,-0.084,True,
+Stark Industries,00073,2024-05-11,EMEA,21246.56,14107.72,0.336,True,
+Cyberdyne Systems,00195,2024-01-25,North America,49594.21,30401.25,0.387,False,Standard order
+Cyberdyne Systems,00746,2024-03-27,North America,19024.9,13678.9,0.281,False,VIP client priority support
+Pied Piper,00883,2024-05-20,North America,4268.83,2245.4,0.474,True,VIP client priority support
+Umbrella Corp,00886,2024-04-12,North America,12765.47,9216.67,0.278,True,Quarterly renewal
+Umbrella Corp,00304,2024-02-25,North America,-43648.93,28721.0,-0.342,True,Standard order
+Massive Dynamic,00083,2024-02-17,North America,44830.12,29632.71,,True,Fast shipping requested
+Hooli Inc,00579,2024-05-13,APAC,70135.62,62070.02,0.115,True,Customer asked for $50 discount
+Pied Piper,00959,2024-01-19,North America,44342.11,28302.73,0.183,False,Quarterly renewal
+Stark Industries,00292,2024-02-10,LATAM,62614.0,59232.84,0.054000000000000006,True,Fast shipping requested
+Globex Inc,00962,2024-02-04,APAC,9099.44,7689.03,0.155,True,Account upgrade pending
+Soylent Corp,00258,2024-01-14,North America,-47754.19,30132.89,-0.369,True,Quarterly renewal
+Vandelay Industries,00453,2024-05-21,LATAM,-42287.56,28628.68,-0.32299999999999995,False,Account upgrade pending
+Massive Dynamic,00152,2024-04-20,EMEA,3616.25,1811.74,0.499,False,Fast shipping requested
+Globex Inc,00363,2024-05-23,LATAM,73050.86,40177.97,0.45,True,Standard order
+Initech LLC,00755,2024-03-26,LATAM,60266.52,30976.99,0.486,False,Quarterly renewal
+Wonka Industries,00941,2024-04-27,APAC,23236.72,18844.98,0.18899999999999997,True,Customer asked for $50 discount
+Dunder Mifflin,00522,2024-04-12,APAC,70473.17,32276.71,,True,Customer asked for $50 discount
+Vandelay Industries,00806,2024-03-21,LATAM,58448.08,42374.86,0.07200000000000001,False,Customer asked for $50 discount
+Cyberdyne Systems,00072,2024-06-19,APAC,46925.08,35006.11,0.254,True,Account upgrade pending
+Initech LLC,00197,2024-04-17,LATAM,50960.19,48412.18,0.05,True,
+Hooli Inc,00622,2024-06-16,APAC,37952.95,16516.56,0.53,False,Customer asked for $50 discount
+Massive Dynamic,00680,2024-06-11,APAC,7457.35,6994.99,0.062,True,Account upgrade pending
+Wonka Industries,00787,2024-01-19,LATAM,40161.1,25979.21,0.172,True,
+Wonka Industries,00789,2024-01-28,LATAM,16803.66,14938.45,0.111,True,Fast shipping requested
+Massive Dynamic,00573,2024-06-01,APAC,76980.19,38133.7,0.465,True,Fast shipping requested
+Wonka Industries,00487,2024-04-25,APAC,56507.37,45940.49,0.187,True,Quarterly renewal
+Wayne Enterprises,00344,2024-03-22,North America,10808.87,8030.99,0.257,True,VIP client priority support
+Acme Corp,00212,2024-04-17,LATAM,,,,True,
+Cyberdyne Systems,00874,2024-04-17,EMEA,,,0.384,True,
+Soylent Corp,00942,2024-02-02,North America,,,0.264,True,Standard order
+Wayne Enterprises,00389,2024-03-24,EMEA,34375.1,18356.3,0.466,False,VIP client priority support
+Acme Corp,00768,2024-05-18,North America,74993.13,69743.61,,False,
+Acme Corp,00637,2024-02-09,EMEA,9903.46,5615.26,0.433,False,
+Wonka Industries,00168,2024-03-20,North America,43612.01,20890.15,0.521,False,Standard order
+Vandelay Industries,00792,2024-03-18,North America,76568.23,45761.48,0.235,False,Standard order
+Wonka Industries,00431,2024-05-05,North America,32797.49,24007.76,0.268,True,Account upgrade pending
+Pied Piper,00942,2024-05-17,LATAM,35133.1,31865.72,0.09300000000000001,False,
+Soylent Corp,00584,2024-06-05,LATAM,27606.47,14084.41,0.449,True,Account upgrade pending
+Acme Corp,00530,2024-02-18,North America,19959.51,11587.61,0.373,True,Standard order
+Wayne Enterprises,00227,2024-04-13,EMEA,29839.81,10537.18,0.5479999999999999,False,Fast shipping requested
+Soylent Corp,00278,2024-03-19,APAC,17675.08,10693.42,0.395,True,Customer asked for $50 discount
+Vandelay Industries,00604,2024-05-14,APAC,73548.04,43834.63,0.40399999999999997,True,Standard order
+Massive Dynamic,00300,2024-06-27,EMEA,,,0.285,True,Standard order
+Wayne Enterprises,00964,2024-05-02,North America,66687.43,53967.42,0.126,True,Standard order
+Umbrella Corp,00122,2024-05-22,LATAM,58458.46,33293.92,0.271,True,Customer asked for $50 discount
+Hooli Inc,00636,2024-01-16,North America,71095.47,59009.24,0.17,True,Standard order
+Cyberdyne Systems,00462,2024-06-25,LATAM,22198.82,20289.72,0.086,True,
+Pied Piper,00641,2024-05-30,EMEA,41181.25,28279.94,0.121,True,Account upgrade pending
+Vandelay Industries,00845,2024-05-25,APAC,33216.93,23251.85,0.3,False,Account upgrade pending
+Acme Corp,00911,2024-04-20,APAC,45476.67,30105.56,0.33799999999999997,True,Account upgrade pending
+Acme Corp,00782,2024-02-14,LATAM,42295.83,24790.06,0.36700000000000005,False,VIP client priority support
+Stark Industries,00419,2024-03-26,APAC,50424.95,24052.7,0.523,True,VIP client priority support
+Globex Inc,00323,2024-03-05,APAC,9867.05,4705.12,0.485,True,Quarterly renewal
+Massive Dynamic,00371,2024-06-08,LATAM,47092.95,34424.95,0.26899999999999996,False,Standard order
+Dunder Mifflin,00624,2024-03-02,EMEA,23650.89,11683.54,0.506,False,Fast shipping requested
+Wonka Industries,00158,2024-05-07,APAC,38410.97,27732.72,0.278,False,Account upgrade pending
+Massive Dynamic,00765,2024-02-04,North America,22766.86,20005.33,0.051,True,
+Initech LLC,00458,2024-05-17,LATAM,26211.73,13499.04,0.485,False,Account upgrade pending
+Cyberdyne Systems,00240,2024-04-15,North America,26140.47,14958.16,0.382,True,VIP client priority support
+Acme Corp,00130,2024-05-08,APAC,70516.08,57326.96,0.122,True,Standard order
+Soylent Corp,00801,2024-03-08,APAC,46932.83,24405.07,0.48,False,Fast shipping requested
+Vandelay Industries,00909,2024-05-04,North America,46500.73,26830.92,0.423,False,
+Dunder Mifflin,00721,2024-01-26,LATAM,12894.18,10354.03,0.19699999999999998,True,Quarterly renewal
+Massive Dynamic,00422,2024-05-24,EMEA,13163.78,9227.81,0.299,False,VIP client priority support
+Dunder Mifflin,00261,2024-04-27,APAC,54194.0,36580.95,0.271,True,Fast shipping requested
+Cyberdyne Systems,00707,2024-03-05,LATAM,63475.14,48177.63,0.24100000000000002,True,Fast shipping requested
+Wayne Enterprises,00023,2024-06-17,LATAM,20948.79,10369.65,0.505,True,
+Pied Piper,00236,2024-06-04,APAC,16815.84,10425.82,0.38,False,Fast shipping requested
+Dunder Mifflin,00041,2024-03-20,LATAM,2985.66,1719.74,0.424,True,
+Massive Dynamic,00898,2024-04-03,APAC,62370.21,50020.91,0.198,False,VIP client priority support
+Globex Inc,00145,2024-02-27,LATAM,92878.85,49487.01,0.318,True,Account upgrade pending
+Cyberdyne Systems,00843,2024-06-12,APAC,8571.78,6737.42,0.214,False,Fast shipping requested
+Wonka Industries,00476,2024-06-28,APAC,48868.34,34403.31,0.29600000000000004,True,VIP client priority support
+Soylent Corp,00380,2024-06-20,LATAM,44256.86,28412.9,0.358,True,Standard order
+Vandelay Industries,00380,2024-02-25,LATAM,33629.84,22801.03,0.322,False,Standard order
+Cyberdyne Systems,00283,2024-02-18,North America,76897.4,33037.4,0.536,False,Quarterly renewal
+Initech LLC,00806,2024-05-24,EMEA,5611.46,4410.61,0.214,True,Customer asked for $50 discount
+Wonka Industries,00149,2024-02-03,APAC,,,0.22899999999999998,False,Standard order
+Initech LLC,00272,2024-01-14,EMEA,71370.24,42877.9,0.231,True,Account upgrade pending
+Umbrella Corp,00969,2024-06-06,North America,69989.89,24660.5,0.5489999999999999,True,Fast shipping requested
+Globex Inc,00503,2024-04-23,North America,67495.37,42724.57,0.36700000000000005,False,VIP client priority support
+Hooli Inc,00544,2024-03-16,LATAM,38163.56,23852.22,0.375,False,VIP client priority support
+Soylent Corp,00910,2024-02-28,LATAM,27810.44,20445.83,0.20600000000000002,True,Fast shipping requested
+Soylent Corp,00069,2024-01-24,North America,7445.64,6849.99,0.08,False,Fast shipping requested
+Globex Inc,00421,2024-03-31,LATAM,65172.87,43079.27,0.33899999999999997,True,Quarterly renewal
+Wonka Industries,00111,2024-03-30,APAC,9058.96,4194.3,0.537,True,Account upgrade pending
+Dunder Mifflin,00850,2024-06-26,APAC,2657.01,2516.19,0.053,True,Standard order
+Initech LLC,00759,2024-06-11,North America,9390.02,5612.0,0.235,False,Standard order
+Initech LLC,00162,2024-06-07,North America,50710.67,37678.03,0.257,False,Customer asked for $50 discount
+Cyberdyne Systems,00114,2024-03-13,LATAM,-39756.59,36695.33,-0.077,False,Customer asked for $50 discount
+Umbrella Corp,00786,2024-02-05,APAC,-22063.81,19526.47,-0.115,False,Account upgrade pending
+Massive Dynamic,00854,2024-06-20,APAC,5869.62,4654.61,0.207,True,Fast shipping requested
+Dunder Mifflin,00428,2024-03-15,North America,30674.91,18558.32,0.395,True,
+Globex Inc,00250,2024-04-21,LATAM,42698.03,22139.72,0.44,False,Account upgrade pending
+Massive Dynamic,00199,2024-03-30,APAC,54689.74,35493.64,0.35100000000000003,False,Quarterly renewal
+Pied Piper,00644,2024-05-06,LATAM,72583.95,35838.32,0.368,False,Quarterly renewal
+Soylent Corp,00070,2024-04-30,LATAM,47538.19,34179.96,,True,Standard order
+Dunder Mifflin,00885,2024-01-24,LATAM,44764.19,17311.15,0.505,False,Customer asked for $50 discount
+Hooli Inc,00488,2024-05-08,EMEA,77598.35,42607.24,0.40700000000000003,True,Standard order
+Umbrella Corp,00725,2024-04-22,LATAM,50615.18,29499.16,0.254,True,
+Dunder Mifflin,00663,2024-03-26,North America,32079.31,15588.54,0.37799999999999995,True,Customer asked for $50 discount
+Globex Inc,00597,2024-06-18,EMEA,68797.61,44856.04,0.348,True,Account upgrade pending
+Cyberdyne Systems,00659,2024-03-25,EMEA,64542.3,47448.67,0.059000000000000004,False,Customer asked for $50 discount
+Pied Piper,00498,2024-02-19,EMEA,-74998.26,52198.79,-0.304,True,Fast shipping requested
+Stark Industries,00898,2024-06-07,EMEA,44994.86,24522.2,0.455,True,Standard order
+Cyberdyne Systems,00374,2024-06-22,EMEA,93099.97,49677.56,0.317,True,
+Umbrella Corp,00377,2024-06-22,LATAM,34895.16,30323.89,0.131,True,
+Wayne Enterprises,00054,2024-06-13,LATAM,83995.79,58272.08,0.11199999999999999,True,Customer asked for $50 discount
+Soylent Corp,00928,2024-05-11,EMEA,62412.98,48370.06,,True,Account upgrade pending
+Stark Industries,00242,2024-04-08,North America,28430.99,22233.03,0.218,True,Customer asked for $50 discount
+Wonka Industries,00484,2024-06-27,EMEA,,,0.06,True,Account upgrade pending
+Vandelay Industries,00624,2024-05-15,LATAM,8783.42,5542.34,0.369,False,Standard order
+Wonka Industries,00927,2024-05-07,North America,60903.22,30594.35,0.35700000000000004,True,Quarterly renewal
+Dunder Mifflin,00685,2024-01-22,APAC,7093.9,5209.58,0.06,True,Fast shipping requested
+Cyberdyne Systems,00383,2024-03-05,North America,27103.49,15286.37,0.436,False,Quarterly renewal
+Acme Corp,00361,2024-05-19,APAC,61106.41,43446.66,0.289,True,Standard order
+Vandelay Industries,00795,2024-04-27,North America,22361.47,17777.37,0.205,True,Customer asked for $50 discount
+Acme Corp,00772,2024-06-14,EMEA,21815.26,16710.49,0.23399999999999999,True,VIP client priority support
+Stark Industries,00998,2024-02-17,LATAM,52059.1,30506.63,0.414,True,Account upgrade pending
+Wayne Enterprises,00329,2024-01-27,North America,24930.03,15082.67,0.395,True,Fast shipping requested
+Wonka Industries,00934,2024-03-31,LATAM,-20954.37,14521.38,-0.307,True,Standard order
+Initech LLC,00870,2024-06-04,LATAM,3092.52,1468.95,,True,Customer asked for $50 discount
+Stark Industries,00455,2024-01-20,EMEA,39944.76,37428.24,0.063,True,Account upgrade pending
+Globex Inc,00269,2024-03-07,LATAM,21101.44,14655.61,0.111,True,Quarterly renewal
+Vandelay Industries,00456,2024-01-23,APAC,50254.06,43771.29,0.129,True,
+Stark Industries,00521,2024-02-27,North America,73892.37,49064.53,0.336,True,Account upgrade pending
+Globex Inc,00068,2024-03-20,LATAM,74969.83,68447.45,0.087,False,VIP client priority support
+Soylent Corp,00697,2024-05-12,APAC,10060.93,7384.72,0.266,True,
+Globex Inc,00531,2024-02-09,APAC,12766.95,8821.96,0.309,False,Customer asked for $50 discount
+Umbrella Corp,00651,2024-05-21,APAC,9825.19,6425.67,0.34600000000000003,True,Fast shipping requested
+Hooli Inc,00738,2024-06-03,APAC,-63268.49,58649.89,-0.073,True,Fast shipping requested
+Umbrella Corp,00786,2024-05-26,LATAM,46549.08,21971.17,0.528,True,Customer asked for $50 discount
+Soylent Corp,00075,2024-06-25,North America,13259.15,9747.93,0.20600000000000002,False,VIP client priority support
+Initech LLC,00779,2024-04-04,North America,26216.06,22453.57,0.075,True,Quarterly renewal
+Wonka Industries,00924,2024-02-10,APAC,70064.49,50236.24,0.28300000000000003,True,Standard order
+Globex Inc,00968,2024-04-10,LATAM,72518.15,47209.32,0.349,True,Customer asked for $50 discount
+Massive Dynamic,00009,2024-01-28,LATAM,10478.15,7858.61,0.25,False,Customer asked for $50 discount
+Massive Dynamic,00296,2024-01-19,LATAM,48725.81,33917.73,0.109,True,Customer asked for $50 discount
+Pied Piper,00348,2024-05-22,APAC,56744.91,52829.51,0.069,True,Account upgrade pending
+Soylent Corp,00153,2024-06-04,EMEA,31914.83,13189.8,0.47100000000000003,True,Fast shipping requested
+Hooli Inc,00307,2024-05-01,North America,27942.66,16402.34,0.413,True,Account upgrade pending
+Soylent Corp,00272,2024-06-16,EMEA,69432.72,30539.55,0.43700000000000006,False,Standard order
+Hooli Inc,00971,2024-06-28,North America,15890.5,10961.51,0.255,True,
+Wonka Industries,00754,2024-01-16,EMEA,50101.63,31039.53,0.207,False,Account upgrade pending
+Stark Industries,00693,2024-06-23,APAC,45950.71,22010.39,0.521,True,Fast shipping requested
+Umbrella Corp,00707,2024-06-29,LATAM,24119.54,19440.35,0.19399999999999998,True,VIP client priority support
+Wonka Industries,00354,2024-02-07,APAC,3633.95,2580.1,0.29,True,Account upgrade pending
+Vandelay Industries,00279,2024-02-05,North America,46367.94,38809.97,0.163,False,VIP client priority support
+Stark Industries,00735,2024-04-30,North America,-51248.8,38282.85,-0.253,True,VIP client priority support
+Dunder Mifflin,00205,2024-03-14,APAC,21763.44,14842.67,0.318,True,Quarterly renewal
+Cyberdyne Systems,00904,2024-02-15,North America,80772.44,38441.7,0.486,True,Standard order
+Wayne Enterprises,00582,2024-06-03,North America,69669.89,48977.93,0.297,True,Customer asked for $50 discount
+Umbrella Corp,00829,2024-01-29,APAC,13614.29,9845.15,0.21899999999999997,False,Quarterly renewal
+Hooli Inc,00877,2024-06-12,LATAM,79501.75,28508.83,0.541,False,Standard order
+Wayne Enterprises,00393,2024-03-01,LATAM,56654.87,35295.98,0.377,True,Fast shipping requested
+Globex Inc,00477,2024-03-19,EMEA,39300.53,18575.64,0.395,True,Customer asked for $50 discount
+Hooli Inc,00227,2024-02-26,EMEA,39014.51,24384.07,0.325,False,
+Umbrella Corp,00697,2024-06-01,North America,50752.32,36438.58,0.081,False,Account upgrade pending
+Massive Dynamic,00154,2024-02-12,APAC,69291.95,58064.09,0.095,True,VIP client priority support
+Initech LLC,00526,2024-04-16,LATAM,54414.57,31968.56,0.248,False,Account upgrade pending
+Globex Inc,00047,2024-04-18,APAC,67428.7,25443.8,,True,
+Initech LLC,00785,2024-06-13,LATAM,30669.13,25841.58,0.09,True,Fast shipping requested
+Wonka Industries,00357,2024-01-31,EMEA,80424.45,70594.79,,True,Fast shipping requested
+Vandelay Industries,00558,2024-04-18,LATAM,61840.35,31662.26,0.488,True,
+Dunder Mifflin,00430,2024-06-06,North America,,,0.386,False,Fast shipping requested
+Acme Corp,00412,2024-04-22,EMEA,40712.11,20030.36,0.508,False,Quarterly renewal
+Wayne Enterprises,00898,2024-02-06,EMEA,-31310.24,15467.26,-0.506,True,Account upgrade pending
+Soylent Corp,00049,2024-03-29,LATAM,59042.44,50658.41,0.142,False,
+Umbrella Corp,00308,2024-02-06,LATAM,87869.72,51898.05,0.244,False,Fast shipping requested
+Globex Inc,00945,2024-04-25,APAC,-7388.57,4795.18,-0.35100000000000003,False,Quarterly renewal
+Pied Piper,00780,2024-05-30,EMEA,36214.87,30963.71,0.145,True,Quarterly renewal
+Vandelay Industries,00619,2024-06-29,EMEA,30049.09,20523.53,0.317,True,Customer asked for $50 discount
+Massive Dynamic,00904,2024-05-07,LATAM,8474.01,6229.97,,True,Standard order
+Wayne Enterprises,00567,2024-05-29,LATAM,22491.83,15744.28,0.3,False,Customer asked for $50 discount
+Pied Piper,00842,2024-05-05,LATAM,34831.76,17137.23,0.508,True,Account upgrade pending
+Acme Corp,00860,2024-01-20,North America,62038.7,50205.39,0.126,True,Customer asked for $50 discount
+Acme Corp,00633,2024-06-12,LATAM,-49616.68,46738.91,-0.057999999999999996,True,Account upgrade pending
+Wayne Enterprises,00018,2024-05-08,LATAM,60559.49,51717.8,0.146,False,Customer asked for $50 discount
+Pied Piper,00407,2024-01-21,APAC,77725.11,43756.36,0.392,True,Standard order
+Cyberdyne Systems,00389,2024-04-06,LATAM,4680.56,2939.39,0.37200000000000005,False,Account upgrade pending
+Acme Corp,00236,2024-02-24,LATAM,20696.58,12852.58,0.379,False,Standard order
+Umbrella Corp,00602,2024-02-06,LATAM,69701.18,52624.39,0.245,False,VIP client priority support
+Pied Piper,00758,2024-02-05,North America,-37809.07,29491.07,-0.22,True,
+Stark Industries,00031,2024-06-11,APAC,58874.34,43213.77,0.266,True,Standard order
+Pied Piper,00634,2024-03-16,EMEA,53626.59,46816.01,0.127,False,Standard order
+Globex Inc,00006,2024-03-19,LATAM,27313.85,18354.91,0.32799999999999996,False,Standard order
+Globex Inc,00363,2024-05-21,North America,,,0.244,False,Account upgrade pending
+Massive Dynamic,00174,2024-06-24,LATAM,13127.88,9622.74,0.267,True,
+Globex Inc,00370,2024-03-05,EMEA,58543.57,43257.19,0.20199999999999999,False,
+Hooli Inc,00390,2024-03-25,LATAM,25437.85,21622.17,0.15,True,Customer asked for $50 discount
+Wayne Enterprises,00753,2024-06-26,LATAM,72598.35,55682.93,0.233,False,Account upgrade pending
+Massive Dynamic,00185,2024-06-23,North America,77218.75,38180.38,0.466,True,Fast shipping requested
+Soylent Corp,00143,2024-06-11,APAC,18530.58,8431.41,0.545,True,Account upgrade pending
+Massive Dynamic,00946,2024-06-26,LATAM,41001.57,20213.77,0.507,False,Fast shipping requested
+Dunder Mifflin,00364,2024-02-12,North America,45856.7,38086.54,0.10300000000000001,False,Account upgrade pending
+Vandelay Industries,00532,2024-05-22,EMEA,36407.34,29496.69,0.125,True,Standard order
+Wayne Enterprises,00426,2024-01-22,North America,62433.17,43016.45,0.311,False,VIP client priority support
+Vandelay Industries,00714,2024-04-25,APAC,5504.49,3445.81,0.374,True,Fast shipping requested
+Umbrella Corp,00529,2024-02-14,EMEA,27171.43,21586.19,0.142,True,VIP client priority support
+Acme Corp,00756,2024-06-06,EMEA,36712.81,19512.18,0.426,False,Account upgrade pending
+Globex Inc,00819,2024-05-17,EMEA,27751.58,19037.58,0.314,True,Account upgrade pending
+Cyberdyne Systems,00602,2024-01-30,APAC,28860.71,21405.03,0.19899999999999998,False,Fast shipping requested
+Initech LLC,00321,2024-01-31,EMEA,23250.81,15159.53,0.348,True,Quarterly renewal
+Soylent Corp,00651,2024-05-17,EMEA,41840.99,26778.23,0.36,True,VIP client priority support
+Initech LLC,00200,2024-04-08,LATAM,33458.95,28161.28,,True,Standard order
+Wayne Enterprises,00231,2024-05-17,APAC,14074.1,9056.94,0.305,True,
+Massive Dynamic,00844,2024-04-03,North America,61689.93,30559.37,0.465,True,
+Acme Corp,00461,2024-03-08,APAC,64733.87,53858.58,0.168,False,
+Vandelay Industries,00625,2024-06-10,LATAM,12865.63,8555.64,0.335,True,Customer asked for $50 discount
+Vandelay Industries,00300,2024-03-15,APAC,91460.61,33511.74,0.531,True,Customer asked for $50 discount
+Wonka Industries,00672,2024-02-02,EMEA,19100.95,13466.17,0.295,True,Fast shipping requested
+Cyberdyne Systems,00385,2024-04-25,North America,47705.27,24377.39,0.489,True,Customer asked for $50 discount
+Hooli Inc,00003,2024-01-24,LATAM,47795.62,22272.76,0.534,True,Customer asked for $50 discount
+Stark Industries,00849,2024-03-13,APAC,41274.63,25136.25,,True,Standard order
+Globex Inc,00952,2024-02-10,LATAM,37271.45,21569.12,0.375,True,Standard order
+Dunder Mifflin,00370,2024-03-05,North America,-28202.36,16921.42,-0.4,False,VIP client priority support
+Dunder Mifflin,00094,2024-06-29,North America,-627.4,354.37,-0.39,True,Standard order
+Vandelay Industries,00352,2024-01-31,LATAM,-56381.73,28556.3,-0.45299999999999996,False,Customer asked for $50 discount
+Stark Industries,00903,2024-03-17,EMEA,29012.72,19380.5,0.332,True,VIP client priority support
+Stark Industries,00740,2024-02-24,EMEA,88361.1,62128.9,0.1,True,Customer asked for $50 discount
+Cyberdyne Systems,00323,2024-02-05,EMEA,21134.09,17076.34,0.192,True,
+Wonka Industries,00675,2024-03-18,EMEA,50012.56,21802.35,0.442,False,VIP client priority support
+Cyberdyne Systems,00116,2024-03-02,LATAM,48037.13,23201.93,0.517,True,Customer asked for $50 discount
+Massive Dynamic,00700,2024-02-14,LATAM,-71606.75,60292.88,-0.158,True,
+Cyberdyne Systems,00519,2024-03-14,LATAM,34620.87,25997.71,0.18899999999999997,False,
+Initech LLC,00550,2024-03-24,LATAM,44189.57,36721.53,0.16899999999999998,True,Standard order
+Soylent Corp,00627,2024-06-04,North America,23542.11,20434.55,0.132,True,Quarterly renewal
+Stark Industries,00130,2024-03-09,North America,57971.56,47478.71,0.18100000000000002,False,VIP client priority support
+Soylent Corp,00524,2024-04-02,North America,48282.82,18973.64,0.49700000000000005,False,Quarterly renewal
+Vandelay Industries,00522,2024-01-01,North America,64472.33,56413.29,0.125,True,Account upgrade pending
+Pied Piper,00936,2024-06-16,LATAM,17226.39,15693.24,0.08900000000000001,True,Quarterly renewal
+Umbrella Corp,00824,2024-05-12,North America,71578.92,56905.24,0.205,True,Standard order
+Stark Industries,00206,2024-03-15,APAC,55598.41,31357.5,0.436,False,Quarterly renewal
+Acme Corp,00955,2024-04-14,North America,17858.33,13965.21,0.218,True,
+Vandelay Industries,00745,2024-03-19,North America,15786.98,13876.76,0.121,True,Quarterly renewal
+Wonka Industries,00533,2024-04-15,APAC,34655.12,26095.31,0.247,True,VIP client priority support
+Dunder Mifflin,00988,2024-02-03,EMEA,22229.86,17494.9,0.213,False,Standard order
+Umbrella Corp,00140,2024-05-29,North America,12078.09,9312.21,0.22899999999999998,True,Customer asked for $50 discount
+Soylent Corp,00272,2024-01-31,North America,12242.35,6512.93,0.46799999999999997,False,Fast shipping requested
+Umbrella Corp,00992,2024-04-01,LATAM,38752.75,28987.06,0.252,False,Standard order
+Soylent Corp,00105,2024-02-05,North America,1390.79,883.15,0.365,True,
+Globex Inc,00023,2024-01-17,EMEA,67735.96,36983.83,0.45399999999999996,True,Standard order
+Initech LLC,00947,2024-05-26,LATAM,66652.8,47706.13,0.22699999999999998,True,Customer asked for $50 discount
+Soylent Corp,00905,2024-02-08,North America,59201.2,31219.38,0.325,True,VIP client priority support
+Initech LLC,00430,2024-02-21,EMEA,60788.74,36568.22,0.23,True,Customer asked for $50 discount
+Hooli Inc,00515,2024-03-23,LATAM,20647.46,11583.23,0.439,True,Account upgrade pending
+Stark Industries,00786,2024-05-29,EMEA,73061.5,40476.07,0.446,False,Account upgrade pending
+Wonka Industries,00817,2024-04-09,APAC,70172.85,42173.88,0.39899999999999997,True,Fast shipping requested
+Vandelay Industries,00361,2024-05-25,EMEA,42451.61,28824.64,0.321,True,Standard order
+Acme Corp,00239,2024-06-03,EMEA,-1984.64,1085.6,-0.45299999999999996,False,Fast shipping requested
+Initech LLC,00941,2024-03-23,North America,2729.61,1465.03,0.313,False,Customer asked for $50 discount
+Vandelay Industries,00965,2024-06-18,LATAM,44158.24,21019.32,0.524,True,Fast shipping requested
+Stark Industries,00179,2024-05-23,APAC,21927.9,13756.33,0.19699999999999998,True,Fast shipping requested
+Hooli Inc,00401,2024-05-25,North America,14065.09,9381.42,0.33299999999999996,True,Customer asked for $50 discount
+Vandelay Industries,00080,2024-03-01,APAC,73687.28,45317.68,0.385,False,VIP client priority support
+Acme Corp,00272,2024-02-23,EMEA,52141.62,39471.21,0.243,True,VIP client priority support
+Soylent Corp,00903,2024-04-06,APAC,41178.79,23513.09,0.429,True,Standard order
+Pied Piper,00867,2024-01-09,APAC,1995.81,1520.81,0.23800000000000002,False,Customer asked for $50 discount
+Hooli Inc,00629,2024-05-03,North America,32633.59,25584.73,0.21600000000000003,True,Fast shipping requested
+Massive Dynamic,00740,2024-05-18,APAC,49714.54,26348.71,0.47,False,Standard order
+Cyberdyne Systems,00090,2024-03-16,LATAM,15375.77,10962.92,0.287,True,VIP client priority support
+Soylent Corp,00917,2024-06-18,APAC,9330.82,6247.27,,True,Customer asked for $50 discount
+Umbrella Corp,00858,2024-03-09,North America,11759.24,5468.05,0.535,True,
+Cyberdyne Systems,00839,2024-05-13,LATAM,78234.4,54546.76,0.247,True,Account upgrade pending
+Hooli Inc,00923,2024-05-12,EMEA,9461.0,5165.71,0.45399999999999996,True,Standard order
+Dunder Mifflin,00446,2024-02-21,EMEA,62641.05,56752.79,0.094,False,
+Wayne Enterprises,00533,2024-04-27,North America,75645.47,51710.77,0.125,False,Standard order
+Hooli Inc,00799,2024-01-26,APAC,65126.91,43244.27,0.336,True,Customer asked for $50 discount
+Cyberdyne Systems,00148,2024-06-07,LATAM,3389.3,2765.67,0.184,False,
+Pied Piper,00311,2024-03-20,APAC,63292.07,36582.82,0.42200000000000004,False,Customer asked for $50 discount
+Vandelay Industries,00427,2024-06-03,North America,14501.21,10034.84,0.308,True,Account upgrade pending
+Pied Piper,00163,2024-01-17,APAC,53362.92,49947.69,0.064,False,
+Acme Corp,00256,2024-01-09,LATAM,4266.67,2973.87,0.303,False,Fast shipping requested
+Acme Corp,00248,2024-04-05,LATAM,44756.25,34820.36,0.222,True,Fast shipping requested
+Wonka Industries,00706,2024-01-24,APAC,2545.06,1325.98,0.479,False,Customer asked for $50 discount
+Dunder Mifflin,00420,2024-05-11,North America,64914.93,35703.21,0.45,True,Fast shipping requested
+Vandelay Industries,00659,2024-03-11,LATAM,67213.48,46377.3,0.31,False,Standard order
+Massive Dynamic,00679,2024-04-05,APAC,22736.46,17893.59,0.213,True,Quarterly renewal
+Initech LLC,00530,2024-03-02,North America,77445.79,56692.74,0.063,True,Customer asked for $50 discount
+Cyberdyne Systems,00415,2024-04-09,North America,56237.15,26668.71,0.39299999999999996,True,Fast shipping requested
+Stark Industries,00520,2024-03-17,EMEA,80803.3,51827.74,0.179,True,Fast shipping requested
+Stark Industries,00671,2024-01-23,EMEA,26968.61,17718.38,0.34299999999999997,False,VIP client priority support
+Acme Corp,00888,2024-06-11,North America,35680.37,28579.98,0.19899999999999998,True,Quarterly renewal
+Umbrella Corp,00351,2024-04-14,LATAM,11170.2,9628.71,0.138,True,VIP client priority support
+Wayne Enterprises,00215,2024-02-13,EMEA,36973.49,27175.52,0.265,True,Standard order
+Massive Dynamic,00205,2024-04-05,North America,85701.73,55304.4,0.174,False,Customer asked for $50 discount
+Initech LLC,00106,2024-04-08,APAC,12943.0,8438.84,0.348,True,Customer asked for $50 discount
+Soylent Corp,00368,2024-02-18,EMEA,-71132.28,60035.64,-0.156,True,Account upgrade pending
+Massive Dynamic,00174,2024-02-01,APAC,53477.7,34118.77,0.36200000000000004,True,Fast shipping requested
+Globex Inc,00670,2024-01-06,North America,56037.27,31079.93,0.401,True,Customer asked for $50 discount
+Cyberdyne Systems,00678,2024-01-26,APAC,46898.43,30061.89,0.359,False,VIP client priority support
+Umbrella Corp,00624,2024-02-21,APAC,62446.66,42213.94,0.324,True,Customer asked for $50 discount
+Umbrella Corp,00003,2024-01-04,North America,87120.08,47235.42,0.306,False,Customer asked for $50 discount
+Dunder Mifflin,00237,2024-04-26,APAC,20177.31,16242.73,0.195,False,VIP client priority support
+Vandelay Industries,00119,2024-01-25,North America,1220.59,892.25,0.26899999999999996,False,Customer asked for $50 discount
+Wonka Industries,00351,2024-02-16,North America,30357.92,16696.86,0.45,True,Standard order
+Initech LLC,00713,2024-01-16,EMEA,10530.09,5297.95,0.35600000000000004,True,
+Dunder Mifflin,00902,2024-02-03,LATAM,69069.65,43030.39,,False,Fast shipping requested
+Wonka Industries,00347,2024-05-12,North America,32747.17,28686.52,0.124,True,Standard order
+Dunder Mifflin,00957,2024-02-10,LATAM,-63964.4,50212.05,-0.215,True,Standard order
+Massive Dynamic,00229,2024-05-20,LATAM,-30544.14,22175.05,-0.27399999999999997,True,VIP client priority support
+Stark Industries,00122,2024-05-07,North America,-8146.93,4513.4,-0.446,True,Account upgrade pending
+Massive Dynamic,00212,2024-06-16,LATAM,71301.46,55900.34,0.21600000000000003,True,Fast shipping requested
+Dunder Mifflin,00373,2024-04-25,North America,-7759.06,3631.24,-0.532,True,Account upgrade pending
+Massive Dynamic,00383,2024-06-28,North America,3910.47,2913.3,0.255,False,Quarterly renewal
+Globex Inc,00953,2024-04-10,EMEA,34549.93,16825.82,0.513,False,
+Soylent Corp,00469,2024-06-17,EMEA,72307.18,38395.11,0.469,True,Fast shipping requested
+Hooli Inc,00178,2024-02-02,North America,29361.72,21757.03,0.259,False,Customer asked for $50 discount
+Cyberdyne Systems,00987,2024-03-28,APAC,34237.01,23760.48,0.306,False,Fast shipping requested
+Vandelay Industries,00958,2024-05-21,EMEA,15466.24,13672.16,0.11599999999999999,True,Account upgrade pending
+Massive Dynamic,00711,2024-06-12,APAC,53421.28,31785.66,0.405,True,
+Cyberdyne Systems,00828,2024-01-04,North America,-2382.77,1370.09,-0.425,True,Customer asked for $50 discount
+Dunder Mifflin,00257,2024-02-07,North America,51949.32,37611.31,0.276,False,Fast shipping requested
+Dunder Mifflin,00575,2024-04-09,EMEA,38563.71,28614.27,0.258,False,Account upgrade pending
+Acme Corp,00014,2024-03-05,EMEA,50470.4,29254.14,0.374,False,
+Vandelay Industries,00988,2024-02-19,APAC,33936.71,25825.84,0.239,True,Quarterly renewal
+Initech LLC,00599,2024-03-06,North America,-25126.93,23242.41,-0.075,True,VIP client priority support
+Pied Piper,00587,2024-05-20,APAC,5929.62,3302.8,0.44299999999999995,True,Standard order
+Stark Industries,00227,2024-02-24,APAC,25164.46,11374.34,0.5479999999999999,True,Standard order
+Dunder Mifflin,00355,2024-04-24,EMEA,86892.79,34417.69,0.493,False,VIP client priority support
+Wayne Enterprises,00554,2024-03-13,North America,68394.53,54852.41,0.198,False,Account upgrade pending
+Globex Inc,00971,2024-01-25,EMEA,93294.52,46282.83,0.365,True,
+Globex Inc,00211,2024-05-17,LATAM,48668.81,38156.35,0.21600000000000003,True,Quarterly renewal
+Pied Piper,00258,2024-05-22,North America,43334.69,32414.35,0.252,True,Fast shipping requested
+Globex Inc,00548,2024-01-02,North America,-72728.4,27614.06,-0.514,False,Customer asked for $50 discount
+Pied Piper,00703,2024-03-18,North America,23190.89,18724.5,0.128,True,
+Pied Piper,00870,2024-05-19,APAC,72030.0,37167.48,0.484,True,Account upgrade pending
+Wonka Industries,00569,2024-02-06,North America,3612.1,2882.46,0.20199999999999999,False,Quarterly renewal
+Cyberdyne Systems,00928,2024-06-14,EMEA,12491.1,7682.03,0.385,True,
+Pied Piper,00955,2024-05-20,LATAM,48528.25,28486.08,0.413,False,Customer asked for $50 discount
+Initech LLC,00688,2024-06-16,EMEA,-10180.3,5766.19,-0.275,True,Fast shipping requested
+Hooli Inc,00157,2024-05-24,APAC,65527.52,36040.14,0.406,True,
+Stark Industries,00138,2024-06-22,APAC,71174.69,59048.63,0.10400000000000001,False,
+Wayne Enterprises,00880,2024-02-05,EMEA,20110.98,12750.36,0.366,True,
+Hooli Inc,00218,2024-01-10,APAC,52465.23,34348.33,0.162,True,Quarterly renewal
+Soylent Corp,00514,2024-05-10,North America,-38477.43,18276.78,-0.392,True,VIP client priority support
+Initech LLC,00184,2024-05-24,EMEA,59752.11,46141.91,0.166,False,Standard order
+Dunder Mifflin,00212,2024-05-12,APAC,,,0.212,True,
+Vandelay Industries,00270,2024-05-28,EMEA,28561.14,19764.31,0.308,False,Account upgrade pending
+Cyberdyne Systems,00362,2024-03-29,LATAM,-76227.81,51632.43,-0.133,False,Account upgrade pending
+Dunder Mifflin,00288,2024-02-24,EMEA,14424.47,10717.38,0.257,False,VIP client priority support
+Dunder Mifflin,00491,2024-05-02,EMEA,-48075.03,29112.1,-0.34600000000000003,True,Fast shipping requested
+Massive Dynamic,00041,2024-05-26,EMEA,4665.44,2169.43,0.535,True,Standard order
+Umbrella Corp,00460,2024-06-04,LATAM,65114.03,42910.15,0.341,True,Quarterly renewal
+Vandelay Industries,00703,2024-03-28,LATAM,44941.74,38155.54,0.151,True,
+Initech LLC,00621,2024-01-25,EMEA,46018.88,20636.59,0.426,True,Account upgrade pending
+Massive Dynamic,00848,2024-01-01,LATAM,39392.3,18947.7,0.519,True,Customer asked for $50 discount
+Hooli Inc,00824,2024-06-27,North America,32198.96,26016.76,0.192,True,Customer asked for $50 discount
+Umbrella Corp,00006,2024-01-02,North America,42360.04,30161.92,0.231,True,Customer asked for $50 discount
+Wonka Industries,00549,2024-04-18,APAC,49771.92,32674.34,0.29100000000000004,True,Customer asked for $50 discount
+Wayne Enterprises,00592,2024-03-29,LATAM,55315.79,48069.42,0.131,True,
+Stark Industries,00821,2024-05-20,North America,12474.98,8108.74,0.35,True,Quarterly renewal
+Stark Industries,00082,2024-06-04,North America,58832.85,35463.13,0.349,True,Fast shipping requested
+Soylent Corp,00450,2024-01-03,EMEA,,,0.305,True,Fast shipping requested
+Acme Corp,00369,2024-03-02,North America,73185.62,55035.59,0.248,True,Fast shipping requested
+Vandelay Industries,00071,2024-01-24,APAC,54597.33,44333.03,0.188,False,VIP client priority support
+Cyberdyne Systems,00589,2024-01-02,APAC,17331.32,6445.08,0.524,True,Account upgrade pending
+Wonka Industries,00813,2024-05-27,APAC,56394.67,24489.91,0.531,True,Account upgrade pending
+Wonka Industries,00029,2024-05-03,North America,21284.18,16455.82,0.165,False,Account upgrade pending
+Massive Dynamic,00010,2024-06-28,APAC,18995.19,12783.76,0.327,False,Customer asked for $50 discount
+Umbrella Corp,00916,2024-05-26,APAC,14117.44,7256.36,0.486,False,
+Umbrella Corp,00857,2024-06-07,APAC,12121.67,8533.66,,True,
+Soylent Corp,00381,2024-06-07,APAC,37179.36,18292.25,0.508,False,
+Hooli Inc,00132,2024-01-14,LATAM,-46252.61,20307.79,-0.43799999999999994,True,Standard order
+Vandelay Industries,00531,2024-04-27,APAC,51846.19,39869.72,0.231,True,Account upgrade pending
+Wayne Enterprises,00243,2024-03-09,LATAM,71910.25,43146.15,0.4,True,Customer asked for $50 discount
+Soylent Corp,00185,2024-05-26,EMEA,73455.8,49362.3,0.32799999999999996,False,Quarterly renewal
+Pied Piper,00983,2024-02-08,LATAM,60522.29,38431.65,0.365,False,
+Soylent Corp,00308,2024-03-05,North America,-30180.94,16026.08,-0.469,False,VIP client priority support
+Vandelay Industries,00343,2024-03-07,APAC,34998.84,24307.78,0.111,False,Account upgrade pending
+Hooli Inc,00666,2024-06-15,EMEA,73463.3,42755.64,0.418,True,Account upgrade pending
+Wayne Enterprises,00475,2024-06-10,EMEA,65185.19,32331.85,0.504,False,Quarterly renewal
+Stark Industries,00325,2024-06-16,APAC,68386.93,27728.76,0.48100000000000004,True,VIP client priority support
+Initech LLC,00189,2024-01-06,EMEA,54719.05,47441.42,0.133,False,VIP client priority support
+Massive Dynamic,00056,2024-01-07,LATAM,39536.72,19135.77,0.516,False,Quarterly renewal
+Vandelay Industries,00291,2024-04-23,EMEA,-10280.14,5325.11,-0.48200000000000004,True,
+Massive Dynamic,00958,2024-03-10,LATAM,13524.56,6677.75,0.368,True,Customer asked for $50 discount
+Soylent Corp,00553,2024-02-28,North America,33418.59,22991.99,0.312,True,Customer asked for $50 discount
+Wayne Enterprises,00481,2024-05-16,North America,55877.97,38028.06,0.265,False,
+Acme Corp,00562,2024-04-05,EMEA,39903.13,19546.3,0.373,False,Customer asked for $50 discount
+Globex Inc,00433,2024-06-09,EMEA,49903.94,22573.73,0.42100000000000004,True,Quarterly renewal
+Wonka Industries,00071,2024-02-16,EMEA,23840.84,18896.07,,True,Quarterly renewal
+Globex Inc,00289,2024-03-09,EMEA,53782.1,41896.26,0.221,True,Customer asked for $50 discount
+Soylent Corp,00714,2024-01-09,APAC,-6476.62,4391.15,-0.322,True,Quarterly renewal
+Wonka Industries,00257,2024-04-07,North America,9586.14,4342.52,0.547,False,Account upgrade pending
+Dunder Mifflin,00214,2024-05-01,LATAM,51267.45,29632.59,0.42200000000000004,False,Customer asked for $50 discount
+Soylent Corp,00654,2024-03-17,EMEA,27351.79,17341.03,0.366,True,
+Wayne Enterprises,00599,2024-01-31,LATAM,59291.21,35930.47,0.39399999999999996,False,Quarterly renewal
+Initech LLC,00512,2024-01-24,APAC,-69848.23,47636.49,-0.318,False,Quarterly renewal
+Soylent Corp,00239,2024-03-22,APAC,,,0.22899999999999998,True,VIP client priority support
+Vandelay Industries,00449,2024-05-23,APAC,44208.39,23905.27,0.41600000000000004,True,Standard order
+Massive Dynamic,00159,2024-04-25,APAC,,,0.303,True,Account upgrade pending
+Wonka Industries,00373,2024-06-07,EMEA,24391.71,16781.5,0.312,True,Account upgrade pending
+Wayne Enterprises,00331,2024-04-14,APAC,8729.58,7516.17,,True,Quarterly renewal
+Globex Inc,00033,2024-05-26,LATAM,63379.37,41592.71,0.16,True,Quarterly renewal
+Dunder Mifflin,00504,2024-01-21,LATAM,60175.99,32434.86,0.461,True,
+Hooli Inc,00273,2024-05-15,North America,-55205.38,49740.05,-0.099,False,Account upgrade pending
+Cyberdyne Systems,00195,2024-02-19,EMEA,42967.06,24362.32,0.433,True,Fast shipping requested
+Dunder Mifflin,00438,2024-01-27,EMEA,76209.14,26851.81,0.5489999999999999,False,Customer asked for $50 discount
+Massive Dynamic,00333,2024-04-05,LATAM,62026.28,38881.29,0.32299999999999995,True,Customer asked for $50 discount
+Soylent Corp,00459,2024-04-11,North America,54610.34,43633.66,0.201,False,Quarterly renewal
+Wonka Industries,00323,2024-01-06,APAC,88286.53,64214.65,0.069,True,Customer asked for $50 discount
+Stark Industries,00911,2024-05-29,EMEA,17858.06,10411.25,0.41700000000000004,True,Quarterly renewal
+Soylent Corp,00846,2024-06-25,North America,-44844.72,40853.54,-0.08900000000000001,True,
+Stark Industries,00357,2024-04-21,LATAM,69803.33,45302.36,,True,Standard order
+Wayne Enterprises,00537,2024-01-11,APAC,40724.76,24964.28,0.387,True,
+Hooli Inc,00590,2024-05-09,North America,17045.38,12136.31,0.28800000000000003,True,Customer asked for $50 discount
+Globex Inc,00409,2024-05-08,LATAM,58149.97,43728.78,0.248,False,Quarterly renewal
+Globex Inc,00273,2024-04-20,APAC,65936.61,39974.07,0.22399999999999998,True,
+Wayne Enterprises,00174,2024-03-30,LATAM,-46927.07,28484.73,-0.39299999999999996,True,
+Vandelay Industries,00874,2024-01-22,North America,55598.83,30023.37,,False,Customer asked for $50 discount
+Soylent Corp,00483,2024-01-06,APAC,20571.15,10864.14,0.324,True,Fast shipping requested
+Vandelay Industries,00685,2024-01-05,LATAM,-56235.35,37343.79,-0.15,True,Standard order
+Soylent Corp,00671,2024-01-03,North America,29454.06,26390.84,0.10400000000000001,True,Quarterly renewal
+Cyberdyne Systems,00521,2024-01-26,APAC,46857.38,26393.88,0.27899999999999997,True,Standard order
+Umbrella Corp,00945,2024-05-15,APAC,,,0.226,False,Account upgrade pending
+Wayne Enterprises,00832,2024-01-16,APAC,65961.46,51383.98,0.221,True,Standard order
+Vandelay Industries,00392,2024-05-13,EMEA,31591.33,24799.19,0.215,False,Fast shipping requested
+Initech LLC,00595,2024-05-18,EMEA,64762.78,47600.64,0.265,True,Fast shipping requested
+Hooli Inc,00940,2024-02-10,APAC,7106.75,2831.6,0.49,False,VIP client priority support
+Cyberdyne Systems,00311,2024-04-23,APAC,11820.8,7612.6,0.35600000000000004,False,Account upgrade pending
+Umbrella Corp,00237,2024-06-24,North America,29446.17,17040.61,0.375,True,VIP client priority support
+Soylent Corp,00141,2024-02-11,EMEA,,,0.525,False,
+Umbrella Corp,00068,2024-02-15,LATAM,65101.11,47914.42,0.264,True,Fast shipping requested
+Stark Industries,00404,2024-06-05,North America,39288.36,32491.47,0.17300000000000001,True,Account upgrade pending
+Cyberdyne Systems,00529,2024-06-10,North America,14643.85,10528.93,0.281,True,Fast shipping requested
+Massive Dynamic,00926,2024-02-06,LATAM,67313.24,40948.88,0.34299999999999997,True,VIP client priority support
+Cyberdyne Systems,00332,2024-04-25,North America,13826.45,12512.94,0.095,True,Fast shipping requested
+Vandelay Industries,00127,2024-01-24,North America,53113.89,24538.62,0.5379999999999999,True,VIP client priority support
+Massive Dynamic,00390,2024-01-12,EMEA,87632.42,60110.36,0.122,True,VIP client priority support
+Wayne Enterprises,00317,2024-04-24,APAC,47170.74,26745.81,,True,Account upgrade pending
+Pied Piper,00006,2024-06-04,LATAM,23324.08,11826.04,,True,Account upgrade pending
+Dunder Mifflin,00571,2024-02-23,North America,,,0.38299999999999995,True,Customer asked for $50 discount
+Globex Inc,00051,2024-01-28,LATAM,74533.27,48670.23,0.34700000000000003,True,VIP client priority support
+Vandelay Industries,00593,2024-04-02,North America,7437.91,4247.05,0.429,False,Customer asked for $50 discount
+Soylent Corp,00138,2024-02-01,APAC,27028.12,22398.31,0.105,False,VIP client priority support
+Vandelay Industries,00706,2024-06-03,APAC,32315.49,15705.33,0.514,True,Account upgrade pending
+Vandelay Industries,00648,2024-05-07,LATAM,77689.01,54078.84,0.109,False,Fast shipping requested
+Wonka Industries,00213,2024-06-06,LATAM,31346.06,19748.02,0.37,True,
+Globex Inc,00316,2024-03-17,APAC,57643.93,37007.4,,False,Customer asked for $50 discount
+Wonka Industries,00347,2024-06-21,LATAM,68754.15,34652.09,0.496,False,VIP client priority support
+Pied Piper,00834,2024-04-15,North America,62715.38,59015.17,0.059000000000000004,False,
+Pied Piper,00363,2024-01-17,EMEA,21394.27,18548.83,0.133,True,Account upgrade pending
+Globex Inc,00886,2024-03-19,APAC,53383.08,38649.35,0.276,False,Account upgrade pending
+Wayne Enterprises,00180,2024-01-29,APAC,58978.33,41815.64,0.29100000000000004,False,Customer asked for $50 discount
+Soylent Corp,00751,2024-05-14,APAC,58277.22,40327.84,0.308,False,Fast shipping requested
+Acme Corp,00471,2024-04-09,North America,806.19,578.04,,True,Standard order
+Hooli Inc,00777,2024-03-20,EMEA,24405.59,14985.03,0.386,True,Customer asked for $50 discount
+Globex Inc,00016,2024-06-08,North America,15890.01,8707.73,0.452,True,Standard order
+Wayne Enterprises,00628,2024-03-27,LATAM,4279.1,3949.61,0.077,True,Fast shipping requested
+Hooli Inc,00913,2024-05-31,LATAM,46415.49,25296.44,0.455,True,Account upgrade pending
+Initech LLC,00096,2024-06-27,LATAM,7746.09,6460.24,0.166,True,Customer asked for $50 discount
+Cyberdyne Systems,00188,2024-06-28,APAC,,,0.106,True,Customer asked for $50 discount
+Pied Piper,00357,2024-06-03,EMEA,41409.63,23963.91,0.375,True,VIP client priority support
+Hooli Inc,00424,2024-03-02,EMEA,41322.2,27066.04,0.345,True,Account upgrade pending
+Pied Piper,00351,2024-05-19,EMEA,13394.87,11961.62,0.107,False,Account upgrade pending
+Globex Inc,00842,2024-04-23,EMEA,-25324.55,13225.04,-0.436,True,Customer asked for $50 discount
+Soylent Corp,00661,2024-06-18,North America,7244.71,6882.47,0.05,True,VIP client priority support
+Massive Dynamic,00299,2024-04-09,LATAM,15077.16,7402.89,0.509,False,Standard order
+Hooli Inc,00009,2024-06-05,LATAM,-63648.94,60466.49,-0.05,False,Standard order
+Wonka Industries,00289,2024-01-08,EMEA,41808.38,24791.07,0.24100000000000002,True,VIP client priority support
+Initech LLC,00193,2024-05-22,LATAM,63327.91,38946.66,0.385,False,Fast shipping requested
+Acme Corp,00148,2024-05-04,LATAM,73135.64,52803.93,0.278,True,Account upgrade pending
+Initech LLC,00466,2024-05-10,LATAM,44957.95,39379.83,0.054000000000000006,False,Fast shipping requested
+Massive Dynamic,00276,2024-04-15,APAC,2992.91,2121.97,0.29100000000000004,True,Fast shipping requested
+Vandelay Industries,00540,2024-03-12,LATAM,49936.31,22588.38,0.42100000000000004,False,Fast shipping requested
+Dunder Mifflin,00553,2024-05-28,APAC,,,0.306,False,VIP client priority support
+Stark Industries,00984,2024-03-16,APAC,16613.58,11928.03,0.081,True,Account upgrade pending
+Acme Corp,00673,2024-03-15,North America,21867.77,18019.04,0.17600000000000002,True,
+Wayne Enterprises,00015,2024-01-29,EMEA,68304.8,38182.38,0.441,True,
+Massive Dynamic,00883,2024-01-09,APAC,73813.34,42368.86,0.426,True,Quarterly renewal
+Dunder Mifflin,00451,2024-06-12,EMEA,-16208.83,14976.96,-0.076,True,VIP client priority support
+Soylent Corp,00309,2024-05-01,EMEA,28795.16,27182.63,0.055999999999999994,True,VIP client priority support
+Dunder Mifflin,00324,2024-05-15,North America,9924.66,3807.04,0.509,False,Customer asked for $50 discount
+Wayne Enterprises,00822,2024-01-26,APAC,53188.46,30238.62,0.386,False,Fast shipping requested
+Vandelay Industries,00185,2024-03-21,North America,-50623.74,30728.61,-0.39299999999999996,False,Quarterly renewal
+Vandelay Industries,00291,2024-03-05,EMEA,3886.22,1615.21,0.46799999999999997,False,Fast shipping requested
+Globex Inc,00089,2024-06-03,EMEA,36491.39,24460.64,0.142,False,Fast shipping requested
+Soylent Corp,00945,2024-03-11,LATAM,52070.5,47852.79,0.081,True,Customer asked for $50 discount
+Wonka Industries,00272,2024-02-15,LATAM,5670.19,4978.43,0.122,False,Account upgrade pending
+Dunder Mifflin,00109,2024-04-23,APAC,-8194.89,7711.39,-0.059000000000000004,True,Quarterly renewal
+Dunder Mifflin,00656,2024-01-01,North America,50013.13,47412.45,0.052000000000000005,True,VIP client priority support
+Cyberdyne Systems,00414,2024-01-18,EMEA,746.4,584.43,0.217,True,Fast shipping requested
+Dunder Mifflin,00093,2024-04-03,APAC,7013.55,4370.48,0.327,False,Customer asked for $50 discount
+Vandelay Industries,00400,2024-01-28,APAC,39684.07,21679.26,0.41,True,VIP client priority support
+Globex Inc,00812,2024-05-18,APAC,,,0.078,True,VIP client priority support
+Globex Inc,00217,2024-06-16,LATAM,70536.69,65740.2,0.068,True,VIP client priority support
+Hooli Inc,00047,2024-03-03,EMEA,1570.21,1011.22,0.35600000000000004,False,
+Wonka Industries,00109,2024-01-30,LATAM,57377.05,24385.25,0.456,True,Customer asked for $50 discount
+Globex Inc,00701,2024-05-27,EMEA,24458.45,21768.02,0.11,True,Quarterly renewal
+Vandelay Industries,00379,2024-05-21,EMEA,-42470.73,21368.09,-0.35600000000000004,True,Standard order
+Soylent Corp,00083,2024-01-02,North America,13866.26,8361.35,0.397,True,Fast shipping requested
+Initech LLC,00212,2024-02-06,APAC,42627.57,25734.42,0.348,False,Fast shipping requested
+Wonka Industries,00802,2024-03-18,APAC,40575.42,28592.99,0.098,False,VIP client priority support
+Pied Piper,00642,2024-06-17,EMEA,21093.78,10420.33,0.506,True,Fast shipping requested
+Acme Corp,00056,2024-06-14,APAC,21737.31,15716.08,0.27699999999999997,True,Account upgrade pending
+Initech LLC,00162,2024-01-08,LATAM,38860.33,30583.08,0.213,False,Quarterly renewal
+Pied Piper,00113,2024-03-24,EMEA,8430.24,5581.13,0.285,True,Quarterly renewal
+Umbrella Corp,00951,2024-06-05,LATAM,13765.53,6359.67,0.5379999999999999,True,Standard order
+Vandelay Industries,00583,2024-01-16,APAC,11522.91,5409.37,0.493,True,Account upgrade pending
+Massive Dynamic,00876,2024-02-28,North America,39899.34,16583.16,0.46799999999999997,True,Fast shipping requested
+Wonka Industries,00253,2024-03-04,APAC,32851.53,21780.56,,True,VIP client priority support
+Vandelay Industries,00788,2024-05-09,North America,32214.47,23323.28,0.276,True,Fast shipping requested
+Vandelay Industries,00417,2024-02-25,EMEA,27201.22,21706.57,0.20199999999999999,True,VIP client priority support
+Soylent Corp,00791,2024-02-05,LATAM,14278.46,9081.1,0.364,False,Account upgrade pending
+Acme Corp,00304,2024-04-19,APAC,67206.53,47779.64,0.09,True,Account upgrade pending
+Dunder Mifflin,00373,2024-01-14,North America,31352.56,19479.23,0.32899999999999996,False,Quarterly renewal
+Stark Industries,00245,2024-05-18,North America,62532.3,27846.42,0.43,True,Account upgrade pending
+Dunder Mifflin,00434,2024-03-11,North America,5221.0,3733.02,0.285,True,VIP client priority support
+Hooli Inc,00377,2024-06-21,North America,15694.93,6844.73,0.529,True,Customer asked for $50 discount
+Globex Inc,00714,2024-02-07,LATAM,11712.11,5446.13,0.535,True,VIP client priority support
+Stark Industries,00431,2024-04-23,North America,-22218.0,13952.9,-0.37200000000000005,True,Account upgrade pending
+Stark Industries,00672,2024-06-14,APAC,46999.12,32458.77,0.11599999999999999,True,
+Wayne Enterprises,00233,2024-05-03,APAC,72818.94,46676.94,0.359,True,Quarterly renewal
+Initech LLC,00860,2024-06-26,EMEA,-12513.48,9134.84,-0.27,False,Quarterly renewal
+Umbrella Corp,00576,2024-01-09,APAC,73362.68,58616.78,0.201,True,VIP client priority support
+Pied Piper,00149,2024-04-27,APAC,15521.24,8645.82,0.287,True,
+Hooli Inc,00747,2024-04-23,APAC,55988.77,41265.79,0.204,False,VIP client priority support
+Stark Industries,00095,2024-03-24,North America,45807.27,37149.7,,True,Fast shipping requested
+Dunder Mifflin,00981,2024-01-23,LATAM,14986.53,9246.69,0.38299999999999995,True,Customer asked for $50 discount
+Cyberdyne Systems,00382,2024-01-04,APAC,26196.56,15351.18,0.414,True,
+Soylent Corp,00296,2024-02-11,LATAM,59163.6,46344.82,0.154,False,Standard order
+Hooli Inc,00775,2024-04-06,North America,993.11,568.06,0.428,True,
+Cyberdyne Systems,00297,2024-05-21,LATAM,3646.35,2618.08,,True,Customer asked for $50 discount
+Wayne Enterprises,00979,2024-06-12,LATAM,9751.18,8073.98,0.172,True,VIP client priority support
+Globex Inc,00614,2024-04-02,LATAM,42635.31,37945.43,0.11,True,
+Wayne Enterprises,00167,2024-05-28,North America,12298.2,9269.2,0.18600000000000003,False,Standard order
+Wayne Enterprises,00299,2024-05-15,North America,38783.05,30599.83,0.21100000000000002,True,Customer asked for $50 discount
+Dunder Mifflin,00715,2024-06-25,APAC,9778.68,6180.43,0.191,True,Customer asked for $50 discount
+Initech LLC,00105,2024-02-25,EMEA,38002.03,18012.96,0.526,False,VIP client priority support
+Soylent Corp,00939,2024-01-20,North America,61503.93,33273.63,0.45899999999999996,False,Quarterly renewal
+Vandelay Industries,00312,2024-01-08,North America,17065.66,7833.14,0.541,False,Standard order
+Acme Corp,00794,2024-05-03,LATAM,-3667.51,3374.11,-0.08,False,Customer asked for $50 discount
+Acme Corp,00068,2024-03-18,North America,56714.0,48660.61,0.142,False,Quarterly renewal
+Wonka Industries,00765,2024-03-12,APAC,34226.1,24493.05,0.084,True,Account upgrade pending
+Umbrella Corp,00733,2024-02-19,APAC,-13297.12,6515.59,-0.51,True,Customer asked for $50 discount
+Vandelay Industries,00604,2024-02-17,LATAM,50677.66,42721.27,0.157,False,
+Stark Industries,00127,2024-04-29,North America,42357.28,36474.32,0.07,False,VIP client priority support
+Wayne Enterprises,00468,2024-06-02,APAC,51684.97,38040.14,0.264,True,Fast shipping requested
+Stark Industries,00184,2024-01-04,LATAM,54616.8,44401.43,0.122,False,Fast shipping requested
+Initech LLC,00067,2024-04-03,EMEA,32931.92,18987.31,0.262,True,
+Pied Piper,00821,2024-06-13,LATAM,34597.44,23677.62,0.124,False,Customer asked for $50 discount
+Soylent Corp,00510,2024-02-29,EMEA,2714.4,2334.38,0.14,False,Quarterly renewal
+Wayne Enterprises,00637,2024-06-08,North America,73129.95,35365.18,0.381,True,Account upgrade pending
+Stark Industries,00829,2024-05-18,North America,71467.25,51813.76,0.275,True,VIP client priority support
+Acme Corp,00034,2024-02-15,APAC,66410.17,46885.58,0.294,True,Fast shipping requested
+Massive Dynamic,00702,2024-05-18,LATAM,35955.37,16719.25,0.535,False,
+Wayne Enterprises,00329,2024-01-16,North America,44489.52,41686.68,0.063,False,VIP client priority support
+Globex Inc,00439,2024-03-29,APAC,31188.76,20397.45,0.34600000000000003,False,
+Wayne Enterprises,00118,2024-03-27,EMEA,-1968.54,1311.05,-0.33399999999999996,True,Customer asked for $50 discount
+Acme Corp,00713,2024-04-30,North America,79854.64,52201.27,0.294,False,Customer asked for $50 discount
+Soylent Corp,00515,2024-06-19,APAC,12913.73,6792.62,0.474,False,Customer asked for $50 discount
+Wayne Enterprises,00049,2024-03-17,LATAM,60442.92,54579.96,0.09699999999999999,False,Account upgrade pending
+Pied Piper,00544,2024-05-01,LATAM,16125.57,11836.17,0.266,False,VIP client priority support
+Cyberdyne Systems,00258,2024-06-08,LATAM,,,0.308,True,Quarterly renewal
+Dunder Mifflin,00986,2024-04-29,APAC,70318.64,33963.9,0.517,True,Account upgrade pending
+Umbrella Corp,00374,2024-04-28,EMEA,18407.86,9093.48,0.506,True,Customer asked for $50 discount
+Wonka Industries,00294,2024-06-14,EMEA,25094.75,18350.53,0.064,True,VIP client priority support
+Soylent Corp,00574,2024-04-21,LATAM,48695.69,27026.11,0.445,True,Fast shipping requested
+Wonka Industries,00044,2024-05-04,North America,4621.88,2181.53,0.528,False,VIP client priority support
+Wonka Industries,00742,2024-02-05,EMEA,8838.96,4198.51,0.525,True,VIP client priority support
+Globex Inc,00244,2024-06-02,North America,58102.72,33467.17,0.424,True,Quarterly renewal
+Initech LLC,00110,2024-02-14,EMEA,78580.04,49694.6,0.317,False,Customer asked for $50 discount
+Massive Dynamic,00434,2024-05-01,EMEA,72266.99,67858.7,0.061,True,
+Vandelay Industries,00679,2024-01-14,EMEA,20895.01,10524.89,0.456,False,
+Soylent Corp,00398,2024-01-03,LATAM,69599.3,55749.04,0.19899999999999998,True,VIP client priority support
+Dunder Mifflin,00325,2024-06-13,LATAM,59304.15,42343.16,0.28600000000000003,False,Fast shipping requested
+Cyberdyne Systems,00898,2024-01-26,EMEA,-67247.26,28527.55,-0.457,False,VIP client priority support
+Vandelay Industries,00029,2024-01-14,EMEA,-47446.65,37625.19,-0.207,False,Standard order
+Initech LLC,00256,2024-05-12,EMEA,68686.43,37014.36,0.418,False,
+Wayne Enterprises,00204,2024-01-22,LATAM,27886.17,23368.61,0.162,False,Standard order
+Soylent Corp,00204,2024-03-08,EMEA,5387.3,3223.96,0.23399999999999999,False,Standard order
+Vandelay Industries,00539,2024-04-21,LATAM,67101.13,32245.82,0.48100000000000004,True,Fast shipping requested
+Soylent Corp,00392,2024-02-03,LATAM,82300.36,54974.07,0.145,True,Standard order
+Wayne Enterprises,00269,2024-03-01,LATAM,68095.95,48756.7,0.284,True,Fast shipping requested
+Umbrella Corp,00731,2024-04-08,LATAM,-55339.76,43386.37,-0.21600000000000003,False,VIP client priority support
+Stark Industries,00621,2024-06-20,North America,1151.22,688.03,0.235,True,Account upgrade pending
+Initech LLC,00267,2024-02-13,LATAM,75394.11,61362.43,0.121,True,Quarterly renewal
+Soylent Corp,00893,2024-03-12,APAC,69504.66,33848.77,0.513,True,Quarterly renewal
+Stark Industries,00755,2024-05-05,EMEA,-41897.77,35948.29,-0.142,True,Customer asked for $50 discount
+Initech LLC,00723,2024-04-29,LATAM,-9875.29,6126.34,-0.33,True,VIP client priority support
+Globex Inc,00867,2024-02-07,North America,26545.52,18475.68,0.304,False,Account upgrade pending
+Acme Corp,00539,2024-05-26,EMEA,31523.21,24777.24,0.214,False,VIP client priority support
+Stark Industries,00605,2024-01-28,APAC,11956.27,7604.19,0.364,True,Customer asked for $50 discount
+Acme Corp,00672,2024-06-08,LATAM,24706.2,19987.32,0.191,False,Account upgrade pending
+Hooli Inc,00391,2024-01-24,LATAM,19509.71,10223.09,0.47600000000000003,True,Customer asked for $50 discount
+Dunder Mifflin,00771,2024-06-16,EMEA,9484.85,4723.46,0.502,False,Fast shipping requested
+Globex Inc,00853,2024-04-04,EMEA,39935.07,21150.8,0.428,True,VIP client priority support
+Dunder Mifflin,00437,2024-01-24,North America,41843.46,18790.81,0.515,False,Customer asked for $50 discount
+Soylent Corp,00448,2024-01-21,LATAM,22879.3,16839.16,0.264,False,Standard order
+Massive Dynamic,00111,2024-05-10,LATAM,33771.55,25735.17,0.177,True,Standard order
+Vandelay Industries,00678,2024-04-28,EMEA,-63795.81,47315.22,-0.19899999999999998,True,
+Dunder Mifflin,00461,2024-06-08,APAC,25929.41,21262.12,0.18,True,Account upgrade pending
+Acme Corp,00006,2024-04-11,North America,1610.49,861.91,0.42200000000000004,True,Account upgrade pending
+Wonka Industries,00998,2024-06-06,APAC,56110.69,44420.96,0.145,False,
+Acme Corp,00215,2024-05-03,EMEA,52818.07,44357.4,0.09300000000000001,True,VIP client priority support
+Cyberdyne Systems,00023,2024-01-30,EMEA,67729.94,44498.57,0.34299999999999997,True,Standard order
+Stark Industries,00009,2024-01-27,LATAM,79349.52,59144.78,0.195,True,Account upgrade pending
+Hooli Inc,00743,2024-06-05,LATAM,17776.98,16319.27,0.08199999999999999,True,VIP client priority support
+Globex Inc,00507,2024-06-08,APAC,-33900.24,24238.67,-0.285,True,Quarterly renewal
+Massive Dynamic,00225,2024-05-30,APAC,74702.84,32509.57,0.53,False,
+Soylent Corp,00819,2024-02-11,EMEA,21543.06,13938.36,0.353,True,VIP client priority support
+Wayne Enterprises,00241,2024-02-23,North America,74944.96,40170.5,0.46399999999999997,True,
+Globex Inc,00346,2024-04-20,North America,46508.44,25951.71,0.442,True,Quarterly renewal
+Wonka Industries,00707,2024-05-11,North America,57377.34,24597.88,0.537,False,
+Massive Dynamic,00043,2024-05-09,North America,12944.95,10407.74,0.196,True,Fast shipping requested
+Wonka Industries,00102,2024-02-09,APAC,25428.26,14366.97,,False,Customer asked for $50 discount
+Massive Dynamic,00176,2024-01-22,APAC,30506.23,16185.25,0.42700000000000005,False,Quarterly renewal
+Pied Piper,00440,2024-04-15,LATAM,86279.5,59114.94,,False,Standard order
+Stark Industries,00323,2024-04-12,EMEA,35465.45,16386.35,0.501,True,VIP client priority support
+Cyberdyne Systems,00908,2024-06-23,APAC,,,0.5,True,Fast shipping requested
+Cyberdyne Systems,00457,2024-06-13,EMEA,85279.6,33712.09,0.494,True,
+Umbrella Corp,00903,2024-03-18,North America,3254.28,2245.45,0.31,False,Standard order
+Massive Dynamic,00566,2024-03-20,APAC,-56899.95,37212.57,-0.34600000000000003,False,
+Pied Piper,00312,2024-04-18,North America,55032.97,31478.86,0.428,True,Customer asked for $50 discount
+Hooli Inc,00755,2024-01-02,LATAM,25754.03,12954.28,0.49700000000000005,False,Customer asked for $50 discount
+Wayne Enterprises,00292,2024-06-19,EMEA,68760.51,45876.15,0.146,True,Standard order
+Initech LLC,00729,2024-04-18,LATAM,6605.06,6017.21,0.08900000000000001,True,Account upgrade pending
+Massive Dynamic,00532,2024-04-11,APAC,44030.63,25713.89,0.41600000000000004,True,Quarterly renewal
+Massive Dynamic,00131,2024-05-04,LATAM,12978.18,7229.25,0.287,False,Standard order
+Hooli Inc,00873,2024-04-14,North America,12165.82,7584.63,0.20199999999999999,True,VIP client priority support
+Acme Corp,00811,2024-02-06,EMEA,-63603.94,49587.52,-0.158,True,Standard order
+Globex Inc,00561,2024-03-30,North America,70574.52,51035.84,0.21899999999999997,True,
+Initech LLC,00517,2024-06-11,LATAM,61824.68,36522.35,0.36200000000000004,True,Quarterly renewal
+Cyberdyne Systems,00348,2024-05-18,North America,71876.92,42838.64,0.40399999999999997,True,Account upgrade pending
+Dunder Mifflin,00127,2024-06-13,North America,14835.79,10221.86,0.311,True,Standard order
+Dunder Mifflin,00959,2024-05-16,EMEA,72197.07,36531.72,0.494,False,VIP client priority support
+Hooli Inc,00047,2024-05-05,North America,25826.76,21203.77,0.179,False,Account upgrade pending
+Initech LLC,00293,2024-02-06,EMEA,19538.81,17995.24,0.079,True,Standard order
+Vandelay Industries,00060,2024-03-17,LATAM,7856.44,4211.05,0.46399999999999997,False,Quarterly renewal
+Pied Piper,00612,2024-05-30,EMEA,47650.52,26728.96,0.282,True,Standard order
+Cyberdyne Systems,00649,2024-02-29,North America,26307.07,11447.69,0.44299999999999995,True,VIP client priority support
+Globex Inc,00867,2024-06-11,EMEA,58824.68,40059.61,0.319,True,Standard order
+Acme Corp,00833,2024-04-28,APAC,-49152.88,39961.29,-0.187,True,
+Dunder Mifflin,00390,2024-03-30,EMEA,56440.78,40346.34,0.085,False,
+Initech LLC,00743,2024-05-22,APAC,65931.81,40152.47,0.391,True,
+Vandelay Industries,00464,2024-03-10,EMEA,49839.64,46948.94,0.057999999999999996,True,Account upgrade pending
+Soylent Corp,00005,2024-01-03,EMEA,33783.1,19550.41,0.375,True,
+Wonka Industries,00688,2024-04-23,North America,28941.96,15167.73,0.434,True,Standard order
+Soylent Corp,00380,2024-02-19,LATAM,1197.57,1022.72,0.146,True,
+Vandelay Industries,00227,2024-02-29,LATAM,72563.59,61316.23,0.155,True,Standard order
+Wonka Industries,00285,2024-05-25,LATAM,13200.54,8804.76,0.33299999999999996,True,Fast shipping requested
+Globex Inc,00131,2024-03-07,EMEA,66134.73,39945.38,0.396,True,Fast shipping requested
+Massive Dynamic,00905,2024-04-26,North America,70372.83,52568.5,0.253,True,VIP client priority support
+Stark Industries,00530,2024-01-12,EMEA,4318.78,3131.12,0.217,True,Fast shipping requested
+Umbrella Corp,00707,2024-04-18,North America,68816.14,62072.16,0.098,True,Account upgrade pending
+Pied Piper,00642,2024-03-26,APAC,20425.98,14808.83,0.217,False,
+Hooli Inc,00635,2024-04-22,North America,47088.48,35834.33,0.239,False,
+Initech LLC,00064,2024-04-23,North America,-24796.37,21214.67,-0.076,True,VIP client priority support
+Globex Inc,00633,2024-04-15,EMEA,-83086.6,33104.82,-0.49,False,Customer asked for $50 discount
+Dunder Mifflin,00961,2024-06-21,North America,34328.72,20356.93,0.40700000000000003,False,Account upgrade pending
+Initech LLC,00653,2024-05-10,APAC,29134.78,14864.13,0.449,True,Account upgrade pending
+Cyberdyne Systems,00526,2024-06-15,APAC,30314.91,18449.46,0.221,True,Account upgrade pending
+Hooli Inc,00674,2024-06-22,EMEA,6105.8,3711.18,0.222,False,
+Globex Inc,00350,2024-02-18,LATAM,56442.13,24458.26,0.532,True,Customer asked for $50 discount
+Initech LLC,00108,2024-04-26,North America,37446.84,31567.69,0.157,False,
+Vandelay Industries,00385,2024-02-22,LATAM,14226.22,12689.79,0.10800000000000001,False,Fast shipping requested
+Hooli Inc,00935,2024-04-02,North America,73160.54,43237.88,0.409,False,Quarterly renewal
+Umbrella Corp,00023,2024-02-15,APAC,68343.35,34650.08,0.493,False,Customer asked for $50 discount
+Soylent Corp,00246,2024-04-04,APAC,49737.7,25415.96,0.489,True,Quarterly renewal
+Pied Piper,00195,2024-02-19,LATAM,52229.37,48416.63,0.073,False,
+Massive Dynamic,00302,2024-02-08,APAC,18914.29,9589.55,0.493,False,
+Soylent Corp,00810,2024-06-18,North America,14011.7,9094.63,0.299,False,Fast shipping requested
+Stark Industries,00539,2024-06-26,LATAM,58121.19,29867.84,0.445,False,Quarterly renewal
+Umbrella Corp,00463,2024-03-01,LATAM,16785.23,12807.13,0.237,True,
+Globex Inc,00303,2024-04-23,APAC,17648.23,12636.13,0.284,True,Customer asked for $50 discount
+Wayne Enterprises,00392,2024-01-07,EMEA,33405.79,17671.66,0.47100000000000003,False,
+Wayne Enterprises,00949,2024-02-28,North America,-9334.8,5712.9,-0.38799999999999996,True,Customer asked for $50 discount
+Vandelay Industries,00836,2024-06-23,APAC,18819.66,8527.66,0.42,True,
+Wayne Enterprises,00289,2024-03-29,LATAM,,,0.306,True,
+Cyberdyne Systems,00234,2024-02-28,EMEA,45882.43,19464.19,0.457,False,Customer asked for $50 discount
+Wonka Industries,00193,2024-04-19,LATAM,,,0.33899999999999997,True,VIP client priority support
+Pied Piper,00675,2024-03-31,APAC,18682.97,11780.65,0.319,True,Account upgrade pending
+Pied Piper,00033,2024-02-05,EMEA,73304.63,48600.97,0.337,True,Quarterly renewal
+Cyberdyne Systems,00066,2024-05-16,LATAM,14531.23,11595.92,0.20199999999999999,True,Standard order
+Wonka Industries,00706,2024-06-03,LATAM,-2499.47,2117.05,-0.153,True,Fast shipping requested
+Massive Dynamic,00072,2024-04-26,North America,27964.59,24357.16,0.129,True,VIP client priority support
+Vandelay Industries,00071,2024-04-09,EMEA,10179.96,8866.75,0.129,True,Account upgrade pending
+Umbrella Corp,00515,2024-06-24,LATAM,21020.35,13621.19,0.35200000000000004,False,Account upgrade pending
+Soylent Corp,00472,2024-04-28,North America,55428.16,29321.5,0.47100000000000003,True,Account upgrade pending
+Wonka Industries,00830,2024-02-14,LATAM,19060.54,16353.94,0.142,True,Fast shipping requested
+Acme Corp,00246,2024-02-10,APAC,84800.52,39021.49,0.41100000000000003,True,VIP client priority support
+Pied Piper,00567,2024-02-01,APAC,6201.76,5383.13,0.132,True,VIP client priority support
+Acme Corp,00075,2024-06-12,LATAM,31207.78,25804.21,0.107,False,Fast shipping requested
+Vandelay Industries,00476,2024-05-04,LATAM,7147.1,3992.32,0.285,True,Quarterly renewal
+Wonka Industries,00019,2024-06-04,North America,13704.13,7783.95,0.43200000000000005,True,VIP client priority support
+Stark Industries,00183,2024-02-25,North America,67005.23,36450.85,0.456,False,VIP client priority support
+Vandelay Industries,00316,2024-04-23,North America,45066.3,34385.59,0.237,False,Standard order
+Cyberdyne Systems,00029,2024-01-04,APAC,61629.23,32971.64,0.465,True,Standard order
+Cyberdyne Systems,00525,2024-01-28,APAC,24539.63,18061.17,0.264,False,Customer asked for $50 discount
+Stark Industries,00178,2024-01-04,LATAM,49222.46,26678.57,0.45799999999999996,False,Standard order
+Globex Inc,00907,2024-02-25,LATAM,29394.3,12722.22,0.446,True,Customer asked for $50 discount
+Globex Inc,00615,2024-03-24,LATAM,51003.59,40343.84,0.209,True,Standard order
+Stark Industries,00019,2024-06-04,LATAM,28986.67,27218.48,0.061,False,Customer asked for $50 discount
+Umbrella Corp,00756,2024-04-19,EMEA,46672.58,35564.51,0.23800000000000002,False,Fast shipping requested
+Hooli Inc,00969,2024-04-23,APAC,10502.89,4841.83,0.539,True,
+Acme Corp,00235,2024-03-25,APAC,-18547.55,10182.6,-0.451,False,Account upgrade pending
+Wonka Industries,00391,2024-05-13,APAC,-14174.14,13096.91,-0.076,True,Quarterly renewal
+Initech LLC,00094,2024-02-14,EMEA,18105.1,15407.44,0.149,False,Customer asked for $50 discount
+Wayne Enterprises,00591,2024-04-24,EMEA,22413.92,17972.64,0.134,True,
+Initech LLC,00840,2024-05-03,North America,57263.73,37335.95,0.348,True,Customer asked for $50 discount
+Cyberdyne Systems,00475,2024-03-19,LATAM,27648.41,15444.23,0.285,False,Standard order
+Acme Corp,00883,2024-05-08,APAC,40082.36,26164.88,0.295,False,VIP client priority support
+Acme Corp,00944,2024-02-01,LATAM,69943.65,34482.22,0.507,True,Fast shipping requested
+Vandelay Industries,00378,2024-06-27,North America,52911.92,26602.94,0.457,True,Fast shipping requested
+Dunder Mifflin,00661,2024-02-07,APAC,45604.95,24125.02,,True,VIP client priority support
+Vandelay Industries,00601,2024-01-21,EMEA,65762.46,30645.31,0.534,True,Account upgrade pending
+Wayne Enterprises,00752,2024-04-15,North America,11060.38,4977.17,0.424,True,Fast shipping requested
+Wayne Enterprises,00007,2024-02-13,LATAM,617.6,497.79,0.19399999999999998,True,Customer asked for $50 discount
+Initech LLC,00721,2024-02-04,EMEA,36742.11,31487.99,0.14300000000000002,True,
+Pied Piper,00197,2024-03-07,LATAM,42668.06,30234.32,0.09300000000000001,False,Customer asked for $50 discount
+Acme Corp,00600,2024-03-01,LATAM,-36646.98,22611.19,-0.38299999999999995,True,Standard order
+Umbrella Corp,00535,2024-01-02,LATAM,45422.37,33385.44,0.265,False,Customer asked for $50 discount
+Wonka Industries,00246,2024-04-02,LATAM,28693.46,27201.4,0.052000000000000005,True,Fast shipping requested
+Wonka Industries,00910,2024-02-05,North America,45342.23,34732.15,0.23399999999999999,True,Account upgrade pending
+Cyberdyne Systems,00677,2024-02-18,North America,-73970.51,34396.29,-0.535,False,Fast shipping requested
+Soylent Corp,00240,2024-06-04,LATAM,30312.31,14519.6,0.521,False,Fast shipping requested
+Cyberdyne Systems,00301,2024-06-04,EMEA,68530.79,50006.06,0.066,False,Customer asked for $50 discount
+Wonka Industries,00690,2024-05-20,LATAM,14061.54,10780.51,0.172,False,Standard order
+Cyberdyne Systems,00733,2024-01-08,EMEA,69710.76,57232.53,0.179,False,Fast shipping requested
+Initech LLC,00945,2024-05-16,LATAM,7237.91,4704.64,0.35,True,Fast shipping requested
+Vandelay Industries,00754,2024-04-07,LATAM,60729.34,47368.89,0.22,False,Fast shipping requested
+Globex Inc,00587,2024-04-04,EMEA,,,0.345,True,VIP client priority support
+Stark Industries,00790,2024-04-03,EMEA,50203.49,20552.06,0.47600000000000003,True,
+Umbrella Corp,00512,2024-06-23,LATAM,11483.19,6878.43,0.401,True,Account upgrade pending
+Vandelay Industries,00127,2024-03-11,LATAM,47515.24,21809.5,0.541,False,
+Vandelay Industries,00957,2024-02-27,North America,69275.26,37547.19,0.45799999999999996,True,Standard order
+Massive Dynamic,00402,2024-03-27,LATAM,51003.45,41210.79,0.192,False,Fast shipping requested
+Wonka Industries,00562,2024-04-10,North America,10252.1,8181.18,0.20199999999999999,True,VIP client priority support
+Vandelay Industries,00495,2024-03-15,EMEA,,,0.478,True,VIP client priority support
+Cyberdyne Systems,00696,2024-02-13,North America,7655.56,4784.73,0.375,True,Fast shipping requested
+Vandelay Industries,00414,2024-03-03,North America,9350.79,5834.89,0.376,False,
+Soylent Corp,00886,2024-06-15,LATAM,22683.88,14807.53,0.295,False,Standard order
+Hooli Inc,00587,2024-05-26,LATAM,20892.5,13120.49,0.37200000000000005,True,Standard order
+Stark Industries,00066,2024-05-17,EMEA,30697.12,21027.53,0.315,False,
+Pied Piper,00213,2024-06-17,North America,,,0.45,True,Account upgrade pending
+Umbrella Corp,00669,2024-02-11,North America,42405.97,19803.59,0.5329999999999999,True,Quarterly renewal
+Wayne Enterprises,00048,2024-05-12,APAC,53575.82,24555.58,0.505,False,Fast shipping requested
+Globex Inc,00679,2024-01-12,EMEA,3236.68,2100.61,0.35100000000000003,False,Customer asked for $50 discount
+Initech LLC,00747,2024-06-08,LATAM,6039.79,4360.73,0.278,True,Fast shipping requested
+Initech LLC,00549,2024-02-22,North America,47402.83,36215.76,0.23600000000000002,True,VIP client priority support
+Wonka Industries,00158,2024-03-21,LATAM,36775.9,17468.55,0.392,False,Fast shipping requested
+Globex Inc,00372,2024-03-26,APAC,11401.56,9565.91,0.161,False,Quarterly renewal
+Massive Dynamic,00746,2024-03-19,LATAM,7617.77,4921.08,0.354,True,Customer asked for $50 discount
+Pied Piper,00399,2024-02-16,APAC,77508.26,39601.88,0.34600000000000003,True,Fast shipping requested
+Initech LLC,00147,2024-04-06,APAC,4438.41,2649.73,0.40299999999999997,False,
+Soylent Corp,00515,2024-03-14,APAC,71469.92,56961.53,0.203,True,VIP client priority support
+Pied Piper,00321,2024-01-24,North America,6213.64,3591.48,0.42200000000000004,True,
+Wonka Industries,00011,2024-04-18,EMEA,46379.99,32176.12,,True,Fast shipping requested
+Cyberdyne Systems,00720,2024-05-16,APAC,23929.42,16189.75,0.134,False,Quarterly renewal
+Globex Inc,00376,2024-02-04,APAC,71460.03,55810.28,0.21899999999999997,False,Customer asked for $50 discount
+Wayne Enterprises,00495,2024-03-16,APAC,16373.41,7695.5,0.53,True,VIP client priority support
+Hooli Inc,00869,2024-05-04,North America,34563.75,20927.27,0.225,True,Customer asked for $50 discount
+Acme Corp,00104,2024-04-20,LATAM,19477.84,10743.24,0.294,True,Quarterly renewal
+Soylent Corp,00405,2024-04-05,APAC,27654.93,17201.37,0.37799999999999995,True,Customer asked for $50 discount
+Vandelay Industries,00445,2024-01-02,APAC,66326.43,49015.23,0.261,True,Quarterly renewal
+Dunder Mifflin,00204,2024-05-02,APAC,10098.03,7367.82,0.212,True,Account upgrade pending
+Vandelay Industries,00946,2024-04-09,EMEA,8675.09,8180.61,0.057,True,Fast shipping requested
+Wonka Industries,00351,2024-04-19,North America,32857.47,21061.64,0.359,True,Quarterly renewal
+Wayne Enterprises,00786,2024-01-30,APAC,74572.15,41685.83,0.441,True,Quarterly renewal
+Wonka Industries,00606,2024-06-10,EMEA,17589.12,15425.66,,False,
+Acme Corp,00390,2024-04-14,APAC,52661.84,38759.11,0.264,False,Customer asked for $50 discount
+Stark Industries,00288,2024-03-30,LATAM,,,0.42200000000000004,True,Customer asked for $50 discount
+Hooli Inc,00104,2024-04-20,EMEA,20837.09,18193.86,0.057,True,Customer asked for $50 discount
+Stark Industries,00760,2024-04-02,APAC,18249.79,16151.06,0.115,False,Standard order
+Hooli Inc,00992,2024-06-16,EMEA,16062.95,11586.14,0.221,False,Account upgrade pending
+Vandelay Industries,00158,2024-01-12,EMEA,18921.15,7790.19,0.473,False,Customer asked for $50 discount
+Soylent Corp,00645,2024-01-31,LATAM,5987.82,4806.89,0.133,True,Customer asked for $50 discount
+Acme Corp,00979,2024-05-24,North America,59682.08,30736.27,0.485,True,VIP client priority support
+Pied Piper,00522,2024-04-08,LATAM,,,0.159,True,Account upgrade pending
+Vandelay Industries,00738,2024-05-14,APAC,23104.06,19361.2,0.162,True,Standard order
+Dunder Mifflin,00152,2024-03-12,EMEA,20647.4,14102.17,,False,Customer asked for $50 discount
+Globex Inc,00970,2024-06-29,APAC,54294.93,34585.87,,False,Fast shipping requested
+Wayne Enterprises,00181,2024-03-06,North America,51885.39,25253.59,0.377,False,
+Soylent Corp,00226,2024-03-24,APAC,16947.3,12020.03,0.23399999999999999,False,VIP client priority support
+Initech LLC,00471,2024-02-17,EMEA,15735.66,11583.2,0.205,True,Fast shipping requested
+Hooli Inc,00193,2024-01-18,EMEA,5867.63,3450.17,0.41200000000000003,True,Account upgrade pending
+Globex Inc,00387,2024-04-08,North America,8697.65,7184.26,0.174,True,Fast shipping requested
+Hooli Inc,00014,2024-01-03,North America,40906.58,23316.75,0.43,True,Customer asked for $50 discount
+Stark Industries,00491,2024-02-09,EMEA,4662.73,4191.79,0.10099999999999999,True,Quarterly renewal
+Acme Corp,00935,2024-02-27,North America,18778.28,8884.91,0.489,False,VIP client priority support
+Initech LLC,00113,2024-02-27,North America,71756.75,35017.29,0.512,True,Account upgrade pending
+Initech LLC,00183,2024-04-19,APAC,48784.74,24437.54,0.45899999999999996,False,Customer asked for $50 discount
+Soylent Corp,00678,2024-04-04,APAC,60898.6,34164.11,0.439,True,VIP client priority support
+Soylent Corp,00739,2024-05-02,North America,9645.18,4045.62,0.547,True,Customer asked for $50 discount
+Stark Industries,00507,2024-04-18,LATAM,56332.64,24932.41,0.522,True,VIP client priority support
+Massive Dynamic,00510,2024-05-17,LATAM,40169.35,26551.94,0.33899999999999997,False,Fast shipping requested
+Globex Inc,00241,2024-04-02,North America,15644.34,14001.68,0.105,False,
+Wonka Industries,00888,2024-02-05,APAC,44542.63,18652.23,0.46399999999999997,True,Standard order
+Vandelay Industries,00721,2024-02-06,LATAM,59523.74,50319.6,0.087,True,Standard order
+Initech LLC,00375,2024-02-06,North America,18755.91,16111.33,0.141,True,VIP client priority support
+Cyberdyne Systems,00740,2024-03-27,LATAM,58714.07,54838.94,0.066,True,Standard order
+Cyberdyne Systems,00853,2024-04-18,LATAM,41784.62,30837.05,0.262,False,Account upgrade pending
+Cyberdyne Systems,00974,2024-02-02,EMEA,30329.98,20321.09,0.33,True,VIP client priority support
+Stark Industries,00669,2024-06-13,LATAM,-62130.4,52997.23,-0.147,False,Standard order
+Globex Inc,00372,2024-06-03,APAC,2589.64,2447.21,0.055,False,Account upgrade pending
+Umbrella Corp,00654,2024-01-09,EMEA,26307.87,19052.65,0.073,True,Standard order
+Stark Industries,00770,2024-03-13,LATAM,37766.1,22621.89,0.401,True,Fast shipping requested
+Massive Dynamic,00104,2024-05-08,EMEA,2445.72,1967.9,0.131,False,Fast shipping requested
+Globex Inc,00976,2024-02-29,EMEA,60656.96,41974.62,0.308,False,VIP client priority support
+Pied Piper,00135,2024-03-27,APAC,-29531.06,20671.74,-0.244,False,Account upgrade pending
+Hooli Inc,00077,2024-02-09,LATAM,7756.75,3614.65,0.534,False,VIP client priority support
+Globex Inc,00466,2024-03-21,EMEA,-70087.17,63428.89,-0.095,True,Fast shipping requested
+Pied Piper,00472,2024-03-07,LATAM,79268.8,48882.43,,True,VIP client priority support
+Wonka Industries,00635,2024-06-23,EMEA,42677.32,20305.07,0.391,True,Fast shipping requested
+Acme Corp,00636,2024-06-13,North America,55707.67,49969.78,0.10300000000000001,True,
+Globex Inc,00229,2024-04-09,LATAM,50351.72,36152.53,0.282,False,VIP client priority support
+Pied Piper,00444,2024-02-21,LATAM,24989.69,14469.03,0.42100000000000004,True,Standard order
+Massive Dynamic,00160,2024-04-30,EMEA,48196.12,44292.23,0.081,True,VIP client priority support
+Umbrella Corp,00056,2024-02-24,North America,77189.81,65396.93,0.085,True,
+Vandelay Industries,00463,2024-04-17,EMEA,50388.51,37085.94,0.264,True,Quarterly renewal
+Umbrella Corp,00358,2024-04-17,LATAM,35924.71,23889.93,0.335,False,Standard order
+Vandelay Industries,00684,2024-05-28,EMEA,-24618.08,17232.66,-0.3,False,Standard order
+Pied Piper,00994,2024-06-21,LATAM,20078.8,12709.88,0.36700000000000005,False,Standard order
+Umbrella Corp,00764,2024-02-18,LATAM,52385.23,44736.99,0.146,True,Customer asked for $50 discount
+Wonka Industries,00373,2024-01-05,APAC,86145.01,30285.36,0.55,False,Customer asked for $50 discount
+Wonka Industries,00556,2024-04-19,APAC,8946.81,7774.78,0.131,True,
+Dunder Mifflin,00706,2024-06-23,LATAM,61108.47,43253.34,0.094,False,Fast shipping requested
+Acme Corp,00632,2024-04-15,North America,47977.18,24700.75,,True,Quarterly renewal
+Umbrella Corp,00796,2024-04-26,LATAM,9752.76,6483.78,0.282,True,Standard order
+Stark Industries,00801,2024-02-27,APAC,20436.88,12527.81,,True,Standard order
+Acme Corp,00158,2024-04-05,APAC,25464.2,21746.43,0.146,True,
+Hooli Inc,00440,2024-02-02,LATAM,73312.99,61216.35,0.165,True,Account upgrade pending
+Globex Inc,00647,2024-05-27,LATAM,63305.79,57165.13,,True,Standard order
+Hooli Inc,00725,2024-05-19,North America,43098.64,27324.54,0.366,False,Fast shipping requested
+Umbrella Corp,00305,2024-02-19,EMEA,58979.11,26376.77,0.517,False,Standard order
+Soylent Corp,00950,2024-06-01,North America,8477.21,4475.97,0.47200000000000003,False,VIP client priority support
+Globex Inc,00503,2024-01-06,LATAM,5981.41,3786.23,0.36700000000000005,True,Quarterly renewal
+Wayne Enterprises,00011,2024-02-15,North America,9231.93,6250.02,0.32299999999999995,True,Standard order
+Umbrella Corp,00621,2024-01-08,North America,39090.62,36549.73,0.065,False,Fast shipping requested
+Vandelay Industries,00963,2024-02-02,APAC,20888.15,16773.18,0.19699999999999998,True,VIP client priority support
+Massive Dynamic,00970,2024-04-12,EMEA,19131.94,14425.48,0.24600000000000002,True,Quarterly renewal
+Pied Piper,00211,2024-05-04,LATAM,71574.7,59380.49,0.10400000000000001,False,Account upgrade pending
+Stark Industries,00383,2024-06-10,North America,33980.55,22019.4,0.35200000000000004,False,VIP client priority support
+Acme Corp,00118,2024-02-16,APAC,32489.32,24821.84,0.23600000000000002,False,Standard order
+Stark Industries,00705,2024-01-03,APAC,21025.34,12434.52,0.243,False,Standard order
+Massive Dynamic,00285,2024-06-04,North America,43259.16,36813.55,,True,Standard order
+Wayne Enterprises,00432,2024-01-31,North America,43817.59,27625.62,0.193,True,VIP client priority support
+Wayne Enterprises,00135,2024-04-13,North America,-67239.3,48076.1,-0.285,True,Fast shipping requested
+Wayne Enterprises,00282,2024-03-22,APAC,38816.83,24290.85,0.19899999999999998,True,
+Dunder Mifflin,00991,2024-02-01,APAC,-70358.93,61986.22,-0.11900000000000001,False,
+Vandelay Industries,00742,2024-04-21,EMEA,13179.26,8975.08,,True,Customer asked for $50 discount
+Pied Piper,00045,2024-01-29,North America,71062.29,54007.34,0.24,True,Account upgrade pending
+Soylent Corp,00123,2024-02-02,APAC,82830.3,47045.02,0.273,False,Account upgrade pending
+Soylent Corp,00678,2024-05-05,APAC,26440.99,22254.5,0.091,False,Fast shipping requested
+Dunder Mifflin,00753,2024-02-22,North America,,,-0.284,True,Quarterly renewal
+Soylent Corp,00108,2024-03-28,EMEA,61142.66,36441.03,0.40399999999999997,False,Quarterly renewal
+Umbrella Corp,00939,2024-04-03,LATAM,93622.17,59318.42,0.18899999999999997,True,
+Hooli Inc,00664,2024-01-27,EMEA,34841.08,29823.96,,True,Customer asked for $50 discount
+Wayne Enterprises,00122,2024-05-20,North America,26904.8,24833.13,0.077,False,Standard order
+Dunder Mifflin,00392,2024-04-18,EMEA,24195.72,15480.78,0.309,True,Fast shipping requested
+Umbrella Corp,00982,2024-01-29,EMEA,9081.5,7374.18,0.188,True,VIP client priority support
+Cyberdyne Systems,00104,2024-02-26,APAC,37390.29,24378.47,0.348,False,Quarterly renewal
+Massive Dynamic,00930,2024-06-28,LATAM,55562.26,43560.81,0.21600000000000003,True,Fast shipping requested
+Soylent Corp,00439,2024-03-26,North America,13724.87,12970.0,0.055,True,Account upgrade pending
+Acme Corp,00501,2024-03-04,LATAM,8649.26,5942.04,0.313,True,
+Globex Inc,00103,2024-03-18,APAC,34219.92,26280.9,,True,Fast shipping requested
+Stark Industries,00913,2024-05-12,LATAM,,,0.478,True,Customer asked for $50 discount
+Soylent Corp,00032,2024-03-03,LATAM,27276.78,12738.26,0.5329999999999999,True,Account upgrade pending
+Initech LLC,00272,2024-06-22,APAC,71988.07,56990.56,0.145,False,
+Hooli Inc,00126,2024-04-20,LATAM,42716.35,25928.82,0.39299999999999996,True,Account upgrade pending
+Wayne Enterprises,00639,2024-05-22,EMEA,-23121.6,21503.09,-0.07,True,
+Hooli Inc,00127,2024-01-14,LATAM,25146.4,20512.94,0.11900000000000001,True,Standard order
+Vandelay Industries,00278,2024-02-06,EMEA,,,0.174,True,VIP client priority support
+Cyberdyne Systems,00991,2024-01-26,APAC,88389.71,54483.97,0.21100000000000002,False,Customer asked for $50 discount
+Initech LLC,00427,2024-05-21,EMEA,22929.14,19673.2,0.142,True,Standard order
+Initech LLC,00540,2024-04-23,APAC,38034.23,28335.5,,True,
+Cyberdyne Systems,00091,2024-02-05,APAC,75653.24,39422.43,0.33299999999999996,True,Quarterly renewal
+Cyberdyne Systems,00687,2024-01-02,LATAM,77641.4,32451.68,0.465,False,Account upgrade pending
+Globex Inc,00842,2024-03-15,LATAM,51949.17,30753.91,0.408,True,Account upgrade pending
+Vandelay Industries,00991,2024-05-06,EMEA,17154.0,16244.84,0.053,False,Standard order
+Globex Inc,00001,2024-02-09,North America,39226.78,28557.1,0.272,False,Customer asked for $50 discount
+Cyberdyne Systems,00496,2024-02-17,EMEA,80906.5,39252.29,0.379,True,Fast shipping requested
+Acme Corp,00190,2024-02-06,EMEA,16925.15,11900.49,0.1,False,Fast shipping requested
+Wayne Enterprises,00401,2024-04-08,North America,37870.52,26474.3,0.245,True,Fast shipping requested
+Dunder Mifflin,00915,2024-06-17,LATAM,3676.07,2984.97,0.188,False,Account upgrade pending
+Wonka Industries,00882,2024-05-08,EMEA,33904.82,20501.82,0.226,False,VIP client priority support
+Vandelay Industries,00880,2024-02-05,APAC,58979.59,41757.55,0.292,True,Account upgrade pending
+Vandelay Industries,00950,2024-05-09,APAC,10141.94,5425.94,0.465,True,
+Vandelay Industries,00163,2024-02-29,North America,54066.9,22978.43,0.541,False,Standard order
+Initech LLC,00746,2024-04-08,LATAM,69217.0,63264.34,0.086,True,Quarterly renewal
+Stark Industries,00111,2024-06-27,LATAM,36650.7,17494.98,0.389,True,VIP client priority support
+Wonka Industries,00542,2024-02-19,North America,43867.04,33777.62,0.23,False,Customer asked for $50 discount
+Initech LLC,00699,2024-06-13,LATAM,14665.2,9400.39,0.359,True,
+Globex Inc,00450,2024-04-19,LATAM,-83982.44,59050.15,-0.1,True,Quarterly renewal
+Acme Corp,00616,2024-05-18,APAC,2179.41,1996.34,0.084,True,Standard order
+Massive Dynamic,00590,2024-03-02,APAC,30241.86,14576.58,0.518,True,Standard order
+Stark Industries,00432,2024-03-07,EMEA,25423.32,12406.58,0.512,True,Quarterly renewal
+Soylent Corp,00075,2024-05-24,North America,26265.5,23901.6,0.09,True,Customer asked for $50 discount
+Vandelay Industries,00043,2024-01-27,North America,37496.46,19685.64,0.475,True,Standard order
+Acme Corp,00793,2024-02-20,LATAM,51304.62,30885.38,0.39799999999999996,True,Account upgrade pending
+Initech LLC,00119,2024-04-22,North America,67337.43,55957.4,0.16899999999999998,True,Quarterly renewal
+Cyberdyne Systems,00766,2024-05-17,North America,74324.94,68527.59,0.078,True,Standard order
+Stark Industries,00359,2024-06-03,EMEA,74857.62,68270.15,0.08800000000000001,False,VIP client priority support
+Vandelay Industries,00753,2024-04-01,EMEA,33543.87,20897.83,0.377,True,Customer asked for $50 discount
+Vandelay Industries,00555,2024-05-08,North America,4884.65,3835.35,0.152,False,Customer asked for $50 discount
+Vandelay Industries,00567,2024-02-23,North America,-28243.05,17651.91,-0.375,True,Standard order
+Acme Corp,00511,2024-01-09,APAC,22905.26,11092.08,0.47700000000000004,True,
+Cyberdyne Systems,00394,2024-04-23,North America,18599.12,13725.46,0.203,False,Standard order
+Hooli Inc,00773,2024-03-27,APAC,,,0.465,True,
+Vandelay Industries,00951,2024-01-15,North America,41720.42,27702.36,0.336,True,Quarterly renewal
+Cyberdyne Systems,00479,2024-03-01,EMEA,68124.59,56202.79,0.175,False,Account upgrade pending
+Cyberdyne Systems,00040,2024-06-06,APAC,27446.27,24372.29,0.11199999999999999,False,
+Wayne Enterprises,00868,2024-02-15,LATAM,,,-0.29,False,VIP client priority support
+Acme Corp,00594,2024-01-21,APAC,86182.14,38176.0,0.433,True,Quarterly renewal
+Umbrella Corp,00646,2024-02-14,EMEA,65407.32,45588.9,0.303,False,Standard order
+Massive Dynamic,00735,2024-02-28,North America,,,,False,Standard order
+Globex Inc,00520,2024-04-23,North America,38572.15,23490.44,0.391,True,Customer asked for $50 discount
+Initech LLC,00026,2024-03-24,APAC,25456.44,20441.52,,True,Customer asked for $50 discount
+Initech LLC,00934,2024-05-31,North America,8414.29,5856.35,0.304,False,Quarterly renewal
+Cyberdyne Systems,00851,2024-05-29,North America,49450.92,45049.79,0.08900000000000001,False,Account upgrade pending
+Massive Dynamic,00589,2024-06-10,LATAM,40653.07,29026.29,0.28600000000000003,True,Customer asked for $50 discount
+Wayne Enterprises,00200,2024-05-27,APAC,68374.68,49366.52,0.278,False,Fast shipping requested
+Umbrella Corp,00456,2024-04-14,APAC,8239.24,4164.68,0.353,True,Quarterly renewal
+Hooli Inc,00848,2024-02-02,EMEA,63013.03,32206.66,0.44799999999999995,False,Standard order
+Cyberdyne Systems,00432,2024-05-09,EMEA,43412.88,38637.46,0.11,True,Fast shipping requested
+Globex Inc,00130,2024-01-09,LATAM,2282.89,1120.9,0.509,False,Quarterly renewal
+Cyberdyne Systems,00714,2024-05-22,EMEA,53542.77,34588.63,0.354,True,Standard order
+Vandelay Industries,00943,2024-03-31,LATAM,73812.85,41007.14,0.4,False,Quarterly renewal
+Acme Corp,00608,2024-05-31,APAC,54762.57,33263.19,0.344,False,Quarterly renewal
+Wayne Enterprises,00506,2024-03-28,North America,54435.56,33554.42,0.21100000000000002,True,Quarterly renewal
+Acme Corp,00834,2024-02-23,LATAM,50144.72,33965.21,0.133,True,VIP client priority support
+Umbrella Corp,00907,2024-02-13,APAC,70470.76,43480.46,0.38299999999999995,False,Account upgrade pending
+Wonka Industries,00521,2024-02-13,North America,45080.17,42690.92,0.053,True,Customer asked for $50 discount
+Umbrella Corp,00289,2024-05-26,LATAM,55040.66,32584.07,0.408,False,VIP client priority support
+Cyberdyne Systems,00506,2024-03-08,North America,64905.45,59063.96,0.09,False,Customer asked for $50 discount
+Initech LLC,00520,2024-03-26,APAC,43882.33,17278.67,,False,Quarterly renewal
+Wonka Industries,00572,2024-06-18,North America,71214.1,59819.84,0.16,True,Quarterly renewal
+Soylent Corp,00834,2024-02-17,LATAM,21553.68,12673.56,0.41200000000000003,True,Standard order
+Soylent Corp,00572,2024-06-05,EMEA,53394.29,35133.44,0.342,True,Account upgrade pending
+Dunder Mifflin,00978,2024-02-16,APAC,63131.54,41098.63,0.349,True,Standard order
+Umbrella Corp,00116,2024-03-14,LATAM,72717.48,34322.65,0.528,False,Fast shipping requested
+Cyberdyne Systems,00722,2024-02-02,LATAM,68136.12,51480.62,0.184,True,Standard order
+Massive Dynamic,00791,2024-03-23,APAC,54849.61,25088.62,0.506,False,Customer asked for $50 discount
+Dunder Mifflin,00839,2024-01-12,APAC,33848.91,21561.76,0.363,False,Quarterly renewal
+Hooli Inc,00553,2024-01-06,North America,60279.76,34178.62,0.433,True,Account upgrade pending
+Umbrella Corp,00371,2024-05-17,EMEA,94590.32,64217.96,0.131,True,Quarterly renewal
+Massive Dynamic,00751,2024-03-04,North America,3187.59,1765.92,,True,Standard order
+Umbrella Corp,00647,2024-06-25,EMEA,3016.46,1631.9,0.45899999999999996,False,Standard order
+Globex Inc,00517,2024-06-29,LATAM,2561.91,1108.83,0.446,True,
+Stark Industries,00436,2024-05-11,North America,24851.31,16429.48,0.28600000000000003,False,Quarterly renewal
+Cyberdyne Systems,00575,2024-03-12,LATAM,21689.51,12710.05,0.414,False,VIP client priority support
+Umbrella Corp,00592,2024-01-07,LATAM,62591.22,45436.59,0.21600000000000003,False,Standard order
+Massive Dynamic,00174,2024-02-23,LATAM,44709.01,26288.9,0.41200000000000003,False,Standard order
+Pied Piper,00506,2024-03-05,LATAM,,,0.33299999999999996,True,Customer asked for $50 discount
+Vandelay Industries,00215,2024-05-23,LATAM,41146.36,29172.77,0.29100000000000004,False,Standard order
+Cyberdyne Systems,00717,2024-01-20,LATAM,9982.55,7297.24,0.26899999999999996,True,VIP client priority support
+Soylent Corp,00175,2024-06-09,LATAM,,,0.268,True,Account upgrade pending
+Stark Industries,00630,2024-04-05,EMEA,11043.06,8436.9,0.23600000000000002,True,VIP client priority support
+Umbrella Corp,00959,2024-03-25,EMEA,-12735.75,9106.06,-0.285,True,Customer asked for $50 discount
+Vandelay Industries,00193,2024-02-21,North America,40561.0,37194.44,0.083,False,Customer asked for $50 discount
+Dunder Mifflin,00015,2024-02-19,APAC,23405.73,16210.63,0.252,False,Standard order
+Hooli Inc,00157,2024-01-27,EMEA,21358.92,13413.4,0.37200000000000005,True,
+Vandelay Industries,00893,2024-06-06,LATAM,16093.35,8819.16,0.452,True,VIP client priority support
+Wonka Industries,00001,2024-03-23,North America,67248.52,48015.44,0.28600000000000003,False,Quarterly renewal
+Massive Dynamic,00403,2024-04-06,LATAM,53115.22,26982.53,0.49200000000000005,True,Fast shipping requested
+Wonka Industries,00285,2024-02-06,LATAM,45636.7,21128.1,0.5,True,Standard order
+Wonka Industries,00375,2024-04-29,APAC,54772.62,46830.59,0.145,True,Quarterly renewal
+Soylent Corp,00370,2024-05-14,EMEA,918.28,641.88,,True,Fast shipping requested
+Wayne Enterprises,00658,2024-05-02,LATAM,3771.85,3526.68,0.065,True,Account upgrade pending
+Dunder Mifflin,00466,2024-05-05,EMEA,,,0.35600000000000004,True,
+Wonka Industries,00135,2024-01-22,LATAM,-62637.8,49671.78,-0.207,True,
+Umbrella Corp,00671,2024-06-06,North America,25283.54,14892.01,0.41100000000000003,True,Fast shipping requested
+Cyberdyne Systems,00427,2024-06-19,North America,6834.1,4954.72,0.07200000000000001,True,Quarterly renewal
+Dunder Mifflin,00765,2024-01-01,APAC,20895.35,18952.08,0.09300000000000001,False,Standard order
+Globex Inc,00187,2024-01-23,EMEA,24153.85,18429.39,0.237,False,Customer asked for $50 discount
+Wonka Industries,00698,2024-06-13,EMEA,56181.93,45563.55,0.18899999999999997,True,Quarterly renewal
+Wonka Industries,00193,2024-03-10,EMEA,13694.85,10572.42,0.228,True,
+Dunder Mifflin,00704,2024-02-13,North America,91200.06,42678.78,0.401,True,Quarterly renewal
+Stark Industries,00717,2024-05-08,APAC,7261.43,6477.2,0.10800000000000001,True,VIP client priority support
+Initech LLC,00479,2024-05-30,APAC,30493.86,25355.08,0.102,True,Quarterly renewal
+Cyberdyne Systems,00487,2024-03-26,APAC,48767.16,33015.37,0.32299999999999995,True,
+Hooli Inc,00468,2024-05-31,LATAM,59352.63,42920.75,0.21899999999999997,True,Standard order
+Umbrella Corp,00782,2024-05-09,North America,31863.46,22113.24,0.306,False,Account upgrade pending
+Pied Piper,00143,2024-02-03,APAC,59248.42,32527.38,0.451,True,VIP client priority support
+Acme Corp,00675,2024-02-07,EMEA,66280.13,48517.06,0.268,True,Fast shipping requested
+Massive Dynamic,00866,2024-04-05,North America,36062.13,30436.44,0.156,True,
+Soylent Corp,00724,2024-03-03,North America,29374.26,14716.5,0.499,True,Account upgrade pending
+Cyberdyne Systems,00547,2024-01-19,APAC,-36879.04,20873.54,-0.434,False,Customer asked for $50 discount
+Stark Industries,00514,2024-01-01,LATAM,68636.66,50242.04,0.268,True,VIP client priority support
+Initech LLC,00292,2024-03-20,LATAM,-54872.46,43694.73,-0.14,True,Fast shipping requested
+Massive Dynamic,00855,2024-01-28,LATAM,60564.06,33189.1,,True,Account upgrade pending
+Massive Dynamic,00394,2024-06-24,LATAM,1472.43,789.39,0.42100000000000004,True,Account upgrade pending
+Stark Industries,00800,2024-05-01,APAC,63390.55,36132.61,0.43,False,Quarterly renewal

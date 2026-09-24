@@ -7,7 +7,7 @@
 
 [![PyPI version](https://img.shields.io/badge/pypi-v0.1.0-blue.svg)](https://pypi.org/project/bizpack/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-18%20passed-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen.svg)]()
 [![Core Dependencies](https://img.shields.io/badge/core%20deps-pandas%20%2B%20numpy-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
@@ -19,18 +19,20 @@ Pandas is built for general data science and software engineering. For everyday 
 * Doing a simple **XLOOKUP** takes a 4-line `df.merge()` with temporary join keys.
 * Calculating a **Month-over-Month (MoM) growth rate** requires manual `.shift(1)` and delta math.
 * Cleaning dirty spreadsheet exports (`$1,250.00`, `(450.00)`, `15.4%`, `"Grand Total"` footers) requires copy-pasting **20+ lines of brittle regex**.
+* **Mixed Currency Disaster:** If a column mixes US Dollars (`$100`), Euros (`€100`), and Indian Rupees (`₹8,900`), naive cleaning strips the symbols and sums `100 + 100 + 8900 = 9100`—creating a catastrophic financial error.
 
 **BizPack solves this with three simple layers:**
 
 ```text
- Breath 1: INGEST & CLEAN      df = bp.clean(df)
+ Breath 1: INGEST & CLEAN      df = bp.clean(df, target_currency="USD")
                                -> Auto-converts currencies, accounting '()', %, dates, headers, footers
+                               -> Standardizes mixed currencies (USD, INR, EUR, GBP) into 1 chosen currency
 
  Breath 2: BUSINESS FORMULAS   bp.xlookup() . bp.pareto() . bp.growth() . bp.run_rate()
                                -> Vectorized business math without Pandas boilerplate
 
  Breath 3: PRESENT & EXPORT    display_df = bp.format_for_display(df)
-                               -> Turns clean floats back into boardroom-ready $, %, and () strings
+                               -> Turns clean floats back into boardroom-ready $, ₹, €, %, and () strings
 ```
 
 ---
@@ -83,7 +85,37 @@ clean_df = bp.clean(df)
 
 ---
 
-### 2. Intuitive Business Formulas
+### 2. Multi-Currency Standardization & Conversion
+
+Multinational business reports frequently contain mixed currencies in the same column (e.g. `$100`, `₹8,900`, `€100`, `£50`). Simply stripping the symbols produces financially invalid numbers.
+
+BizPack automatically detects mixed currencies, prompts the user interactively (or takes `target_currency`), and converts all values using real-world exchange rates:
+
+```python
+# Standardize all currency columns to Indian Rupees (INR)
+clean_df = bp.clean(df, target_currency="INR")
+
+# Standardize to US Dollars (USD) and keep audit column
+clean_df = bp.read_csv("dirty_sales.csv", target_currency="USD", keep_currency_col=True)
+
+# Interactive mode: if target_currency is not set and mixed currencies exist,
+# BizPack asks the analyst directly in the terminal:
+# [BizPack Alert] Multiple currencies detected in column 'gross_revenue': [EUR, GBP, INR, USD]
+# Which currency would you like to standardize to? [USD]:
+```
+
+**Custom Exchange Rates:**
+```python
+# Provide custom FX rates relative to USD
+clean_df = bp.clean(df, target_currency="INR", rates={"INR": 1.0 / 90.0, "EUR": 1.10})
+```
+
+**Audit Trail:**
+BizPack records full transparency in `clean_df.attrs['currency_conversions']`, logging original currencies found, rates used, and row counts converted.
+
+---
+
+### 3. Intuitive Business Formulas
 
 #### Pythonic XLOOKUP
 No more awkward `df.merge()` key management:
@@ -125,9 +157,9 @@ run_rate_df = bp.run_rate(
 
 ---
 
-### 3. Executive Presentation Formatting
+### 4. Executive Presentation Formatting
 
-When doing math, computers need floats. When presenting to stakeholders, executives need `$` and `%`. 
+When doing math, computers need floats. When presenting to stakeholders, executives need `$`, `₹`, `€`, and `%`. 
 
 BizPack remembers original column formats and restores them in **one line**:
 
@@ -135,13 +167,13 @@ BizPack remembers original column formats and restores them in **one line**:
 # Do your calculations
 clean_df["profit"] = clean_df["revenue"] * clean_df["margin"]
 
-# Turn clean floats back into $, %, and () strings for presentation
+# Turn clean floats back into $, ₹, %, and () strings for presentation
 display_df = bp.format_for_display(clean_df)
 ```
 
 ---
 
-### 4. Seamless Pandas Accessor
+### 5. Seamless Pandas Accessor
 
 You can also use BizPack directly as a native Pandas accessor:
 
@@ -159,7 +191,8 @@ display_df = clean_df.biz.format()
 
 ```text
 bizpack/
-├── cleaner.py          # Auto-clean headers, types, currencies, accounting '()', footers
+├── cleaner.py          # Auto-clean headers, types, accounting '()', footers
+├── currency.py         # Multi-currency detection, conversion, exchange rates & user prompt
 ├── formulas.py         # Business math: xlookup, pareto, growth, run_rate
 ├── formatters.py       # Presentation formatters: format_currency, format_percent, format_for_display
 ├── accessor.py         # Native df.biz.* DataFrame accessor

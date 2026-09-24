@@ -54,10 +54,11 @@ def test_clean_types_currency_and_accounting():
     })
     cleaned = cleaner.clean_types(df, percent_as_ratio=True)
     
-    # Revenue should be float
+    # Revenue should be float standardized to dominant currency (USD)
+    # €500.50 converted to USD (at 1.08 rate) = 540.54
     assert np.issubdtype(cleaned["revenue"].dtype, np.floating)
     assert cleaned["revenue"].iloc[0] == 1250.0
-    assert cleaned["revenue"].iloc[1] == 500.5
+    assert cleaned["revenue"].iloc[1] == 540.54
     assert cleaned["revenue"].iloc[2] == -200.0
     assert cleaned["revenue"].iloc[3] == -50.0
 
@@ -85,11 +86,15 @@ def test_clean_international_currencies():
     assert cleaned["euro_standard"].iloc[2] == -1250.5
     assert cleaned["euro_standard"].iloc[3] == 1250.5
 
-    # Mixed currencies
+    # Mixed currencies standardized to USD:
+    # $1,000.50 -> 1000.5
+    # £2,500.00 * 1.28 -> 3200.0
+    # CHF 1'250.50 * 1.14 -> 1425.57
+    # ¥150,000 / 150 -> 1000.0
     assert cleaned["mixed_currency"].iloc[0] == 1000.5
-    assert cleaned["mixed_currency"].iloc[1] == 2500.0
-    assert cleaned["mixed_currency"].iloc[2] == 1250.5
-    assert cleaned["mixed_currency"].iloc[3] == 150000.0
+    assert cleaned["mixed_currency"].iloc[1] == 3200.0
+    assert cleaned["mixed_currency"].iloc[2] == 1425.57
+    assert cleaned["mixed_currency"].iloc[3] == 1000.0
 
     # Euro decimals without currency symbol
     assert cleaned["euro_decimals"].iloc[0] == 1250.5
