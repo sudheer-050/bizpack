@@ -2,6 +2,10 @@
 
 <div align="center">
 
+<p align="center">
+  <img src="assets/banner.png" alt="BizPack - The Intelligent Business Data Engine for Python" width="100%" />
+</p>
+
 ```
  ____  _     ____             _    
 | __ )(_)___|  _ \ __ _  ___| | __
