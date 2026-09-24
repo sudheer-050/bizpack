@@ -395,5 +395,40 @@ def clean(
         df = clean_strings(df)
     if types:
         df = clean_types(df, percent_as_ratio=percent_as_ratio)
-
     return df
+
+
+def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Read a CSV file safely and automatically clean it with BizPack.
+    Preserves leading zeros in IDs and ZIP codes by reading strings before type coercion.
+    """
+    clean_kwargs = {
+        "headers": kwargs.pop("headers", True),
+        "strings": kwargs.pop("strings", True),
+        "totals": kwargs.pop("totals", True),
+        "empty": kwargs.pop("empty", True),
+        "types": kwargs.pop("types", True),
+        "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
+    }
+    if "dtype" not in kwargs:
+        kwargs["dtype"] = str
+
+    df = pd.read_csv(filepath_or_buffer, **kwargs)
+    return clean(df, **clean_kwargs)
+
+
+def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Read an Excel file safely and automatically clean it with BizPack.
+    """
+    clean_kwargs = {
+        "headers": kwargs.pop("headers", True),
+        "strings": kwargs.pop("strings", True),
+        "totals": kwargs.pop("totals", True),
+        "empty": kwargs.pop("empty", True),
+        "types": kwargs.pop("types", True),
+        "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
+    }
+    df = pd.read_excel(filepath_or_buffer, **kwargs)
+    return clean(df, **clean_kwargs)

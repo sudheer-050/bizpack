@@ -12,6 +12,8 @@ from bizpack.cleaner import (
     clean_types,
     strip_totals,
     drop_empty,
+    read_csv,
+    read_excel,
 )
 from bizpack.formulas import (
     xlookup,
@@ -35,6 +37,8 @@ __all__ = [
     "clean_types",
     "strip_totals",
     "drop_empty",
+    "read_csv",
+    "read_excel",
     "xlookup",
     "growth",
     "pareto",
