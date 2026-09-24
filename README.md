@@ -23,7 +23,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/bizpack.svg?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/bizpack/)
 [![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-37%20passed%20(100%25)-brightgreen.svg?logo=pytest&logoColor=white)](https://github.com/sudheer-050/bizpack/actions)
+[![Tests](https://img.shields.io/badge/tests-43%20passed%20(100%25)-brightgreen.svg?logo=pytest&logoColor=white)](https://github.com/sudheer-050/bizpack/actions)
 [![Core Dependencies](https://img.shields.io/badge/dependencies-zero%20heavy%20(pandas%20%2B%20numpy)-success.svg)]()
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
@@ -159,6 +159,50 @@ When `bizpack` encounters mixed currencies in an interactive session, it pauses 
 Which currency would you like to standardize to? (default: USD): USD
 [BizPack Success] ✔ Standardized 100 rows to USD (rates: EUR=1.087, GBP=1.282, INR=0.0119)
 ```
+
+---
+
+### 🏥 1-Line Data Health Scorecard (`bp.audit()`)
+
+Audit your dataset before cleaning to uncover silent currency conflation, date ambiguity, and ID truncation risks:
+
+```python
+import bizpack as bp
+
+df = bp.read_csv("dirty_data.csv", clean=False)
+bp.audit(df)
+# Also available on DataFrames: df.biz.audit()
+```
+
+```text
+==================================================================
+                 BIZPACK DATA HEALTH AUDIT SCORECARD
+==================================================================
+ Overall Health Score: 0 / 100  [CRITICAL]
+ Records Analyzed:     101 rows | 10 columns
+ Data Completeness:    86.4%
+------------------------------------------------------------------
+ ISSUES DETECTED:
+ [!] [WARN]  Columns ['Blank Column']: 1 column(s) are 100% empty and should be dropped.
+ [!] [HIGH]  Footer: Detected 'Grand Total' summary row (risk of 2x revenue inflation).
+ [!] [HIGH]  Order Date: Contradictory dates in same column (both DD/MM and MM/DD found).
+ [!] [HIGH]  Gross Revenue: Multi-currency conflict detected: ['EUR', 'GBP', 'INR', 'USD'].
+ [!] [HIGH]  Unit Cost: Multi-currency conflict detected: ['EUR', 'GBP', 'INR', 'USD'].
+------------------------------------------------------------------
+ RECOMMENDATION: Severe defects detected. Immediate `bp.clean()` required before any math.
+==================================================================
+```
+
+---
+
+### 🌐 Interactive Web Playground (Streamlit)
+
+Prefer a no-code visual interface? Launch the built-in browser playground:
+
+```bash
+streamlit run app.py
+```
+*Drag-and-drop any CSV or Excel spreadsheet to inspect health scores, toggle currency conversions, view live Pareto 80/20 distributions, and download clean data.*
 
 ---
 
@@ -435,6 +479,7 @@ BizPack is built on vectorized Pandas and NumPy operations, designed to process 
 
 | Function | Parameters | Description |
 | :--- | :--- | :--- |
+| `bp.audit(df, ...)` | `df, print_report=True` | Non-destructive data health scorecard checking multi-currency conflation, date ambiguity, footer leakage, and leading zero risks. |
 | `bp.clean(df, ...)` | `df, target_currency, rates, id_cols, preserve_cols, interactive` | Master cleaning function: standardizes headers, empty elements, footers, currencies, accounting formats, and dates. |
 | `bp.clean_file(in_path, out_path, ...)` | `input_path, output_path=None, **clean_kwargs` | Clean a CSV directly from disk and save the clean result. |
 | `bp.read_csv(filepath, ...)` | `filepath, clean=True, **clean_kwargs` | Read a CSV with automatic BizPack cleaning enabled by default. |

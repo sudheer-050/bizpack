@@ -132,3 +132,11 @@ class BizAccessor:
             prompt_if_interactive=prompt_if_interactive,
             keep_currency_col=keep_currency_col,
         )
+
+    def audit(self, print_report: bool = True):
+        """
+        Run BizPack data health audit scorecard directly on this DataFrame.
+        """
+        from bizpack.audit import audit as audit_func
+        return audit_func(self._obj, print_report=print_report)
+

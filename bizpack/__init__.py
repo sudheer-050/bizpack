@@ -3,7 +3,7 @@ BizPack - The Business & Data Analyst Toolkit for Python.
 Zero-friction spreadsheet cleaning + intuitive business formulas.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 from bizpack.cleaner import (
     clean,
@@ -43,11 +43,17 @@ from bizpack.dates import (
     parse_dates_consistently,
     detect_row_dayfirst,
 )
+from bizpack.audit import (
+    audit,
+    AuditReport,
+)
 import pandas as pd
 # Import accessor to register pd.DataFrame.biz
 import bizpack.accessor
 
 __all__ = [
+    "audit",
+    "AuditReport",
     "clean",
     "clean_file",
     "clean_headers",
