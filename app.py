@@ -21,30 +21,15 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
         font-weight: 700;
         color: #58A6FF;
         margin-bottom: 0.2rem;
     }
     .sub-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: #8B949E;
-        margin-bottom: 1.5rem;
-    }
-    .metric-card {
-        background-color: #161B22;
-        border: 1px solid #30363D;
-        border-radius: 8px;
-        padding: 1rem;
-        text-align: center;
-    }
-    .badge {
-        display: inline-block;
-        padding: 0.25em 0.6em;
-        font-size: 80%;
-        font-weight: 700;
-        border-radius: 4px;
-        color: #fff;
+        margin-bottom: 1.2rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -60,7 +45,7 @@ st.sidebar.title("⚡ BizPack Controls")
 st.sidebar.markdown("Zero-friction spreadsheet cleaning + business math for Python.")
 
 target_curr = st.sidebar.selectbox(
-    "🌍 Target Currency for Standardization:",
+    "🌍 Standardize Currencies To:",
     ["USD", "INR", "EUR", "GBP", "CAD", "AUD"],
     index=0,
 )
@@ -110,32 +95,9 @@ elif use_sample or df_raw is None:
         sample_path = os.path.join("examples", "dirty_data.csv")
     if os.path.exists(sample_path):
         df_raw = bp.read_csv(sample_path, clean=False)
-        st.info("Loaded realistic 100-row sample dataset containing mixed currencies (₹, $, €, £), two-tier dates, accounting brackets, and empty columns.")
 
 if df_raw is not None:
-    # 1. Health Audit Section
-    st.markdown("### 🏥 1. Pre-Cleaning Health Diagnostic (Raw Input File)")
-    st.caption("Diagnosing hidden defects, multi-currency conflicts, and date ambiguities in the raw input file:")
-    report = bp.audit(df_raw, print_report=False)
-    
-    score_col, status_col, rows_col, comp_col = st.columns(4)
-    with score_col:
-        st.metric("Raw Health Score", f"{report.score} / 100")
-    with status_col:
-        rating_color = "🔴" if report.score < 50 else "🟡" if report.score < 80 else "🟢"
-        st.metric("Raw Status Rating", f"{rating_color} {report.rating}")
-    with rows_col:
-        st.metric("Records Analyzed", f"{report.stats['rows']} rows × {report.stats['cols']} cols")
-    with comp_col:
-        st.metric("Data Completeness", f"{report.stats['completeness_pct']:.1f}%")
-
-    with st.expander(f"🔍 View {len(report.issues)} Issue(s) Detected in Raw Input", expanded=(report.score < 80)):
-        st.warning(f"**Diagnostic Summary:** {report.recommendation}")
-        for issue in report.issues:
-            icon = "🚨" if issue["severity"] == "HIGH" else "⚠️" if issue["severity"] == "MEDIUM" else "ℹ️"
-            st.write(f"{icon} **[{issue['severity']}] {issue['column']}**: {issue['message']}")
-
-    # 2. Perform BizPack cleaning
+    # 1. Clean the dataset immediately with BizPack
     clean_df = bp.clean(
         df_raw,
         target_currency=target_curr,
@@ -144,100 +106,123 @@ if df_raw is not None:
         prompt_currency=False,
     )
 
+    # 2. Run Health Audits on both
+    raw_report = bp.audit(df_raw, print_report=False)
     clean_report = bp.audit(clean_df, print_report=False)
+    score_diff = clean_report.score - raw_report.score
 
-    # 3. Side-by-Side Comparison
-    st.markdown("---")
-    st.markdown("### 🔄 2. Transformation: Raw Input vs. Pristine BizPack Output")
+    # 3. Prominent Health Upgrade Banner
+    st.success(
+        f"✨ **BizPack Upgrade Complete:** Dataset Health jumped from "
+        f"**{raw_report.score}/100 ({raw_report.rating})** ➔ **{clean_report.score}/100 ({clean_report.rating})** "
+        f"(+{score_diff} pts improvement! All currencies standardized to {target_curr}, dates disambiguated, footers removed)."
+    )
 
-    # Health Improvement Banner
-    score_diff = clean_report.score - report.score
-    st.success(f"✨ **BizPack Health Upgrade:** Dataset health jumped from **{report.score}/100 ({report.rating})** ➔ **{clean_report.score}/100 ({clean_report.rating})** (+{score_diff} pts improvement)!")
+    # 4. KPI Metrics Bar
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.metric("Raw Health (Before)", f"{raw_report.score} / 100", help="Quality score of the raw uncleaned input")
+    with m2:
+        st.metric("Clean Health (After)", f"{clean_report.score} / 100", delta=f"+{score_diff} pts", help="Quality score after BizPack cleaning")
+    with m3:
+        st.metric("Records Cleaned", f"{clean_df.shape[0]} rows × {clean_df.shape[1]} cols")
+    with m4:
+        st.metric("Target Currency", target_curr)
 
-    col_raw, col_clean = st.columns(2)
+    # 5. Core View Tabs (Cleaned Data is Tab 1 by default!)
+    tab_clean, tab_before, tab_side, tab_audit, tab_analytics = st.tabs([
+        "✅ Cleaned Output (After Clean)",
+        "❌ Raw Input (Before Clean)",
+        "🔄 Side-by-Side View",
+        "🏥 Health Diagnostic Details",
+        "📈 Business Math (Pareto & Growth)",
+    ])
 
-    with col_raw:
-        st.subheader("❌ Before: Raw Dirty Spreadsheet")
-        st.caption(f"Health: {report.score}/100 ({report.rating}) • Contains string currencies, mixed dates, empty columns.")
-        st.dataframe(df_raw.head(10), use_container_width=True, height=350)
+    with tab_clean:
+        st.markdown(f"#### ✅ Cleaned & Standardized DataFrame (`{target_curr}`)")
+        st.caption("All mixed currencies standardized, accounting deficits converted to true negatives, leading zero IDs protected, footers removed.")
+        
+        # Action Bar (Download + Quick Stats)
+        dl_col, note_col = st.columns([1, 3])
+        with dl_col:
+            csv_buf = io.StringIO()
+            clean_df.to_csv(csv_buf, index=False)
+            st.download_button(
+                label="⬇️ Download Cleaned CSV",
+                data=csv_buf.getvalue(),
+                file_name=f"bizpack_clean_{target_curr.lower()}.csv",
+                mime="text/csv",
+                use_container_width=True,
+            )
+        with note_col:
+            st.info(f"Showing top 20 rows of {len(clean_df)} cleaned records. All types cast to float64, boolean, and ISO date.")
 
-    with col_clean:
-        st.subheader(f"✅ After: Cleaned ({target_curr})")
-        st.caption(f"Health: {clean_report.score}/100 ({clean_report.rating}) • Standardized to {target_curr}, types cast, zero NaT rows.")
-        st.dataframe(clean_df.head(10), use_container_width=True, height=350)
+        st.dataframe(clean_df.head(20), use_container_width=True, height=450)
 
-    # 3. Currency Audit Trail Expander
-    if "currency_conversions" in clean_df.attrs and clean_df.attrs["currency_conversions"]:
-        with st.expander("🌍 Multi-Currency Audit Trail & Conversion Transparency", expanded=True):
-            conv_data = clean_df.attrs["currency_conversions"]
-            for col_name, info in conv_data.items():
-                st.write(f"**Column `{col_name}` converted to `{info['target_currency']}`:**")
-                st.write(f"- Currencies standardized: `{dict(info['counts'])}`")
-                st.write(f"- Conversion rates applied: `{info['rates_applied']}`")
+        # Currency Conversion Audit Log
+        if "currency_conversions" in clean_df.attrs and clean_df.attrs["currency_conversions"]:
+            with st.expander("🌍 Multi-Currency Audit Trail & Exchange Rates Applied", expanded=False):
+                for col_name, info in clean_df.attrs["currency_conversions"].items():
+                    st.write(f"**Column `{col_name}` standardized to `{info['target_currency']}`:**")
+                    st.write(f"- Currencies detected & converted: `{dict(info['counts'])}`")
+                    st.write(f"- Conversion rates used: `{info['rates_applied']}`")
 
-    # 4. Business Analytics Section (Pareto & Growth)
-    st.markdown("---")
-    st.markdown("### 📈 3. Instant Pythonic Business Analytics")
+    with tab_before:
+        st.markdown("#### ❌ Raw Dirty Input Spreadsheet (Before Cleaning)")
+        st.caption("Contains string currencies ($/€/₹), accounting brackets '($1,200)', mixed date formats, and empty elements.")
+        st.dataframe(df_raw.head(20), use_container_width=True, height=450)
 
-    num_cols = clean_df.select_dtypes(include=["number"]).columns.tolist()
-    str_cols = clean_df.select_dtypes(include=["object", "string"]).columns.tolist()
-    date_cols = [c for c in clean_df.columns if "date" in c.lower()]
+    with tab_side:
+        st.markdown("#### 🔄 Side-by-Side Direct Comparison")
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            st.markdown("**❌ Before: Raw Dirty Input**")
+            st.dataframe(df_raw.head(15), use_container_width=True, height=400)
+        with col_s2:
+            st.markdown(f"**✅ After: Cleaned ({target_curr})**")
+            st.dataframe(clean_df.head(15), use_container_width=True, height=400)
 
-    tab1, tab2, tab3 = st.tabs(["📊 Pareto (80/20 Rule)", "📅 Period Growth", "👔 Boardroom Display"])
+    with tab_audit:
+        st.markdown("#### 🏥 Pre-Cleaning Health Diagnostic Scorecard")
+        st.caption("Detailed breakdown of issues detected in the raw input file:")
+        
+        for issue in raw_report.issues:
+            icon = "🚨" if issue["severity"] == "HIGH" else "⚠️" if issue["severity"] == "MEDIUM" else "ℹ️"
+            st.write(f"{icon} **[{issue['severity']}] {issue['column']}**: {issue['message']}")
+        st.warning(f"**Diagnostic Summary:** {raw_report.recommendation}")
 
-    with tab1:
-        if str_cols and num_cols:
-            p_dim = st.selectbox("Dimension (Category):", str_cols, index=0)
-            p_metric = st.selectbox("Metric (Value):", num_cols, index=0)
-            
-            pareto_df = bp.pareto(clean_df, dim_col=p_dim, metric_col=p_metric, top_pct=0.80)
-            st.info(pareto_df.attrs.get("summary", "Pareto calculation complete."))
-            
-            # Bar chart of top contributors
-            top_contributors = pareto_df[pareto_df["cumulative_pct"] <= 0.85]
-            st.bar_chart(data=top_contributors.set_index(p_dim)[p_metric])
-        else:
-            st.write("No numeric or category columns found for Pareto analysis.")
+    with tab_analytics:
+        st.markdown("#### 📈 Instant Pythonic Business Analytics")
+        num_cols = clean_df.select_dtypes(include=["number"]).columns.tolist()
+        str_cols = clean_df.select_dtypes(include=["object", "string"]).columns.tolist()
+        date_cols = [c for c in clean_df.columns if "date" in c.lower()]
 
-    with tab2:
-        if date_cols and num_cols:
-            d_col = date_cols[0]
-            g_metric = num_cols[0]
-            try:
-                growth_df = bp.growth(clean_df, date_col=d_col, metric_col=g_metric, freq="M")
-                st.dataframe(growth_df, use_container_width=True)
-            except Exception as e:
-                st.write(f"Could not calculate growth: {e}")
-        else:
-            st.write("Ensure your dataset has at least one date column for growth trends.")
+        sub1, sub2, sub3 = st.tabs(["📊 Pareto 80/20 Rule", "📅 Period Growth", "👔 Boardroom Display"])
 
-    with tab3:
-        st.write("Convert calculation floats back into boardroom-ready formatted strings (`$`, `₹`, `€`, `%`, `()`):")
-        display_df = bp.format_for_display(clean_df)
-        st.dataframe(display_df.head(10), use_container_width=True)
+        with sub1:
+            if str_cols and num_cols:
+                p_dim = st.selectbox("Dimension (Category):", str_cols, index=0, key="pareto_dim")
+                p_metric = st.selectbox("Metric (Value):", num_cols, index=0, key="pareto_metric")
+                pareto_df = bp.pareto(clean_df, dim_col=p_dim, metric_col=p_metric, top_pct=0.80)
+                st.info(pareto_df.attrs.get("summary", "Pareto calculation complete."))
+                top_contrib = pareto_df[pareto_df["cumulative_pct"] <= 0.85]
+                st.bar_chart(data=top_contrib.set_index(p_dim)[p_metric])
+            else:
+                st.write("No numeric or category columns found for Pareto analysis.")
 
-    # 5. Export / Download
-    st.markdown("---")
-    st.markdown("### 💾 4. Download & Reproduce")
+        with sub2:
+            if date_cols and num_cols:
+                d_col = date_cols[0]
+                g_metric = num_cols[0]
+                try:
+                    growth_df = bp.growth(clean_df, date_col=d_col, metric_col=g_metric, freq="M")
+                    st.dataframe(growth_df, use_container_width=True)
+                except Exception as e:
+                    st.write(f"Could not calculate growth: {e}")
+            else:
+                st.write("Ensure your dataset has at least one date column for growth trends.")
 
-    col_dl, col_code = st.columns([1, 2])
-
-    with col_dl:
-        csv_buffer = io.StringIO()
-        clean_df.to_csv(csv_buffer, index=False)
-        st.download_button(
-            label="⬇️ Download Cleaned CSV",
-            data=csv_buffer.getvalue(),
-            file_name="bizpack_clean.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-
-    with col_code:
-        st.code(f"""
-# Reproduce this in your own Python script or Jupyter Notebook:
-import bizpack as bp
-
-df = bp.clean_file('dirty_data.csv', target_currency='{target_curr}')
-pareto_df = bp.pareto(df, dim_col='{str_cols[0] if str_cols else 'category'}', metric_col='{num_cols[0] if num_cols else 'revenue'}')
-""", language="python")
+        with sub3:
+            st.write("Convert calculation floats back into boardroom-ready formatted strings (`$`, `₹`, `€`, `%`, `()`):")
+            display_df = bp.format_for_display(clean_df)
+            st.dataframe(display_df.head(15), use_container_width=True)
