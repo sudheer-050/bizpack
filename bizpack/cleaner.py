@@ -3,7 +3,8 @@ Core data cleaning module for BizKit.
 Zero-friction spreadsheet and business data hygiene.
 """
 
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from pathlib import Path
 import re
 import unicodedata
 import warnings
@@ -547,3 +548,52 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     }
     df = pd.read_excel(filepath_or_buffer, **kwargs)
     return clean(df, **clean_kwargs)
+
+
+def clean_file(
+    input_path: Union[str, Path],
+    output_path: Optional[Union[str, Path]] = None,
+    target_currency: Optional[str] = None,
+    **kwargs: Any,
+) -> pd.DataFrame:
+    """
+    Clean an entire spreadsheet file in ONE line.
+    Automatically detects CSV vs Excel, standardizes mixed currencies by prompting
+    in the output area, and saves to a brand new file without touching the original.
+    
+    Example:
+    >>> import bizpack as bp
+    >>> bp.clean_file("dirty_sales.csv")
+    """
+    input_p = Path(input_path)
+    if not input_p.exists():
+        raise FileNotFoundError(f"File not found: '{input_path}'")
+
+    ext = input_p.suffix.lower()
+    if ext in (".xlsx", ".xls", ".xlsm"):
+        df = read_excel(input_p, target_currency=target_currency, **kwargs)
+    else:
+        df = read_csv(input_p, target_currency=target_currency, **kwargs)
+
+    # Determine default output path if not provided
+    if output_path is None:
+        curr_suffix = ""
+        if "currency_conversions" in df.attrs:
+            for audit in df.attrs["currency_conversions"].values():
+                curr_suffix = f"_{audit['target_currency'].lower()}"
+                break
+        output_p = input_p.parent / f"clean_{input_p.stem}{curr_suffix}{ext}"
+    else:
+        output_p = Path(output_path)
+
+    # Save to new clean file
+    if ext in (".xlsx", ".xls", ".xlsm"):
+        df.to_excel(output_p, index=False)
+    else:
+        df.to_csv(output_p, index=False)
+
+    print(f"\n[BizPack] Success! Clean file created: {output_p.name}")
+    print(f"Location: {output_p.resolve()}")
+    print(f"Records: {len(df):,} rows | Columns cleaned: {len(df.columns)}")
+    return df
+

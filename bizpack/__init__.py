@@ -7,6 +7,7 @@ __version__ = "0.1.0"
 
 from bizpack.cleaner import (
     clean,
+    clean_file,
     clean_headers,
     clean_strings,
     clean_types,
@@ -42,6 +43,7 @@ import bizpack.accessor
 
 __all__ = [
     "clean",
+    "clean_file",
     "clean_headers",
     "clean_strings",
     "clean_types",

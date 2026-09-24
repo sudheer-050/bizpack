@@ -138,3 +138,17 @@ def test_master_clean():
 
     # ID preserved
     assert cleaned["account_id"].iloc[0] == "00123"
+
+
+def test_clean_file(tmp_path):
+    # Test 1-line clean_file helper
+    dirty_csv = tmp_path / "raw_data.csv"
+    dirty_csv.write_text('Account #,Revenue\n00101,$100.00\n00102,"₹8,900.00"\n', encoding="utf-8")
+
+    out_csv = tmp_path / "cleaned_result.csv"
+    df = cleaner.clean_file(dirty_csv, output_path=out_csv, target_currency="USD")
+
+    assert out_csv.exists()
+    assert df["revenue"].tolist() == [100.0, 100.0]
+    assert df["account"].tolist() == ["00101", "00102"]
+
