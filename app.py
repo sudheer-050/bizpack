@@ -114,31 +114,28 @@ elif use_sample or df_raw is None:
 
 if df_raw is not None:
     # 1. Health Audit Section
-    st.markdown("### 🏥 1. Data Health Scorecard")
+    st.markdown("### 🏥 1. Pre-Cleaning Health Diagnostic (Raw Input File)")
+    st.caption("Diagnosing hidden defects, multi-currency conflicts, and date ambiguities in the raw input file:")
     report = bp.audit(df_raw, print_report=False)
     
     score_col, status_col, rows_col, comp_col = st.columns(4)
     with score_col:
-        st.metric("Health Score", f"{report.score} / 100")
+        st.metric("Raw Health Score", f"{report.score} / 100")
     with status_col:
         rating_color = "🔴" if report.score < 50 else "🟡" if report.score < 80 else "🟢"
-        st.metric("Status Rating", f"{rating_color} {report.rating}")
+        st.metric("Raw Status Rating", f"{rating_color} {report.rating}")
     with rows_col:
-        st.metric("Rows / Columns", f"{report.stats['rows']} × {report.stats['cols']}")
+        st.metric("Records Analyzed", f"{report.stats['rows']} rows × {report.stats['cols']} cols")
     with comp_col:
         st.metric("Data Completeness", f"{report.stats['completeness_pct']:.1f}%")
 
-    with st.expander(f"🔍 View {len(report.issues)} Detected Issue(s)", expanded=(report.score < 80)):
+    with st.expander(f"🔍 View {len(report.issues)} Issue(s) Detected in Raw Input", expanded=(report.score < 80)):
+        st.warning(f"**Diagnostic Summary:** {report.recommendation}")
         for issue in report.issues:
             icon = "🚨" if issue["severity"] == "HIGH" else "⚠️" if issue["severity"] == "MEDIUM" else "ℹ️"
             st.write(f"{icon} **[{issue['severity']}] {issue['column']}**: {issue['message']}")
-        st.caption(f"**Recommendation:** {report.recommendation}")
 
-    # 2. Side-by-Side Comparison
-    st.markdown("---")
-    st.markdown("### 🔄 2. Transformation: Raw Input vs. Pristine BizPack Output")
-
-    # Perform BizPack cleaning
+    # 2. Perform BizPack cleaning
     clean_df = bp.clean(
         df_raw,
         target_currency=target_curr,
@@ -147,16 +144,26 @@ if df_raw is not None:
         prompt_currency=False,
     )
 
+    clean_report = bp.audit(clean_df, print_report=False)
+
+    # 3. Side-by-Side Comparison
+    st.markdown("---")
+    st.markdown("### 🔄 2. Transformation: Raw Input vs. Pristine BizPack Output")
+
+    # Health Improvement Banner
+    score_diff = clean_report.score - report.score
+    st.success(f"✨ **BizPack Health Upgrade:** Dataset health jumped from **{report.score}/100 ({report.rating})** ➔ **{clean_report.score}/100 ({clean_report.rating})** (+{score_diff} pts improvement)!")
+
     col_raw, col_clean = st.columns(2)
 
     with col_raw:
         st.subheader("❌ Before: Raw Dirty Spreadsheet")
-        st.caption("Contains string currencies, accounting '()', mixed dates, and empty elements.")
+        st.caption(f"Health: {report.score}/100 ({report.rating}) • Contains string currencies, mixed dates, empty columns.")
         st.dataframe(df_raw.head(10), use_container_width=True, height=350)
 
     with col_clean:
         st.subheader(f"✅ After: Cleaned ({target_curr})")
-        st.caption(f"Standardized to {target_curr}, types cast, zero NaT dropped rows, IDs preserved.")
+        st.caption(f"Health: {clean_report.score}/100 ({clean_report.rating}) • Standardized to {target_curr}, types cast, zero NaT rows.")
         st.dataframe(clean_df.head(10), use_container_width=True, height=350)
 
     # 3. Currency Audit Trail Expander
