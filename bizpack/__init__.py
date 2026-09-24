@@ -3,7 +3,7 @@ BizPack - The Business & Data Analyst Toolkit for Python.
 Zero-friction spreadsheet cleaning + intuitive business formulas.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from bizpack.cleaner import (
     clean,
