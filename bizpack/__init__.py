@@ -41,6 +41,7 @@ from bizpack.currency import (
 from bizpack.dates import (
     infer_date_format_and_dayfirst,
     parse_dates_consistently,
+    detect_row_dayfirst,
 )
 # Import accessor to register pd.DataFrame.biz
 import bizpack.accessor
@@ -73,5 +74,6 @@ __all__ = [
     "CODE_TO_SYMBOL",
     "infer_date_format_and_dayfirst",
     "parse_dates_consistently",
+    "detect_row_dayfirst",
 ]
 

@@ -348,6 +348,7 @@ def clean_types(
     Stores original formatting metadata in df.attrs['_biz_formats'] for later presentation.
     """
     df = df.copy()
+    raw_df = df.copy()
     formats_meta: Dict[str, str] = {}
     active_target_currency = target_currency
 
@@ -451,6 +452,7 @@ def clean_types(
                         df[col],
                         dayfirst=dayfirst,
                         dataset_currency=active_target_currency,
+                        df=raw_df,
                     )
                     df[col] = parsed_series
                     formats_meta[col] = "datetime"

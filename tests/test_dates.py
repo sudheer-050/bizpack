@@ -88,3 +88,94 @@ def test_clean_df_with_smart_date_resolution():
     # Check audit information stored in attrs
     assert "date_formats" in cleaned.attrs
     assert cleaned.attrs["date_formats"]["order_date"]["dayfirst"] is True
+
+
+def test_mixed_dates_in_same_column_with_partner_context():
+    """
+    Test a column with a mixture of Indian (DD/MM/YYYY) and US (MM/DD/YYYY) dates.
+    Ensures:
+    1. Unambiguous dates like 25/03/2024 and 03/25/2024 are both parsed to March 25th with ZERO NaTs.
+    2. Ambiguous dates like 05/09/2024 are resolved row-by-row using partner context:
+       - Row with INR / India -> September 5th
+       - Row with USD / North America -> May 9th
+    3. Ambiguous dates like 01/02/2024:
+       - Row with EUR / Europe -> February 1st
+       - Row with USD / USA -> January 2nd
+    """
+    df = pd.DataFrame({
+        "order_date": [
+            "25/03/2024",  # Indian unambiguous
+            "03/25/2024",  # US unambiguous
+            "05/09/2024",  # Indian ambiguous -> Sept 5
+            "05/09/2024",  # US ambiguous -> May 9
+            "31-12-2023",  # Indian unambiguous
+            "12-31-2023",  # US unambiguous
+            "01/02/2024",  # Europe ambiguous -> Feb 1
+            "01/02/2024",  # US ambiguous -> Jan 2
+        ],
+        "amount": [
+            "₹ 5,000",
+            "$ 100",
+            "₹ 8,900",
+            "$ 250",
+            "₹ 15,000",
+            "$ 400",
+            "€ 500",
+            "$ 500",
+        ],
+        "region": [
+            "India",
+            "USA",
+            "India",
+            "North America",
+            "APAC",
+            "USA",
+            "Europe",
+            "USA",
+        ],
+    })
+
+    cleaned = bp.clean(df, target_currency="INR")
+
+    # Column should be converted to datetime64 with ZERO NaT drops
+    assert np.issubdtype(cleaned["order_date"].dtype, np.datetime64)
+    assert cleaned["order_date"].isna().sum() == 0
+
+    # Row 0: 25/03/2024 -> March 25, 2024
+    assert cleaned["order_date"].iloc[0] == pd.Timestamp("2024-03-25")
+    # Row 1: 03/25/2024 -> March 25, 2024 (US date preserved without turning into NaT!)
+    assert cleaned["order_date"].iloc[1] == pd.Timestamp("2024-03-25")
+    # Row 2: 05/09/2024 in India row -> September 5, 2024
+    assert cleaned["order_date"].iloc[2] == pd.Timestamp("2024-09-05")
+    # Row 3: 05/09/2024 in US row -> May 9, 2024
+    assert cleaned["order_date"].iloc[3] == pd.Timestamp("2024-05-09")
+    # Row 4: 31-12-2023 -> December 31, 2023
+    assert cleaned["order_date"].iloc[4] == pd.Timestamp("2023-12-31")
+    # Row 5: 12-31-2023 -> December 31, 2023
+    assert cleaned["order_date"].iloc[5] == pd.Timestamp("2023-12-31")
+    # Row 6: 01/02/2024 in Europe row -> February 1, 2024
+    assert cleaned["order_date"].iloc[6] == pd.Timestamp("2024-02-01")
+    # Row 7: 01/02/2024 in US row -> January 2, 2024
+    assert cleaned["order_date"].iloc[7] == pd.Timestamp("2024-01-02")
+
+    # Verify audit info recorded mixed date detection
+    audit = cleaned.attrs["date_formats"]["order_date"]
+    assert audit["is_mixed"] is True
+    assert audit["ambiguous_resolved_by_row_context"] >= 4
+
+
+def test_mixed_dates_standalone_series():
+    """
+    Test mixed dates on a standalone pd.Series with no other columns.
+    Both 25/03/2024 (Indian) and 03/25/2024 (US) must parse successfully to March 25th.
+    """
+    s = pd.Series(["25/03/2024", "03/25/2024", "2024-01-15", "15-Aug-2024"])
+    parsed, audit = parse_dates_consistently(s)
+
+    assert parsed.isna().sum() == 0
+    assert parsed.iloc[0] == pd.Timestamp("2024-03-25")
+    assert parsed.iloc[1] == pd.Timestamp("2024-03-25")
+    assert parsed.iloc[2] == pd.Timestamp("2024-01-15")
+    assert parsed.iloc[3] == pd.Timestamp("2024-08-15")
+    assert audit["is_mixed"] is True
+
