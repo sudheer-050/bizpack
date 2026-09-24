@@ -1,0 +1,101 @@
+customer_name_client,account,order_date_utc,region_territory,gross_revenue,unit_cost,profit_margin,active_subscription,customer_notes_log
+Acme Corp,00124,2024-03-25,APAC,1681.69,944.71,0.33299999999999996,False,Standard order
+Wayne Enterprises,00235,2024-03-25,USA,-12865.27,8045.42,-0.098,True,Account upgrade pending
+Massive Dynamic,00280,2024-12-14,Europe,6792.0,4472.37,0.22,True,VIP client priority support
+Acme Corp,00243,2024-02-22,Europe,44703.74,30621.52,0.175,False,Fast shipping requested
+Soylent Corp,00945,2024-09-05,India,1319.31,854.92,0.17300000000000001,False,
+Hooli Inc,00234,2024-05-09,North America,59426.74,41967.12,0.518,True,Quarterly renewal
+Pied Piper,00058,2024-03-15,APAC,505.62,429.78,-0.15,True,Customer asked for discount
+Dunder Mifflin,00612,2024-02-01,India,-218.25,125.48,-0.292,True,
+Cyberdyne Systems,00892,2024-01-02,USA,49457.81,33685.22,0.075,False,
+Stark Industries,00007,2024-06-15,EMEA,1350.54,918.0,0.32,True,Standard order
+Globex Inc,00944,2024-11-22,APAC,2155.23,1615.49,,True,Fast shipping requested
+Initech LLC,00042,2024-04-18,LATAM,-15200.0,11400.0,0.25,False,Quarterly renewal
+Wayne Enterprises,00030,2024-04-09,USA,11238.22,7866.75,0.345,False,
+Wayne Enterprises,00609,2024-01-02,LATAM,4775.39,3342.77,0.14300000000000002,False,Standard order
+Stark Industries,00208,2024-12-21,USA,27292.58,19104.81,0.138,False,
+Acme Corp,00782,2024-12-06,Europe,94402.59,61186.87,0.161,True,
+Wayne Enterprises,00099,2024-06-04,LATAM,42389.97,29672.98,0.29100000000000004,True,
+Stark Industries,00132,2024-09-03,LATAM,14729.6,10310.72,0.301,True,
+Soylent Corp,00726,2024-11-02,APAC,555.51,34608.11,0.166,True,Fast shipping requested
+Wayne Enterprises,00394,2024-11-15,EMEA,41722.11,29205.48,0.115,True,Fast shipping requested
+Hooli Inc,00723,2024-02-21,USA,30495.64,21346.95,0.11800000000000001,False,Fast shipping requested
+Massive Dynamic,00478,2024-11-09,LATAM,34439.28,24107.5,0.138,True,Standard order
+Soylent Corp,00846,2024-06-26,APAC,935.14,58258.99,0.076,False,
+Soylent Corp,00676,2024-11-13,LATAM,22996.71,16097.7,0.156,True,
+Stark Industries,00274,2024-07-19,USA,44901.36,31430.95,0.21,True,Fast shipping requested
+Stark Industries,00510,2024-01-25,APAC,1942.87,121040.55,0.111,True,
+Globex Inc,00070,2024-10-13,LATAM,49806.46,34864.52,0.262,False,Standard order
+Wayne Enterprises,00703,2024-05-25,India,1740.19,108413.72,0.18600000000000003,True,
+Massive Dynamic,00469,2024-12-24,APAC,633.27,39452.6,0.25,True,
+Wayne Enterprises,00896,2024-11-10,USA,25432.38,17802.67,0.13,True,Fast shipping requested
+Stark Industries,00981,2024-01-17,Europe,131537.73,85255.93,0.245,True,
+Hooli Inc,00250,2024-10-08,APAC,2130.96,132758.6,0.084,False,Standard order
+Stark Industries,00789,2024-11-05,North America,23816.59,16671.61,0.27,True,
+Globex Inc,00438,2024-12-18,North America,34524.39,24167.07,0.335,False,
+Cyberdyne Systems,00926,2024-02-15,India,599.34,37339.11,0.076,True,
+Stark Industries,00240,2024-01-08,India,211.73,13190.56,0.302,True,Standard order
+Acme Corp,00885,2024-09-03,EMEA,11976.43,8383.5,0.318,True,
+Massive Dynamic,00745,2024-08-19,India,588.59,36669.12,0.239,False,Fast shipping requested
+Wayne Enterprises,00104,2024-06-14,USA,21236.57,14865.6,0.237,False,Standard order
+Wayne Enterprises,00067,2024-06-24,LATAM,40049.57,28034.7,0.094,True,Fast shipping requested
+Stark Industries,00464,2024-03-14,North America,13999.4,9799.58,0.15,True,
+Stark Industries,00105,2024-09-21,APAC,1887.93,117617.77,0.43799999999999994,True,Fast shipping requested
+Dunder Mifflin,00502,2024-07-07,LATAM,45131.9,31592.33,0.11599999999999999,True,
+Hooli Inc,00953,2024-08-26,Europe,65473.49,42436.52,0.32899999999999996,False,
+Cyberdyne Systems,00163,2024-04-10,North America,48438.6,33907.02,0.282,False,Standard order
+Pied Piper,00063,2024-08-19,APAC,1157.93,72139.07,0.391,True,Standard order
+Stark Industries,00087,2024-02-06,Europe,130714.4,84722.29,0.32,True,
+Wayne Enterprises,00969,2024-10-08,India,1358.78,84651.86,0.298,False,
+Globex Inc,00540,2024-04-09,EMEA,33519.33,23463.53,0.17600000000000002,True,
+Massive Dynamic,00692,2024-08-10,USA,15877.24,11114.07,0.35100000000000003,True,Standard order
+Cyberdyne Systems,00641,2024-02-04,India,1234.14,76887.1,0.252,True,
+Wayne Enterprises,00905,2024-05-12,North America,7971.57,5580.1,0.38299999999999995,False,
+Globex Inc,00831,2024-01-17,USA,33426.37,23398.46,0.272,False,Standard order
+Massive Dynamic,00275,2024-12-04,APAC,1268.3,79015.03,0.159,False,Fast shipping requested
+Pied Piper,00213,2024-05-21,USA,25319.91,17723.94,0.15,True,Standard order
+Dunder Mifflin,00854,2024-01-02,EMEA,16744.47,11721.13,0.102,True,Fast shipping requested
+Cyberdyne Systems,00569,2024-09-14,USA,582.52,407.76,0.08,False,Fast shipping requested
+Stark Industries,00041,2024-10-12,Europe,121761.78,78919.67,0.222,True,
+Pied Piper,00925,2024-01-28,Europe,194713.52,126203.21,0.134,True,Standard order
+Pied Piper,00803,2024-07-28,India,2189.87,136428.75,0.35,True,Fast shipping requested
+Massive Dynamic,00907,2024-03-01,LATAM,36854.57,25798.2,0.183,False,Fast shipping requested
+Hooli Inc,00168,2024-02-23,Europe,85963.29,55716.95,0.065,False,Fast shipping requested
+Soylent Corp,00841,2024-05-12,LATAM,41044.77,28731.34,0.39899999999999997,True,Standard order
+Soylent Corp,00413,2024-02-09,EMEA,48347.77,33843.44,0.162,False,
+Dunder Mifflin,00700,2024-06-18,Europe,203203.34,131705.87,0.096,True,Fast shipping requested
+Globex Inc,00990,2024-02-02,EMEA,29868.91,20908.24,0.188,True,
+Globex Inc,00528,2024-10-13,APAC,472.64,29445.75,0.068,False,Standard order
+Stark Industries,00952,2024-11-18,Europe,156911.96,101702.19,0.34700000000000003,False,Fast shipping requested
+Pied Piper,00446,2024-06-22,APAC,1421.52,88560.71,0.315,True,
+Stark Industries,00321,2024-06-14,USA,20179.78,14125.85,0.168,True,Fast shipping requested
+Dunder Mifflin,00685,2024-12-22,LATAM,45150.0,31605.0,0.29600000000000004,True,
+Stark Industries,00858,2024-05-10,APAC,516.69,32189.93,0.364,False,
+Cyberdyne Systems,00457,2024-04-22,LATAM,25607.58,17925.31,0.36700000000000005,False,Fast shipping requested
+Wayne Enterprises,00295,2024-11-22,India,1412.99,88029.1,0.087,True,
+Soylent Corp,00830,2024-01-05,North America,2406.06,1684.24,0.444,False,Standard order
+Cyberdyne Systems,00429,2024-04-19,USA,35945.46,25161.82,0.204,False,Fast shipping requested
+Massive Dynamic,00676,2024-02-01,USA,38943.18,27260.23,0.138,False,
+Cyberdyne Systems,00056,2024-02-08,India,1056.29,65807.04,0.371,False,
+Stark Industries,00614,2024-08-25,EMEA,30671.35,21469.94,0.33799999999999997,False,
+Stark Industries,00461,2024-08-24,North America,22558.48,15790.94,0.35100000000000003,False,
+Stark Industries,00501,2024-05-08,USA,22049.64,15434.75,0.335,True,
+Pied Piper,00332,2024-03-03,India,386.65,24088.39,0.203,True,Fast shipping requested
+Wayne Enterprises,00429,2024-09-11,LATAM,23349.62,16344.73,0.075,False,
+Globex Inc,00973,2024-10-01,USA,19081.01,13356.71,0.052000000000000005,True,
+Dunder Mifflin,00878,2024-09-14,Europe,162826.8,105535.89,0.268,False,Fast shipping requested
+Cyberdyne Systems,00229,2024-08-14,EMEA,1548.34,1083.84,0.184,False,
+Massive Dynamic,00865,2024-10-05,LATAM,26752.77,18726.94,0.413,False,
+Acme Corp,00090,2024-03-14,USA,43355.88,30349.12,0.12300000000000001,True,
+Pied Piper,00221,2024-06-11,LATAM,38085.36,26659.75,0.20199999999999999,False,
+Wayne Enterprises,00486,2024-09-24,APAC,170.3,10609.68,0.431,True,Standard order
+Acme Corp,00777,2024-04-08,APAC,1894.94,118054.74,0.299,True,Fast shipping requested
+Cyberdyne Systems,00690,2024-04-19,APAC,1075.07,66977.14,0.152,True,Fast shipping requested
+Globex Inc,00626,2024-02-23,USA,38911.82,27238.27,0.11599999999999999,True,Standard order
+Globex Inc,00031,2024-11-19,EMEA,45410.5,31787.35,0.2,False,Fast shipping requested
+Wayne Enterprises,00611,2024-11-27,USA,12218.18,8552.73,0.32899999999999996,True,
+Wayne Enterprises,00820,2024-01-26,India,816.91,50893.31,0.221,True,Standard order
+Stark Industries,00668,2024-07-01,EMEA,41134.31,28794.02,0.092,True,
+Massive Dynamic,00450,2024-09-24,North America,48277.14,33794.0,0.158,False,
+Cyberdyne Systems,00451,2024-10-24,Europe,61924.1,40135.99,0.391,True,
+Cyberdyne Systems,00254,2024-10-15,Europe,133935.85,86810.28,0.20199999999999999,True,
