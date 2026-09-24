@@ -1,5 +1,5 @@
 import pandas as pd
-import bizkit  # Register accessor
+import bizpack  # Register accessor
 
 
 def test_accessor_clean_and_format():

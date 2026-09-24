@@ -1,5 +1,5 @@
 import pandas as pd
-from bizkit import formatters
+from bizpack import formatters
 
 
 def test_format_currency():

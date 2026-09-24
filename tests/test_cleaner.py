@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from bizkit import cleaner
+from bizpack import cleaner
 
 
 def test_clean_headers():

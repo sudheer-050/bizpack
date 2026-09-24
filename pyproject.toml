@@ -3,21 +3,20 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bizkit"
+name = "bizpack"
 version = "0.1.0"
 authors = [
-    { name = "BizKit Contributors" }
+    { name = "BizPack Contributors" }
 ]
 description = "The Python toolkit for business & data analysts: zero-friction spreadsheet cleaning + intuitive business formulas."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
 keywords = ["pandas", "data-cleaning", "business-analyst", "excel", "accounting", "analytics", "xlookup", "pareto"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Financial and Insurance Industry",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -40,5 +39,5 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/yourusername/bizkit"
-"Bug Tracker" = "https://github.com/yourusername/bizkit/issues"
+"Homepage" = "https://github.com/sudheer-050/bizpack"
+"Bug Tracker" = "https://github.com/sudheer-050/bizpack/issues"

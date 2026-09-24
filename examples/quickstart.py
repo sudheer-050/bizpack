@@ -1,5 +1,5 @@
 """
-Quickstart example demonstrating BizKit:
+Quickstart example demonstrating BizPack:
 1. One-line cleaning of dirty business data
 2. Intuitive business formulas (XLOOKUP, Pareto, MoM Growth, Pacing)
 3. Restoring executive presentation formatting
@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import pandas as pd
-import bizkit as bk
+import bizpack as bp
 
 print("=" * 70)
 print("1. LOADING MESSY BUSINESS DATA (TYPICAL SPREADSHEET EXPORT)")
@@ -31,10 +31,10 @@ print("\nRaw Data Types:")
 print(df.dtypes)
 
 print("\n" + "=" * 70)
-print("2. ONE-LINE MAGIC CLEANING (bk.clean)")
+print("2. ONE-LINE MAGIC CLEANING (bp.clean)")
 print("=" * 70)
 
-clean_df = bk.clean(df)
+clean_df = bp.clean(df)
 print("\nCleaned DataFrame:")
 print(clean_df)
 print("\nCleaned Data Types (Auto-converted):")
@@ -47,18 +47,17 @@ print("3. INTUITIVE BUSINESS FORMULAS")
 print("=" * 70)
 
 # A. Pareto 80/20 Analysis
-pareto_df = bk.pareto(clean_df, dim_col="customer_name_account", metric_col="revenue")
+pareto_df = bp.pareto(clean_df, dim_col="customer_name_account", metric_col="revenue")
 print("\nPareto (80/20 Rule) Analysis:")
 print(pareto_df[["customer_name_account", "revenue", "cumulative_share", "is_top_80"]])
 print(f"\n[Insight] {pareto_df.attrs['summary']}")
 
 # B. Pythonic XLOOKUP
-# Let's say we have a lookup catalog of tiers:
 tiers_catalog = pd.DataFrame({
     "acct": ["00101", "00104", "00105"],
     "tier": ["Silver", "Enterprise", "Enterprise Platinum"]
 })
-clean_df["service_tier"] = bk.xlookup(
+clean_df["service_tier"] = bp.xlookup(
     clean_df["account_id"],
     tiers_catalog["acct"],
     tiers_catalog["tier"],
@@ -68,7 +67,7 @@ print("\nAfter XLOOKUP (Added 'service_tier' without df.merge boilerplate):")
 print(clean_df[["customer_name_account", "account_id", "service_tier"]])
 
 # C. Pacing & Run-rate towards target
-run_rate_df = bk.run_rate(
+run_rate_df = bp.run_rate(
     clean_df,
     date_col="order_date",
     metric_col="revenue",
@@ -79,16 +78,16 @@ print("\nMonth-to-Date Pacing & Projected Run-Rate:")
 print(run_rate_df.T)
 
 print("\n" + "=" * 70)
-print("4. EXECUTIVE PRESENTATION FORMATTING (bk.format_for_display)")
+print("4. EXECUTIVE PRESENTATION FORMATTING (bp.format_for_display)")
 print("=" * 70)
 
 # Calculate profit
 clean_df["profit"] = clean_df["revenue"] * clean_df["margin"]
 
 # Turn clean numbers back into $, %, and accounting () for presentation
-display_df = bk.format_for_display(clean_df)
+display_df = bp.format_for_display(clean_df)
 # Also format our newly calculated profit column as accounting
-display_df["profit"] = bk.format_accounting(clean_df["profit"])
+display_df["profit"] = bp.format_accounting(clean_df["profit"])
 
 print("\nFinal Boardroom-Ready Table:")
 print(display_df[["customer_name_account", "account_id", "revenue", "margin", "profit", "service_tier"]])

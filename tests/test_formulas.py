@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from bizkit import formulas
+from bizpack import formulas
 
 
 def test_xlookup_series():

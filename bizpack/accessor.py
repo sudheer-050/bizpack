@@ -5,7 +5,7 @@ Enables df.biz.clean(), df.biz.format(), df.biz.pareto(), etc.
 
 import pandas as pd
 from typing import Optional, Union, List, Dict
-from bizkit import cleaner, formulas, formatters
+from bizpack import cleaner, formulas, formatters
 
 
 @pd.api.extensions.register_dataframe_accessor("biz")
