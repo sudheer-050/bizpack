@@ -32,6 +32,10 @@
 
 ---
 
+<p align="center">
+  <img src="assets/demo.gif" alt="BizPack Animated Demo" width="95%" />
+</p>
+
 </div>
 
 ## 🎯 Overview: What BizPack Does vs. What It Doesn't Do
