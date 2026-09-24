@@ -236,44 +236,37 @@ def ask_user_target_currency(
     default: str = "USD",
 ) -> str:
     """
-    Prompt the user interactively when multiple currencies are detected in a column.
-    If running non-interactively (e.g. script/test/headless), logs a clear notice and uses default.
+    Prompt the user directly in the output area when multiple currencies are detected.
+    Allows user to select their desired target currency (e.g. INR, USD, EUR, GBP).
     """
     sorted_curr = sorted(list(set(detected_currencies)))
     curr_list_str = ", ".join(sorted_curr)
 
-    # Check if stdin is interactive terminal
-    is_interactive = hasattr(sys, "stdin") and sys.stdin is not None and sys.stdin.isatty()
+    print("\n" + "=" * 75)
+    col_disp = f" in column '{col_name}'" if col_name else ""
+    print(f" [BizPack Alert] Multiple currencies detected{col_disp}: [{curr_list_str}]")
+    print(" To prevent financial errors, BizPack standardizes all amounts into 1 currency.")
+    print("=" * 75)
+    prompt_msg = f" Which currency would you like to convert everything into? ({curr_list_str}) [Default: {default}]: "
 
-    if is_interactive:
-        print("\n" + "=" * 70)
-        col_disp = f" in column '{col_name}'" if col_name else ""
-        print(f"[BizPack Alert] Multiple currencies detected{col_disp}: [{curr_list_str}]")
-        print("To prevent calculation errors, BizPack standardizes all values into one currency.")
-        prompt_msg = f"Which currency would you like to standardize to? [{default}]: "
-        try:
-            user_choice = input(prompt_msg).strip().upper()
-            if user_choice:
-                if user_choice in DEFAULT_RATES_TO_USD or user_choice in sorted_curr:
-                    print(f"-> Standardizing to {user_choice}...\n" + "=" * 70)
-                    return user_choice
-                else:
-                    print(f"Unknown currency '{user_choice}'. Defaulting to {default}.\n" + "=" * 70)
-                    return default
+    try:
+        user_choice = input(prompt_msg).strip().upper()
+        if user_choice:
+            if user_choice in DEFAULT_RATES_TO_USD or user_choice in sorted_curr:
+                print(f" -> Standardizing all values to: {user_choice}\n" + "=" * 75 + "\n")
+                return user_choice
             else:
-                print(f"-> Using default: {default}\n" + "=" * 70)
+                print(f" -> '{user_choice}' not recognized. Using default: {default}\n" + "=" * 75 + "\n")
                 return default
-        except (EOFError, KeyboardInterrupt):
-            print(f"\n-> Defaulting to {default}.\n" + "=" * 70)
+        else:
+            print(f" -> Using default: {default}\n" + "=" * 75 + "\n")
             return default
-    else:
-        # Non-interactive / headless mode
-        col_disp = f" in column '{col_name}'" if col_name else ""
-        print(
-            f"[BizPack Notice] Multiple currencies detected{col_disp}: [{curr_list_str}]. "
-            f"Standardizing to '{default}'. (Pass target_currency='{sorted_curr[0]}' to choose another)."
-        )
+    except (EOFError, OSError, KeyboardInterrupt):
+        # Fallback for headless non-interactive environments or closed pipes
+        print(f" [Notice] Non-interactive environment. Standardizing to '{default}'.")
+        print("=" * 75 + "\n")
         return default
+
 
 
 def standardize_currency_series(

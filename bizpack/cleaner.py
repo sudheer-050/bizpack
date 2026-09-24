@@ -347,6 +347,7 @@ def clean_types(
     """
     df = df.copy()
     formats_meta: Dict[str, str] = {}
+    active_target_currency = target_currency
 
     for col in df.columns:
         # Only inspect object or string columns
@@ -394,7 +395,7 @@ def clean_types(
             if has_currency:
                 converted_series, orig_curr_series, audit = standardize_currency_series(
                     df[col],
-                    target_currency=target_currency,
+                    target_currency=active_target_currency,
                     rates=rates,
                     col_name=str(col),
                     prompt_if_interactive=prompt_currency,
@@ -403,6 +404,10 @@ def clean_types(
                 if "currency_conversions" not in df.attrs:
                     df.attrs["currency_conversions"] = {}
                 df.attrs["currency_conversions"][col] = audit
+
+                # Remember user's choice for subsequent currency columns if multiple currencies were resolved
+                if len(audit.get("detected_currencies", [])) > 1 and "target_currency" in audit:
+                    active_target_currency = audit["target_currency"]
 
                 if keep_currency_col:
                     df[f"{col}_original_currency"] = orig_curr_series
