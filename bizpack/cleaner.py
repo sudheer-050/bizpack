@@ -6,6 +6,7 @@ Zero-friction spreadsheet and business data hygiene.
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 from pathlib import Path
 import re
+import os
 import unicodedata
 import warnings
 import numpy as np
@@ -544,10 +545,58 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "keep_currency_col": kwargs.pop("keep_currency_col", False),
         "dayfirst": kwargs.pop("dayfirst", None),
     }
-    if "dtype" not in kwargs:
+    clean_data = kwargs.pop("clean", True)
+    if "dtype" not in kwargs and clean_data:
         kwargs["dtype"] = str
 
-    df = pd.read_csv(filepath_or_buffer, **kwargs)
+def _resolve_filepath(path_or_str: Any) -> Any:
+    if isinstance(path_or_str, (str, Path)):
+        p = Path(path_or_str)
+        if p.exists():
+            return p
+        import inspect
+        frame = inspect.currentframe()
+        try:
+            while frame:
+                fname = frame.f_code.co_filename
+                if fname and os.path.exists(fname) and not fname.startswith("<") and "cleaner.py" not in fname:
+                    cand = Path(fname).parent / path_or_str
+                    if cand.exists():
+                        return cand
+                frame = frame.f_back
+        finally:
+            del frame
+    return path_or_str
+
+
+def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Read a CSV file safely and automatically clean it with BizPack.
+    Supports currency standardization via target_currency='USD' or 'INR'.
+    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
+    Pass clean=False to read the raw dirty DataFrame.
+    """
+    clean_kwargs = {
+        "headers": kwargs.pop("headers", True),
+        "strings": kwargs.pop("strings", True),
+        "totals": kwargs.pop("totals", True),
+        "empty": kwargs.pop("empty", True),
+        "types": kwargs.pop("types", True),
+        "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
+        "target_currency": kwargs.pop("target_currency", None),
+        "rates": kwargs.pop("rates", None),
+        "prompt_currency": kwargs.pop("prompt_currency", True),
+        "keep_currency_col": kwargs.pop("keep_currency_col", False),
+        "dayfirst": kwargs.pop("dayfirst", None),
+    }
+    clean_data = kwargs.pop("clean", True)
+    if "dtype" not in kwargs and clean_data:
+        kwargs["dtype"] = str
+
+    resolved_path = _resolve_filepath(filepath_or_buffer)
+    df = pd.read_csv(resolved_path, **kwargs)
+    if not clean_data:
+        return df
     return clean(df, **clean_kwargs)
 
 
@@ -570,7 +619,11 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "keep_currency_col": kwargs.pop("keep_currency_col", False),
         "dayfirst": kwargs.pop("dayfirst", None),
     }
-    df = pd.read_excel(filepath_or_buffer, **kwargs)
+    clean_data = kwargs.pop("clean", True)
+    resolved_path = _resolve_filepath(filepath_or_buffer)
+    df = pd.read_excel(resolved_path, **kwargs)
+    if not clean_data:
+        return df
     return clean(df, **clean_kwargs)
 
 
@@ -589,7 +642,7 @@ def clean_file(
     >>> import bizpack as bp
     >>> bp.clean_file("dirty_sales.csv")
     """
-    input_p = Path(input_path)
+    input_p = Path(_resolve_filepath(input_path))
     if not input_p.exists():
         raise FileNotFoundError(f"File not found: '{input_path}'")
 
@@ -608,7 +661,8 @@ def clean_file(
                 break
         output_p = input_p.parent / f"clean_{input_p.stem}{curr_suffix}{ext}"
     else:
-        output_p = Path(output_path)
+        out_cand = Path(output_path)
+        output_p = input_p.parent / out_cand if not out_cand.is_absolute() and len(out_cand.parts) == 1 else out_cand
 
     # Save to new clean file
     if ext in (".xlsx", ".xls", ".xlsm"):

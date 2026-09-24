@@ -43,6 +43,7 @@ from bizpack.dates import (
     parse_dates_consistently,
     detect_row_dayfirst,
 )
+import pandas as pd
 # Import accessor to register pd.DataFrame.biz
 import bizpack.accessor
 
