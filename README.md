@@ -24,7 +24,7 @@
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-[What It Does & Doesn't Do](#-overview-what-bizpack-does-vs-what-it-doesnt-do) • [Benefits](#-benefits-of-using-bizpack) • [Use Cases](#-what-you-can-do-with-bizpack) • [Quickstart](#-quickstart-in-4-lines) • [The 5 Disasters](#-why-bizpack-the-5-silent-disasters-of-raw-pandas) • [Two-Tier Date Engine](#-flagship-1-two-tier-hierarchical-date-engine) • [API Reference](#-api-reference)
+[What It Does & Doesn't Do](#-overview-what-bizpack-does-vs-what-it-doesnt-do) • [Benefits](#-benefits-of-using-bizpack) • [Use Cases](#-what-you-can-do-with-bizpack) • [Who Is This For?](#-who-is-this-for) • [Quickstart](#-quickstart-in-4-lines) • [The 5 Disasters](#-why-bizpack-the-5-silent-disasters-of-raw-pandas) • [Two-Tier Date Engine](#-flagship-1-two-tier-hierarchical-date-engine) • [API Reference](#-api-reference)
 
 ---
 
@@ -96,6 +96,18 @@ BizPack is purpose-built for analytics engineers, financial analysts, operations
 │    projecting month-end finish with zero manual date math.                     │
 └────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 👥 Who Is This For?
+
+| Persona | The Daily Frustration | Why BizPack Is a Game Changer |
+| :--- | :--- | :--- |
+| 📊 **Financial & FP&A Analysts** | Tired of writing 20+ lines of brittle regex just to handle accounting parentheses `($1,200)`, mixed international currencies (`₹`, `$`, `€`), and losing hours doing basic `XLOOKUP` or `MoM Growth` in Pandas. | **Speak business, not boilerplate.** Clean entire financial ledgers in 1 line and run `bp.xlookup()` and `bp.growth()` natively without wrestling with Pandas join suffixes. |
+| 🛠️ **Analytics Engineers & BI Devs** | User-uploaded spreadsheets constantly crash downstream **Streamlit**, **Dash**, or **Power BI** pipelines due to uncleaned headers, stray `#REF!` errors, empty footer rows, or date parsing crashes. | **Bulletproof ingestion gateway.** Place `bp.clean()` at the top of your ingestion DAG to sanitize raw CSVs/Excels into pristine, type-safe DataFrames before they touch your warehouse. |
+| 💼 **Revenue Operations (RevOps)** | Consolidating multinational sales reports where APAC logs in `₹`, EMEA in `€`, and US in `$`. Summing columns naively creates disastrous ledger miscalculations. | **Multi-currency standardization.** BizPack automatically detects mixed currencies, prompts interactively or applies FX matrices, and records an unalterable audit log for finance. |
+| 🔬 **Data Scientists & ML Engineers** | Feature pipelines fail when numeric conversions silently wipe leading zeros from account IDs, postal codes, and tax identifiers (`"00124"` $\rightarrow$ `124`). | **Identifier & string fidelity.** Protects code columns from integer truncation while vectorizing type conversions across hundreds of thousands of rows. |
+| 🎓 **Excel Power Users Transitioning to Python** | Want the speed and automation of Python, but find Pandas' multi-line `.groupby()`, `.shift(1)`, and `.merge()` syntax counter-intuitive compared to standard spreadsheet formulas. | **Zero learning curve.** Functions work like Excel formulas (`xlookup`, `pareto`, `growth`, `run_rate`) while running at native C/NumPy speed. |
 
 ---
 
