@@ -1,8 +1,20 @@
 """
-Smart Date Inference & Standardization Module for BizPack.
-Automatically examines other entries in a column and regional/currency context
-to resolve ambiguous and mixed dates (DD-MM-YYYY vs MM-DD-YYYY) row-by-row
-with 100% data integrity and zero NaT drops.
+Smart Hierarchical Date Inference & Standardization Module for BizPack.
+
+Hierarchy:
+1. Tier 1 (Regular Column-Wide Format Check):
+   - First scans the entire column for regular, consistent date patterns (e.g. all DD/MM/YYYY,
+     all MM/DD/YYYY, or all ISO YYYY-MM-DD).
+   - If the column consistently follows one format with 0 conflicting entries, Tier 1 succeeds
+     and applies the regular format across the whole column.
+2. Tier 2 (Mixed / Ambiguous Fallback):
+   - If Tier 1 is NOT able to determine a single regular format (because the column is mixed
+     with both US and Indian/European entries, or all entries are <= 12 and ambiguous):
+   - Tier 2 activates row-by-row contextual disambiguation:
+     a) Unambiguous entries (e.g. 25/03/2024 vs 03/25/2024) are parsed by their own number clues.
+     b) Ambiguous entries (e.g. 05/09/2024) are resolved using that specific row's partner columns
+        (currency symbols like ₹ / $ or regions like India / USA).
+     c) Final fallback: column-wide majority vote or dataset target currency.
 """
 
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
@@ -51,6 +63,7 @@ MONTH_FIRST_TERMS = {
 
 def detect_row_dayfirst(row_values: Iterable[Any]) -> Optional[bool]:
     """
+    Tier 2 Context Inspector:
     Inspect all cells in a row (partner columns like currency, country, territory)
     to determine if that row's context is Day-First (Indian/European) or Month-First (US).
     Returns True for Day-First, False for Month-First, or None if ambiguous/neutral.
@@ -162,7 +175,7 @@ def _parse_single_date(
                 method = "row_context_day_first" if use_df else "row_context_month_first"
             else:
                 use_df = default_dayfirst
-                method = "default_fallback_day_first" if use_df else "default_fallback_month_first"
+                method = "regular_column_day_first" if use_df else "regular_column_month_first"
 
             try:
                 month = p2 if use_df else p1
@@ -191,9 +204,12 @@ def infer_date_format_and_dayfirst(
     dataset_currency: Optional[str] = None,
 ) -> Tuple[bool, Dict[str, Any]]:
     """
-    Examine non-null entries across an entire date column to determine whether
-    the column format is DD/MM/YYYY (dayfirst=True), MM/DD/YYYY (dayfirst=False),
-    or a mixture of both.
+    Tier 1 Hierarchy Step:
+    Examine the column first for a regular, consistent date format.
+
+    Returns:
+    - dayfirst: bool (resolved default dayfirst)
+    - audit_info: dict containing hierarchy_tier, inferred_format, is_mixed, reason, etc.
     """
     day_first_votes = 0
     month_first_votes = 0
@@ -201,7 +217,6 @@ def infer_date_format_and_dayfirst(
     total_evaluated = 0
 
     non_null_vals = series.dropna().astype(str).tolist()
-
     date_regex = re.compile(r"^(\d{1,4})[\/\-\.\s](\d{1,2})[\/\-\.\s](\d{1,4})")
 
     for val in non_null_vals:
@@ -229,48 +244,78 @@ def infer_date_format_and_dayfirst(
                 month_first_votes += 1
 
     is_mixed = (day_first_votes > 0 and month_first_votes > 0)
+    has_regular_dayfirst = (day_first_votes > 0 and month_first_votes == 0)
+    has_regular_monthfirst = (month_first_votes > 0 and day_first_votes == 0)
+    has_regular_iso = (year_first_count > 0 and day_first_votes == 0 and month_first_votes == 0)
 
-    # Decision logic for column-level default
-    if day_first_votes > month_first_votes:
+    # -------------------------------------------------------------
+    # HIERARCHY EVALUATION
+    # -------------------------------------------------------------
+    if has_regular_dayfirst:
+        # Tier 1 Success: Consistent Day-First column format
+        hierarchy_tier = 1
         dayfirst = True
-        inferred_format = "Mixed (Row Intelligence)" if is_mixed else "DD/MM/YYYY"
+        inferred_format = "DD/MM/YYYY"
         reason = (
-            f"Mixed dates detected ({day_first_votes} Day-first, {month_first_votes} Month-first); defaulting ambiguous to DD/MM/YYYY"
-            if is_mixed
-            else f"Deduced from {day_first_votes} unambiguous entries in column where day > 12 was in first position"
+            f"Tier 1 (Regular Format): Column consistently follows DD/MM/YYYY "
+            f"({day_first_votes} unambiguous entries, 0 conflicting Month-first entries)"
         )
-    elif month_first_votes > day_first_votes:
+
+    elif has_regular_monthfirst:
+        # Tier 1 Success: Consistent Month-First column format
+        hierarchy_tier = 1
         dayfirst = False
-        inferred_format = "Mixed (Row Intelligence)" if is_mixed else "MM/DD/YYYY"
+        inferred_format = "MM/DD/YYYY"
         reason = (
-            f"Mixed dates detected ({month_first_votes} Month-first, {day_first_votes} Day-first); defaulting ambiguous to MM/DD/YYYY"
-            if is_mixed
-            else f"Deduced from {month_first_votes} unambiguous entries in column where day > 12 was in second position"
+            f"Tier 1 (Regular Format): Column consistently follows MM/DD/YYYY "
+            f"({month_first_votes} unambiguous entries, 0 conflicting Day-first entries)"
         )
-    elif is_mixed:
-        dayfirst = True
-        inferred_format = "Mixed (Row Intelligence)"
-        reason = f"Equal mix of Day-first ({day_first_votes}) and Month-first ({month_first_votes}) dates; resolving individually by row context"
-    elif year_first_count > 0 and year_first_count >= (day_first_votes + month_first_votes):
+
+    elif has_regular_iso:
+        # Tier 1 Success: Consistent ISO format
+        hierarchy_tier = 1
         dayfirst = False
         inferred_format = "YYYY-MM-DD"
-        reason = "ISO format (YYYY-MM-DD) detected"
+        reason = "Tier 1 (Regular Format): Column consistently follows ISO YYYY-MM-DD format"
+
+    elif is_mixed:
+        # Tier 1 NOT able to resolve: Column contains mixed date formats
+        # Triggers Tier 2: Row-by-Row Contextual Disambiguation
+        hierarchy_tier = 2
+        dayfirst = (day_first_votes >= month_first_votes)
+        inferred_format = "Mixed (Tier 2 Contextual Fallback)"
+        reason = (
+            f"Tier 2 (Mixed Fallback): Mixed formats detected in same column "
+            f"({day_first_votes} Day-first vs {month_first_votes} Month-first); "
+            f"resolving row-by-row via partner columns (currency/region)"
+        )
+
     else:
-        # Ambiguous entries only (all values <= 12): rely on currency / regional context
+        # Tier 1 NOT able to resolve: All date entries are ambiguous (<= 12)
+        # Triggers Tier 2: Check partner columns or dataset currency convention
+        hierarchy_tier = 2
         curr = (dataset_currency or "").upper().strip()
         if curr in DAY_FIRST_CURRENCIES:
             dayfirst = True
             inferred_format = "DD/MM/YYYY"
-            reason = f"All entries ambiguous; resolved using dataset currency '{curr}' regional convention (DD/MM/YYYY)"
+            reason = (
+                f"Tier 2 (Ambiguous Fallback): All date numbers <= 12; "
+                f"resolving row-by-row via partner columns or '{curr}' convention (DD/MM/YYYY)"
+            )
         else:
             dayfirst = False
             inferred_format = "MM/DD/YYYY"
-            reason = f"All entries ambiguous; resolved using dataset currency '{curr or 'USD'}' convention (MM/DD/YYYY)"
+            reason = (
+                f"Tier 2 (Ambiguous Fallback): All date numbers <= 12; "
+                f"resolving row-by-row via partner columns or '{curr or 'USD'}' convention (MM/DD/YYYY)"
+            )
 
     audit_info = {
+        "hierarchy_tier": hierarchy_tier,
         "dayfirst": dayfirst,
         "inferred_format": inferred_format,
         "is_mixed": is_mixed,
+        "regular_format_detected": (hierarchy_tier == 1),
         "reason": reason,
         "day_first_votes": day_first_votes,
         "month_first_votes": month_first_votes,
@@ -288,19 +333,20 @@ def parse_dates_consistently(
     row_contexts: Optional[List[Any]] = None,
 ) -> Tuple[pd.Series, Dict[str, Any]]:
     """
-    Parse a date Series with 100% data integrity, row-by-row context awareness,
-    and automatic mixed date handling.
+    Parse a date Series with strict two-tier hierarchical resolution:
 
-    Handles mixed columns where some rows are in Indian/European format (DD/MM/YYYY)
-    and others are in US format (MM/DD/YYYY) without dropping ANY valid row to NaT!
+    Tier 1 (Regular Column Format):
+    - First checks if the entire column follows a consistent regular date format (DD/MM/YYYY,
+      MM/DD/YYYY, or ISO YYYY-MM-DD). If so, parses all rows consistently with that format.
 
-    Parameters:
-    - series: pd.Series containing date strings.
-    - dayfirst: Optional explicit dayfirst override.
-    - dataset_currency: Fallback currency convention (e.g. 'INR', 'USD', 'EUR').
-    - df: Optional parent DataFrame containing other columns (like currency, region, territory)
-          used to disambiguate ambiguous dates on a row-by-row basis.
-    - row_contexts: Optional list of text strings containing contextual hints for each row.
+    Tier 2 (Fallback for Mixed / Ambiguous Columns):
+    - If Tier 1 is NOT able to resolve (because dates are mixed row-by-row or all ambiguous <= 12),
+      activates row-by-row contextual disambiguation:
+      1. Inspects unambiguous date numbers (> 12) in each row.
+      2. Inspects partner columns (currency symbols ₹ / $ / €, regional territories India / USA).
+      3. Falls back to column majority or dataset target currency.
+
+    Guarantees 100% data integrity with ZERO valid dates dropped as NaT!
     """
     default_dayfirst, audit_info = infer_date_format_and_dayfirst(
         series,
@@ -310,39 +356,64 @@ def parse_dates_consistently(
     if dayfirst is not None:
         default_dayfirst = dayfirst
         audit_info["dayfirst"] = dayfirst
+        audit_info["hierarchy_tier"] = 1
+        audit_info["reason"] = "Tier 1: Explicit dayfirst override provided by caller"
+
+    hierarchy_tier = audit_info.get("hierarchy_tier", 1)
+    is_regular_column = (hierarchy_tier == 1)
 
     parsed_dates: List[Optional[pd.Timestamp]] = []
     methods_count: Dict[str, int] = {}
-    ambiguous_resolved_count = 0
+    ambiguous_resolved_by_row_context = 0
 
-    # Pre-extract row contexts if df is provided
-    row_hints: List[Optional[bool]] = []
-    if df is not None and len(df) == len(series):
-        other_cols = [c for c in df.columns if c != series.name]
-        for idx in range(len(df)):
-            row_vals = [df.iloc[idx][c] for c in other_cols]
-            row_hints.append(detect_row_dayfirst(row_vals))
-    elif row_contexts is not None and len(row_contexts) == len(series):
-        for idx in range(len(row_contexts)):
-            row_hints.append(detect_row_dayfirst([row_contexts[idx]]))
+    if is_regular_column:
+        # -------------------------------------------------------------
+        # TIER 1 EXECUTION: Apply Regular Column-Wide Format
+        # -------------------------------------------------------------
+        for val in series:
+            ts, method = _parse_single_date(
+                val,
+                row_dayfirst=None,  # Use column's regular format
+                default_dayfirst=default_dayfirst,
+            )
+            parsed_dates.append(ts)
+            methods_count[method] = methods_count.get(method, 0) + 1
+
+        audit_info["resolution_level"] = "Tier 1: Regular Column Format"
+
     else:
-        row_hints = [None] * len(series)
+        # -------------------------------------------------------------
+        # TIER 2 EXECUTION: Row-by-Row Contextual Disambiguation
+        # -------------------------------------------------------------
+        row_hints: List[Optional[bool]] = []
+        if df is not None and len(df) == len(series):
+            other_cols = [c for c in df.columns if c != series.name]
+            for idx in range(len(df)):
+                row_vals = [df.iloc[idx][c] for c in other_cols]
+                row_hints.append(detect_row_dayfirst(row_vals))
+        elif row_contexts is not None and len(row_contexts) == len(series):
+            for idx in range(len(row_contexts)):
+                row_hints.append(detect_row_dayfirst([row_contexts[idx]]))
+        else:
+            row_hints = [None] * len(series)
 
-    for idx, val in enumerate(series):
-        row_df = row_hints[idx]
-        ts, method = _parse_single_date(
-            val,
-            row_dayfirst=row_df,
-            default_dayfirst=default_dayfirst,
-        )
-        parsed_dates.append(ts)
-        methods_count[method] = methods_count.get(method, 0) + 1
-        if "row_context" in method:
-            ambiguous_resolved_count += 1
+        for idx, val in enumerate(series):
+            row_df = row_hints[idx]
+            ts, method = _parse_single_date(
+                val,
+                row_dayfirst=row_df,
+                default_dayfirst=default_dayfirst,
+            )
+            parsed_dates.append(ts)
+            methods_count[method] = methods_count.get(method, 0) + 1
+            if "row_context" in method:
+                ambiguous_resolved_by_row_context += 1
+
+        audit_info["resolution_level"] = "Tier 2: Row Contextual Disambiguation"
 
     parsed_series = pd.Series(parsed_dates, index=series.index, dtype="datetime64[ns]")
 
     audit_info["methods_breakdown"] = methods_count
-    audit_info["ambiguous_resolved_by_row_context"] = ambiguous_resolved_count
+    audit_info["ambiguous_resolved_by_row_context"] = ambiguous_resolved_by_row_context
 
     return parsed_series, audit_info

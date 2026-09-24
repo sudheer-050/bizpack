@@ -179,3 +179,32 @@ def test_mixed_dates_standalone_series():
     assert parsed.iloc[3] == pd.Timestamp("2024-08-15")
     assert audit["is_mixed"] is True
 
+
+def test_hierarchy_tier_1_regular_column_overrides_stray_currency():
+    """
+    Verify the two-tier hierarchy:
+    Tier 1 first checks if the column has a regular date format.
+    If 25/09/2024 is in the column (Day > 12 in 1st pos) and no Month > 12 entries exist,
+    Tier 1 confirms the column is regularly DD/MM/YYYY.
+    Therefore, a row with '$ 100' does NOT wrongly flip '05/09/2024' to May 9th;
+    it correctly parses as September 5th because Tier 1 succeeded!
+    """
+    df = pd.DataFrame({
+        "order_date": ["05/09/2024", "25/09/2024", "12/01/2024"],
+        "revenue": ["$ 100.00", "₹ 15,000.00", "₹ 20,000.00"],
+        "region": ["USA", "India", "India"],
+    })
+
+    cleaned = bp.clean(df, target_currency="INR")
+    audit = cleaned.attrs["date_formats"]["order_date"]
+
+    assert audit["hierarchy_tier"] == 1
+    assert audit["regular_format_detected"] is True
+    assert audit["inferred_format"] == "DD/MM/YYYY"
+
+    # Row 0 MUST be September 5th (not May 9th) because Tier 1 determined regular DD/MM/YYYY
+    assert cleaned["order_date"].iloc[0] == pd.Timestamp("2024-09-05")
+    assert cleaned["order_date"].iloc[1] == pd.Timestamp("2024-09-25")
+    assert cleaned["order_date"].iloc[2] == pd.Timestamp("2024-01-12")
+
+
