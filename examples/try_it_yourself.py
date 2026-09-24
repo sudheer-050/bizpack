@@ -42,22 +42,24 @@ def main():
 
     print(f"\n-> Selected Target Currency: {target_currency}")
 
-    # 2. Locate the dirty CSV file
+    # 2. Locate the dirty CSV file (prefers the new mixed dataset v2)
     current_dir = Path(__file__).resolve().parent
-    dirty_file = current_dir / "dirty_sales_1k.csv"
+    dirty_file = current_dir / "dirty_sales_v2.csv"
     if not dirty_file.exists():
-        dirty_file = Path("dirty_sales_1k.csv")
+        dirty_file = current_dir / "dirty_sales_1k.csv"
 
     if not dirty_file.exists():
-        print(f"Error: Could not find 'dirty_sales_1k.csv' in {current_dir}")
+        print(f"Error: Could not find dirty dataset in {current_dir}")
         return
 
     # 3. Read raw dirty file to preview BEFORE cleaning
     df_raw = pd.read_csv(dirty_file, dtype=str)
     print("\n" + "-" * 75)
-    print("BEFORE CLEANING (Raw Dirty Data - Notice Mixed $, £, €, and raw numbers):")
+    print("BEFORE CLEANING (Notice Mixed Currencies: ₹, $, €, £ and Mixed Dates):")
+    date_col_raw = [c for c in df_raw.columns if "Date" in c][0]
     rev_col_raw = [c for c in df_raw.columns if "Revenue" in c][0]
-    print(df_raw[[df_raw.columns[0], rev_col_raw]].head(5).to_string(index=False))
+    reg_col_raw = [c for c in df_raw.columns if "Region" in c][0]
+    print(df_raw[[df_raw.columns[0], date_col_raw, reg_col_raw, rev_col_raw]].head(6).to_string(index=False))
     print("-" * 75)
 
     # 4. Clean using BizPack and standardize currency (creates a new DataFrame)
@@ -76,8 +78,8 @@ def main():
     # 6. Show AFTER cleaning preview
     print("\n" + "-" * 75)
     print(f"AFTER CLEANING & CONVERSION (Standardized to {target_currency}):")
-    preview_cols = ["customer_name_client", "gross_revenue", "gross_revenue_original_currency", "unit_cost", "profit_margin"]
-    print(df_clean[preview_cols].head(5).to_string(index=False))
+    preview_cols = ["customer_name_client", "order_date_utc", "region_territory", "gross_revenue", "profit_margin"]
+    print(df_clean[preview_cols].head(6).to_string(index=False))
     print("-" * 75)
 
     # 7. Summary Financial KPIs
