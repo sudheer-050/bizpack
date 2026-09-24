@@ -29,8 +29,9 @@ class BizAccessor:
         rates: Optional[Dict[str, float]] = None,
         prompt_currency: bool = True,
         keep_currency_col: bool = False,
+        dayfirst: Optional[bool] = None,
     ) -> pd.DataFrame:
-        """One-line data cleaning with optional currency standardization."""
+        """One-line data cleaning with optional currency standardization and smart date resolution."""
         return cleaner.clean(
             self._obj,
             headers=headers,
@@ -43,6 +44,7 @@ class BizAccessor:
             rates=rates,
             prompt_currency=prompt_currency,
             keep_currency_col=keep_currency_col,
+            dayfirst=dayfirst,
         )
 
     def clean_headers(self) -> pd.DataFrame:

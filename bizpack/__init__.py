@@ -38,6 +38,10 @@ from bizpack.currency import (
     SYMBOL_TO_CODE,
     CODE_TO_SYMBOL,
 )
+from bizpack.dates import (
+    infer_date_format_and_dayfirst,
+    parse_dates_consistently,
+)
 # Import accessor to register pd.DataFrame.biz
 import bizpack.accessor
 
@@ -67,5 +71,7 @@ __all__ = [
     "DEFAULT_RATES_TO_USD",
     "SYMBOL_TO_CODE",
     "CODE_TO_SYMBOL",
+    "infer_date_format_and_dayfirst",
+    "parse_dates_consistently",
 ]
 

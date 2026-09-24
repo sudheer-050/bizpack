@@ -332,6 +332,7 @@ def clean_types(
     rates: Optional[Dict[str, float]] = None,
     prompt_currency: bool = True,
     keep_currency_col: bool = False,
+    dayfirst: Optional[bool] = None,
 ) -> pd.DataFrame:
     """
     Auto-detect and convert dirty business columns to their proper dtypes:
@@ -434,15 +435,28 @@ def clean_types(
             formats_meta[col] = "boolean"
             continue
 
-        # 3. Test for Datetime
+        # 3. Test for Datetime (with column-wide format deduction from other entries)
         try:
+            from bizpack.dates import parse_dates_consistently
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", category=UserWarning)
-                parsed_dates = pd.to_datetime(sample, errors="coerce")
-                date_ratio = parsed_dates.notna().sum() / len(sample)
+                test_parsed, _ = parse_dates_consistently(
+                    sample,
+                    dayfirst=dayfirst,
+                    dataset_currency=active_target_currency,
+                )
+                date_ratio = test_parsed.notna().sum() / len(sample)
                 if date_ratio >= date_threshold:
-                    df[col] = pd.to_datetime(df[col], errors="coerce")
+                    parsed_series, date_audit = parse_dates_consistently(
+                        df[col],
+                        dayfirst=dayfirst,
+                        dataset_currency=active_target_currency,
+                    )
+                    df[col] = parsed_series
                     formats_meta[col] = "datetime"
+                    if "date_formats" not in df.attrs:
+                        df.attrs["date_formats"] = {}
+                    df.attrs["date_formats"][col] = date_audit
                     continue
         except Exception:
             pass
@@ -467,6 +481,7 @@ def clean(
     rates: Optional[Dict[str, float]] = None,
     prompt_currency: bool = True,
     keep_currency_col: bool = False,
+    dayfirst: Optional[bool] = None,
 ) -> pd.DataFrame:
     """
     The master all-in-one cleaning function.
@@ -481,6 +496,8 @@ def clean(
        while preserving ID and ZIP codes with leading zeros.
     6. Standardizes mixed currencies (e.g. USD, EUR, INR) into target_currency so financial
        calculations and aggregations are mathematically accurate.
+    7. Resolves date formats (DD-MM-YYYY vs MM-DD-YYYY) by checking other entries in the column
+       and regional/currency context.
     """
     df = df.copy()
 
@@ -500,6 +517,7 @@ def clean(
             rates=rates,
             prompt_currency=prompt_currency,
             keep_currency_col=keep_currency_col,
+            dayfirst=dayfirst,
         )
     return df
 
@@ -509,6 +527,7 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     Read a CSV file safely and automatically clean it with BizPack.
     Preserves leading zeros in IDs and ZIP codes by reading strings before type coercion.
     Supports currency standardization via target_currency='USD' or 'INR'.
+    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
     """
     clean_kwargs = {
         "headers": kwargs.pop("headers", True),
@@ -521,6 +540,7 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "rates": kwargs.pop("rates", None),
         "prompt_currency": kwargs.pop("prompt_currency", True),
         "keep_currency_col": kwargs.pop("keep_currency_col", False),
+        "dayfirst": kwargs.pop("dayfirst", None),
     }
     if "dtype" not in kwargs:
         kwargs["dtype"] = str
@@ -533,6 +553,7 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     """
     Read an Excel file safely and automatically clean it with BizPack.
     Supports currency standardization via target_currency='USD' or 'INR'.
+    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
     """
     clean_kwargs = {
         "headers": kwargs.pop("headers", True),
@@ -545,6 +566,7 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "rates": kwargs.pop("rates", None),
         "prompt_currency": kwargs.pop("prompt_currency", True),
         "keep_currency_col": kwargs.pop("keep_currency_col", False),
+        "dayfirst": kwargs.pop("dayfirst", None),
     }
     df = pd.read_excel(filepath_or_buffer, **kwargs)
     return clean(df, **clean_kwargs)

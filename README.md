@@ -7,7 +7,7 @@
 
 [![PyPI version](https://img.shields.io/badge/pypi-v0.1.0-blue.svg)](https://pypi.org/project/bizpack/)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-34%20passed-brightgreen.svg)]()
 [![Core Dependencies](https://img.shields.io/badge/core%20deps-pandas%20%2B%20numpy-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
@@ -82,6 +82,7 @@ clean_df = bp.clean(df)
 * **Percentages:** `"22.5%"` $\rightarrow$ `0.225` (`float64`)
 * **Sheet Footers:** Detects and strips `"Grand Total"` rows (saved in `df.attrs['totals']`)
 * **ID Protection:** Recognizes leading zeros (`"00101"`, `"07001"`) and prevents numeric corruption
+* **Smart Dates:** Deduces `DD/MM/YYYY` vs `MM/DD/YYYY` by checking other entries in the column and regional currency context, eliminating scrambled date errors
 
 ---
 
@@ -193,6 +194,7 @@ display_df = clean_df.biz.format()
 bizpack/
 ├── cleaner.py          # Auto-clean headers, types, accounting '()', footers
 ├── currency.py         # Multi-currency detection, conversion, exchange rates & user prompt
+├── dates.py            # Smart date inference (DD-MM-YYYY vs MM-DD-YYYY) from column entries
 ├── formulas.py         # Business math: xlookup, pareto, growth, run_rate
 ├── formatters.py       # Presentation formatters: format_currency, format_percent, format_for_display
 ├── accessor.py         # Native df.biz.* DataFrame accessor
