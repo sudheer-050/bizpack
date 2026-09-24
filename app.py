@@ -163,9 +163,12 @@ if df_raw is not None:
         if "currency_conversions" in clean_df.attrs and clean_df.attrs["currency_conversions"]:
             with st.expander("🌍 Multi-Currency Audit Trail & Exchange Rates Applied", expanded=False):
                 for col_name, info in clean_df.attrs["currency_conversions"].items():
-                    st.write(f"**Column `{col_name}` standardized to `{info['target_currency']}`:**")
-                    st.write(f"- Currencies detected & converted: `{dict(info['counts'])}`")
-                    st.write(f"- Conversion rates used: `{info['rates_applied']}`")
+                    st.write(f"**Column `{col_name}` standardized to `{info.get('target_currency', target_curr)}`:**")
+                    st.write(f"- Currencies detected: `{info.get('detected_currencies', [])}`")
+                    rates_used = info.get("effective_rates_to_target", {})
+                    if rates_used:
+                        st.write(f"- Conversion factors applied: `{rates_used}`")
+                    st.write(f"- Rows converted: `{info.get('rows_converted', 0)}` of `{info.get('total_rows', len(clean_df))}`")
 
     with tab_before:
         st.markdown("#### ❌ Raw Dirty Input Spreadsheet (Before Cleaning)")
