@@ -89,12 +89,36 @@ if uploaded_file is not None:
             df_raw = pd.read_csv(uploaded_file)
     except Exception as e:
         st.error(f"Error reading file: {e}")
-elif use_sample or df_raw is None:
-    sample_path = os.path.join(os.path.dirname(__file__), "examples", "dirty_data.csv")
-    if not os.path.exists(sample_path):
-        sample_path = os.path.join("examples", "dirty_data.csv")
-    if os.path.exists(sample_path):
-        df_raw = bp.read_csv(sample_path, clean=False)
+
+if df_raw is None:
+    # Try local examples directory paths
+    sample_candidates = [
+        os.path.join(os.path.dirname(__file__), "examples", "dirty_data.csv"),
+        os.path.join("examples", "dirty_data.csv"),
+        "dirty_data.csv",
+    ]
+    for p in sample_candidates:
+        if os.path.exists(p):
+            try:
+                df_raw = pd.read_csv(p)
+                break
+            except Exception:
+                pass
+
+if df_raw is None:
+    # Bulletproof in-memory fallback dataset so playground NEVER renders empty
+    df_raw = pd.DataFrame({
+        "Customer Name / Client ": ["Acme Corp", "Wayne Enterprises", "Massive Dynamic", "Acme Corp", "Soylent Corp", "Hooli Inc", "Pied Piper", "Dunder Mifflin", "Cyberdyne Systems", "Grand Total"],
+        " Account # ": ["00124", "00235", "00280", "00243", "00945", "00234", "00058", "00612", "00892", ""],
+        "Order Date (UTC)": ["25/03/2024", "03/25/2024", "14.12.2024", "22.02.2024", "05/09/2024", "05/09/2024", "15-Mar-2024", "01/02/2024", "01/02/2024", ""],
+        "Region / Territory": ["APAC", "USA", "Europe", "Europe", "India", "North America", "APAC", "India", "USA", ""],
+        "Gross Revenue": ["₹ 1,49,670.67", "($ 12,865.27)", "£ 5,306.25", "€ 41.392,35", "₹ 1,17,418.70", "$ 59,426.74", "Rs. 45,000.00", "(₹ 19,424.07)", "49457.81", "$ 500,000.00"],
+        "Unit Cost": ["₹ 84,078.93", "$ 8,045.42", "£ 3,494.04", "€ 28.353,26", "₹ 76,087.98", "$ 41,967.12", "Rs. 38,250.00", "₹ 11,167.64", "33685.22", "$ 300,000.00"],
+        "Profit Margin %": ["33.3%", "(9.8%)", "22.0%", "17.5%", "17.3%", "51.8%", "(15.0%)", "(29.2%)", "7.5%", ""],
+        "Active Subscription?": ["false", "true", "Y", "false", "No", "Yes", "Y", "true", "N", ""],
+        "Customer Notes / Log": ["Standard order", "Account upgrade pending", "VIP client priority support", "Fast shipping requested", "N/A", "Quarterly renewal", "Customer asked for discount", "-", "null", ""],
+        "Blank Column (Notes)": [None, None, None, None, None, None, None, None, None, None],
+    })
 
 if df_raw is not None:
     # 1. Clean the dataset immediately with BizPack
@@ -129,13 +153,12 @@ if df_raw is not None:
     with m4:
         st.metric("Target Currency", target_curr)
 
-    # 5. Core View Tabs (Cleaned Data is Tab 1 by default!)
-    tab_clean, tab_before, tab_side, tab_audit, tab_analytics = st.tabs([
-        "✅ Cleaned Output (After Clean)",
-        "❌ Raw Input (Before Clean)",
-        "🔄 Side-by-Side View",
-        "🏥 Health Diagnostic Details",
-        "📈 Business Math (Pareto & Growth)",
+    # 5. Core View Tabs (Cleaned Output is Tab 1, Business Analytics is Tab 2)
+    tab_clean, tab_analytics, tab_side, tab_audit = st.tabs([
+        "✅ 1. Cleaned Output (After Clean)",
+        "📈 2. Business Analytics (Pareto & Growth)",
+        "🔄 3. Side-by-Side Comparison",
+        "🏥 4. Health Diagnostic Details",
     ])
 
     with tab_clean:
@@ -155,9 +178,9 @@ if df_raw is not None:
                 use_container_width=True,
             )
         with note_col:
-            st.info(f"Showing top 20 rows of {len(clean_df)} cleaned records. All types cast to float64, boolean, and ISO date.")
+            st.info(f"Showing top 25 rows of {len(clean_df)} cleaned records. All types cast to float64, boolean, and ISO date.")
 
-        st.dataframe(clean_df.head(20), use_container_width=True, height=450)
+        st.dataframe(clean_df.head(25), use_container_width=True, height=480)
 
         # Currency Conversion Audit Log
         if "currency_conversions" in clean_df.attrs and clean_df.attrs["currency_conversions"]:
@@ -170,41 +193,25 @@ if df_raw is not None:
                         st.write(f"- Conversion factors applied: `{rates_used}`")
                     st.write(f"- Rows converted: `{info.get('rows_converted', 0)}` of `{info.get('total_rows', len(clean_df))}`")
 
-    with tab_before:
-        st.markdown("#### ❌ Raw Dirty Input Spreadsheet (Before Cleaning)")
-        st.caption("Contains string currencies ($/€/₹), accounting brackets '($1,200)', mixed date formats, and empty elements.")
-        st.dataframe(df_raw.head(20), use_container_width=True, height=450)
-
-    with tab_side:
-        st.markdown("#### 🔄 Side-by-Side Direct Comparison")
-        col_s1, col_s2 = st.columns(2)
-        with col_s1:
-            st.markdown("**❌ Before: Raw Dirty Input**")
-            st.dataframe(df_raw.head(15), use_container_width=True, height=400)
-        with col_s2:
-            st.markdown(f"**✅ After: Cleaned ({target_curr})**")
-            st.dataframe(clean_df.head(15), use_container_width=True, height=400)
-
-    with tab_audit:
-        st.markdown("#### 🏥 Pre-Cleaning Health Diagnostic Scorecard")
-        st.caption("Detailed breakdown of issues detected in the raw input file:")
-        
-        for issue in raw_report.issues:
-            icon = "🚨" if issue["severity"] == "HIGH" else "⚠️" if issue["severity"] == "MEDIUM" else "ℹ️"
-            st.write(f"{icon} **[{issue['severity']}] {issue['column']}**: {issue['message']}")
-        st.warning(f"**Diagnostic Summary:** {raw_report.recommendation}")
-
     with tab_analytics:
         st.markdown("#### 📈 Instant Pythonic Business Analytics")
+        st.caption("Run Pareto 80/20 driver analysis, period growth trends, and boardroom display formatting in 1 line.")
+        
         num_cols = clean_df.select_dtypes(include=["number"]).columns.tolist()
         str_cols = clean_df.select_dtypes(include=["object", "string"]).columns.tolist()
         date_cols = [c for c in clean_df.columns if "date" in c.lower() or pd.api.types.is_datetime64_any_dtype(clean_df[c])]
         if not date_cols:
             date_cols = [c for c in clean_df.columns if any(k in c.lower() for k in ["time", "day", "period", "year", "month"])]
 
-        sub1, sub2, sub3 = st.tabs(["📊 Pareto 80/20 Rule", "📅 Period Growth", "👔 Boardroom Display"])
+        tool_choice = st.radio(
+            "Select Analysis Tool:",
+            ["📊 Pareto 80/20 Rule", "📅 Period Growth Trends", "👔 Boardroom Display Formatting"],
+            horizontal=True,
+            key="analytics_tool_choice",
+        )
 
-        with sub1:
+        if tool_choice == "📊 Pareto 80/20 Rule":
+            st.markdown("##### 📊 Pareto 80/20 Rule Analysis")
             if str_cols and num_cols:
                 p_col1, p_col2 = st.columns(2)
                 with p_col1:
@@ -225,13 +232,17 @@ if df_raw is not None:
                 else:
                     top_contrib = pareto_df.head(10)
                 
-                st.dataframe(pareto_df, use_container_width=True)
+                st.markdown("**Top Contributors Bar Chart:**")
                 if not top_contrib.empty and p_dim in top_contrib.columns and p_metric in top_contrib.columns:
                     st.bar_chart(data=top_contrib.set_index(p_dim)[p_metric])
+                
+                st.markdown("**Full Pareto Calculation Table:**")
+                st.dataframe(pareto_df, use_container_width=True)
             else:
                 st.write("No numeric or category columns found for Pareto analysis.")
 
-        with sub2:
+        elif tool_choice == "📅 Period Growth Trends":
+            st.markdown("##### 📅 Period-over-Period Growth Analysis")
             if date_cols and num_cols:
                 col_g1, col_g2, col_g3 = st.columns(3)
                 with col_g1:
@@ -243,18 +254,43 @@ if df_raw is not None:
                     freq_code = "M" if "Monthly" in freq_choice else "Q" if "Quarterly" in freq_choice else "Y"
                 try:
                     growth_df = bp.growth(clean_df, date_col=d_col, metric_col=g_metric, freq=freq_code)
-                    st.dataframe(growth_df, use_container_width=True)
                     if f"current_{g_metric}" in growth_df.columns and "period" in growth_df.columns and not growth_df.empty:
+                        st.markdown(f"**{freq_choice.split()[0]} {g_metric} Trend:**")
                         st.line_chart(data=growth_df.set_index("period")[f"current_{g_metric}"])
+                    st.markdown("**Period Growth Summary Table:**")
+                    st.dataframe(growth_df, use_container_width=True)
                 except Exception as e:
                     st.warning(f"Could not calculate growth: {e}")
             else:
                 st.write("Ensure your dataset has at least one date column for growth trends.")
 
-        with sub3:
+        elif tool_choice == "👔 Boardroom Display Formatting":
+            st.markdown("##### 👔 Boardroom Display Formatting")
             st.write("Convert calculation floats back into boardroom-ready formatted strings (`$`, `₹`, `€`, `%`, `()`):")
             try:
                 display_df = bp.format_for_display(clean_df)
-                st.dataframe(display_df.head(20), use_container_width=True)
+                st.dataframe(display_df.head(25), use_container_width=True)
             except Exception as e:
-                st.dataframe(clean_df.head(20), use_container_width=True)
+                st.dataframe(clean_df.head(25), use_container_width=True)
+
+    with tab_side:
+        st.markdown("#### 🔄 Side-by-Side Direct Comparison")
+        col_s1, col_s2 = st.columns(2)
+        with col_s1:
+            st.markdown("**❌ Before: Raw Dirty Input**")
+            st.dataframe(df_raw.head(20), use_container_width=True, height=450)
+        with col_s2:
+            st.markdown(f"**✅ After: Cleaned ({target_curr})**")
+            st.dataframe(clean_df.head(20), use_container_width=True, height=450)
+
+    with tab_audit:
+        st.markdown("#### 🏥 Pre-Cleaning Health Diagnostic Scorecard")
+        st.caption("Detailed breakdown of issues detected in the raw input file:")
+        
+        if raw_report.issues:
+            for issue in raw_report.issues:
+                icon = "🚨" if issue["severity"] == "HIGH" else "⚠️" if issue["severity"] == "MEDIUM" else "ℹ️"
+                st.write(f"{icon} **[{issue['severity']}] {issue['column']}**: {issue['message']}")
+        else:
+            st.success("🎉 No data defects detected in input.")
+        st.warning(f"**Diagnostic Summary:** {raw_report.recommendation}")
