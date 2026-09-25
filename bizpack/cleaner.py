@@ -147,6 +147,11 @@ def strip_totals(
 
     if rows_to_drop:
         totals_records = df.loc[rows_to_drop].to_dict(orient="records")
+        # Replace NaN/NaT with None so attrs stay JSON-serializable for downstream consumers (e.g. Streamlit).
+        totals_records = [
+            {k: (None if pd.isna(v) else v) for k, v in record.items()}
+            for record in totals_records
+        ]
         df = df.drop(index=rows_to_drop).reset_index(drop=True)
         if "totals" not in df.attrs:
             df.attrs["totals"] = totals_records
@@ -525,30 +530,6 @@ def clean(
     return df
 
 
-def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
-    """
-    Read a CSV file safely and automatically clean it with BizPack.
-    Preserves leading zeros in IDs and ZIP codes by reading strings before type coercion.
-    Supports currency standardization via target_currency='USD' or 'INR'.
-    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
-    """
-    clean_kwargs = {
-        "headers": kwargs.pop("headers", True),
-        "strings": kwargs.pop("strings", True),
-        "totals": kwargs.pop("totals", True),
-        "empty": kwargs.pop("empty", True),
-        "types": kwargs.pop("types", True),
-        "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
-        "target_currency": kwargs.pop("target_currency", None),
-        "rates": kwargs.pop("rates", None),
-        "prompt_currency": kwargs.pop("prompt_currency", True),
-        "keep_currency_col": kwargs.pop("keep_currency_col", False),
-        "dayfirst": kwargs.pop("dayfirst", None),
-    }
-    clean_data = kwargs.pop("clean", True)
-    if "dtype" not in kwargs and clean_data:
-        kwargs["dtype"] = str
-
 def _resolve_filepath(path_or_str: Any) -> Any:
     if isinstance(path_or_str, (str, Path)):
         p = Path(path_or_str)
@@ -620,6 +601,8 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "dayfirst": kwargs.pop("dayfirst", None),
     }
     clean_data = kwargs.pop("clean", True)
+    if "dtype" not in kwargs and clean_data:
+        kwargs["dtype"] = str
     resolved_path = _resolve_filepath(filepath_or_buffer)
     df = pd.read_excel(resolved_path, **kwargs)
     if not clean_data:

@@ -51,7 +51,7 @@ target_curr = st.sidebar.selectbox(
 )
 
 strip_footers = st.sidebar.checkbox("Remove 'Grand Total' summary footers", value=True)
-protect_ids = st.sidebar.checkbox("Protect leading zeros on Account/ZIP IDs", value=True)
+st.sidebar.caption("🔒 Leading zeros on Account/ZIP IDs are always protected automatically.")
 dayfirst_opt = st.sidebar.selectbox("Date Parsing Preference:", ["Auto (Two-Tier Inference)", "DD/MM/YYYY", "MM/DD/YYYY"])
 
 dayfirst_val = True if dayfirst_opt == "DD/MM/YYYY" else False if dayfirst_opt == "MM/DD/YYYY" else None
@@ -81,12 +81,14 @@ with col_sample:
 
 df_raw = None
 
-if uploaded_file is not None:
+if uploaded_file is not None and not use_sample:
     try:
+        # Read every column as string first so leading zeros on IDs/ZIPs (e.g. "00124")
+        # survive ingestion; BizPack's clean() selectively coerces the rest to proper types.
         if uploaded_file.name.endswith(".xlsx"):
-            df_raw = pd.read_excel(uploaded_file)
+            df_raw = pd.read_excel(uploaded_file, dtype=str)
         else:
-            df_raw = pd.read_csv(uploaded_file)
+            df_raw = pd.read_csv(uploaded_file, dtype=str)
     except Exception as e:
         st.error(f"Error reading file: {e}")
 
@@ -100,7 +102,7 @@ if df_raw is None:
     for p in sample_candidates:
         if os.path.exists(p):
             try:
-                df_raw = pd.read_csv(p)
+                df_raw = pd.read_csv(p, dtype=str)
                 break
             except Exception:
                 pass
