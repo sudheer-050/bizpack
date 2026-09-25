@@ -198,34 +198,63 @@ if df_raw is not None:
         st.markdown("#### 📈 Instant Pythonic Business Analytics")
         num_cols = clean_df.select_dtypes(include=["number"]).columns.tolist()
         str_cols = clean_df.select_dtypes(include=["object", "string"]).columns.tolist()
-        date_cols = [c for c in clean_df.columns if "date" in c.lower()]
+        date_cols = [c for c in clean_df.columns if "date" in c.lower() or pd.api.types.is_datetime64_any_dtype(clean_df[c])]
+        if not date_cols:
+            date_cols = [c for c in clean_df.columns if any(k in c.lower() for k in ["time", "day", "period", "year", "month"])]
 
         sub1, sub2, sub3 = st.tabs(["📊 Pareto 80/20 Rule", "📅 Period Growth", "👔 Boardroom Display"])
 
         with sub1:
             if str_cols and num_cols:
-                p_dim = st.selectbox("Dimension (Category):", str_cols, index=0, key="pareto_dim")
-                p_metric = st.selectbox("Metric (Value):", num_cols, index=0, key="pareto_metric")
+                p_col1, p_col2 = st.columns(2)
+                with p_col1:
+                    p_dim = st.selectbox("Dimension (Category):", str_cols, index=0, key="pareto_dim")
+                with p_col2:
+                    p_metric = st.selectbox("Metric (Value):", num_cols, index=0, key="pareto_metric")
                 pareto_df = bp.pareto(clean_df, dim_col=p_dim, metric_col=p_metric, top_pct=0.80)
                 st.info(pareto_df.attrs.get("summary", "Pareto calculation complete."))
-                top_contrib = pareto_df[pareto_df["cumulative_pct"] <= 0.85]
-                st.bar_chart(data=top_contrib.set_index(p_dim)[p_metric])
+                
+                # Identify top drivers safely
+                top_flag = f"is_top_{int(0.80 * 100)}"
+                if top_flag in pareto_df.columns and pareto_df[top_flag].any():
+                    top_contrib = pareto_df[pareto_df[top_flag]]
+                elif "cumulative_share" in pareto_df.columns:
+                    top_contrib = pareto_df[pareto_df["cumulative_share"] <= 0.85]
+                    if top_contrib.empty:
+                        top_contrib = pareto_df.head(5)
+                else:
+                    top_contrib = pareto_df.head(10)
+                
+                st.dataframe(pareto_df, use_container_width=True)
+                if not top_contrib.empty and p_dim in top_contrib.columns and p_metric in top_contrib.columns:
+                    st.bar_chart(data=top_contrib.set_index(p_dim)[p_metric])
             else:
                 st.write("No numeric or category columns found for Pareto analysis.")
 
         with sub2:
             if date_cols and num_cols:
-                d_col = date_cols[0]
-                g_metric = num_cols[0]
+                col_g1, col_g2, col_g3 = st.columns(3)
+                with col_g1:
+                    d_col = st.selectbox("Date Column:", date_cols, index=0, key="growth_date")
+                with col_g2:
+                    g_metric = st.selectbox("Metric Column:", num_cols, index=0, key="growth_metric")
+                with col_g3:
+                    freq_choice = st.selectbox("Frequency:", ["Monthly (M)", "Quarterly (Q)", "Yearly (Y)"], index=0, key="growth_freq")
+                    freq_code = "M" if "Monthly" in freq_choice else "Q" if "Quarterly" in freq_choice else "Y"
                 try:
-                    growth_df = bp.growth(clean_df, date_col=d_col, metric_col=g_metric, freq="M")
+                    growth_df = bp.growth(clean_df, date_col=d_col, metric_col=g_metric, freq=freq_code)
                     st.dataframe(growth_df, use_container_width=True)
+                    if f"current_{g_metric}" in growth_df.columns and "period" in growth_df.columns and not growth_df.empty:
+                        st.line_chart(data=growth_df.set_index("period")[f"current_{g_metric}"])
                 except Exception as e:
-                    st.write(f"Could not calculate growth: {e}")
+                    st.warning(f"Could not calculate growth: {e}")
             else:
                 st.write("Ensure your dataset has at least one date column for growth trends.")
 
         with sub3:
             st.write("Convert calculation floats back into boardroom-ready formatted strings (`$`, `₹`, `€`, `%`, `()`):")
-            display_df = bp.format_for_display(clean_df)
-            st.dataframe(display_df.head(15), use_container_width=True)
+            try:
+                display_df = bp.format_for_display(clean_df)
+                st.dataframe(display_df.head(20), use_container_width=True)
+            except Exception as e:
+                st.dataframe(clean_df.head(20), use_container_width=True)

@@ -49,8 +49,9 @@ def create_frames():
     if existing_frames >= TOTAL_FRAMES:
         print(f"Reusing {existing_frames} pre-generated frames...")
     else:
-        print("Generating 336 frames...")
-        for i in range(TOTAL_FRAMES):
+        print(f"Generating {TOTAL_FRAMES} frames...")
+
+    for i in range(0 if existing_frames < TOTAL_FRAMES else TOTAL_FRAMES, TOTAL_FRAMES):
         img = Image.new("RGB", (WIDTH, HEIGHT), BG)
         draw = ImageDraw.Draw(img)
         
