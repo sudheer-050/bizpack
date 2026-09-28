@@ -3,7 +3,7 @@ BizPack - The Business & Data Analyst Toolkit for Python.
 Zero-friction spreadsheet cleaning + intuitive business formulas.
 """
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 from bizpack.cleaner import (
     clean,
@@ -35,6 +35,7 @@ from bizpack.currency import (
     standardize_currency_df,
     standardize_currency_df as standardize_currency,
     DEFAULT_RATES_TO_USD,
+    RATES_AS_OF,
     SYMBOL_TO_CODE,
     CODE_TO_SYMBOL,
 )
@@ -77,6 +78,7 @@ __all__ = [
     "standardize_currency_df",
     "standardize_currency",
     "DEFAULT_RATES_TO_USD",
+    "RATES_AS_OF",
     "SYMBOL_TO_CODE",
     "CODE_TO_SYMBOL",
     "infer_date_format_and_dayfirst",

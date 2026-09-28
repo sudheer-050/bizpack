@@ -137,7 +137,7 @@ def _parse_single_date(
                 t = pd.to_datetime(time_part).time()
                 ts = pd.Timestamp.combine(ts.date(), t)
             return ts, "iso"
-        except Exception:
+        except (ValueError, TypeError, OverflowError):
             pass
 
     # 2. Three-component date check (P1 / P2 / P3)
@@ -154,7 +154,7 @@ def _parse_single_date(
                     t = pd.to_datetime(time_part).time()
                     ts = pd.Timestamp.combine(ts.date(), t)
                 return ts, "unambiguous_day_first"
-            except Exception:
+            except (ValueError, TypeError, OverflowError):
                 pass
 
         # Case B: Unambiguous Day in second position (p2 > 12) -> US MM/DD/YYYY
@@ -165,7 +165,7 @@ def _parse_single_date(
                     t = pd.to_datetime(time_part).time()
                     ts = pd.Timestamp.combine(ts.date(), t)
                 return ts, "unambiguous_month_first"
-            except Exception:
+            except (ValueError, TypeError, OverflowError):
                 pass
 
         # Case C: Ambiguous (both p1 and p2 <= 12, e.g. 05/09/2024)
@@ -185,7 +185,7 @@ def _parse_single_date(
                     t = pd.to_datetime(time_part).time()
                     ts = pd.Timestamp.combine(ts.date(), t)
                 return ts, method
-            except Exception:
+            except (ValueError, TypeError, OverflowError):
                 pass
 
     # 3. Textual month or other formats (e.g. 25-Mar-2024, March 25 2024)
@@ -195,7 +195,7 @@ def _parse_single_date(
             warnings.simplefilter("ignore", category=UserWarning)
             ts = pd.to_datetime(s_val, dayfirst=use_df, errors="coerce")
             return ts, "textual_or_standard"
-    except Exception:
+    except (ValueError, TypeError, OverflowError):
         return pd.NaT, "failed"
 
 
@@ -366,26 +366,19 @@ def parse_dates_consistently(
     methods_count: Dict[str, int] = {}
     ambiguous_resolved_by_row_context = 0
 
-    if is_regular_column:
-        # -------------------------------------------------------------
-        # TIER 1 EXECUTION: Apply Regular Column-Wide Format
-        # -------------------------------------------------------------
-        for val in series:
-            ts, method = _parse_single_date(
-                val,
-                row_dayfirst=None,  # Use column's regular format
-                default_dayfirst=default_dayfirst,
-            )
-            parsed_dates.append(ts)
-            methods_count[method] = methods_count.get(method, 0) + 1
+    # Row-level context hints let ambiguous entries (Case C in _parse_single_date)
+    # be resolved via partner columns (currency/region). They are only honored
+    # in Tier 1 when the column's "regular format" was established purely from
+    # ISO evidence (year_first_count), because that says nothing about how any
+    # ambiguous DD/MM-vs-MM/DD rows mixed into the same column should resolve.
+    # When Tier 1 was established via actual DD/MM or MM/DD slash evidence
+    # elsewhere in the column, that column-wide convention is stronger evidence
+    # than a single row's stray currency symbol and must take priority
+    # (see test_hierarchy_tier_1_regular_column_overrides_stray_currency).
+    use_row_hints_in_tier1 = audit_info.get("inferred_format") == "YYYY-MM-DD"
 
-        audit_info["resolution_level"] = "Tier 1: Regular Column Format"
-
-    else:
-        # -------------------------------------------------------------
-        # TIER 2 EXECUTION: Row-by-Row Contextual Disambiguation
-        # -------------------------------------------------------------
-        row_hints: List[Optional[bool]] = []
+    row_hints: List[Optional[bool]] = []
+    if not is_regular_column or use_row_hints_in_tier1:
         if df is not None and len(df) == len(series):
             other_cols = [c for c in df.columns if c != series.name]
             for idx in range(len(df)):
@@ -396,7 +389,32 @@ def parse_dates_consistently(
                 row_hints.append(detect_row_dayfirst([row_contexts[idx]]))
         else:
             row_hints = [None] * len(series)
+    else:
+        row_hints = [None] * len(series)
 
+    if is_regular_column:
+        # -------------------------------------------------------------
+        # TIER 1 EXECUTION: Apply Regular Column-Wide Format. Row context is
+        # only consulted for ambiguous entries when the regular format itself
+        # was ISO-derived (see use_row_hints_in_tier1 above).
+        # -------------------------------------------------------------
+        for idx, val in enumerate(series):
+            ts, method = _parse_single_date(
+                val,
+                row_dayfirst=row_hints[idx],
+                default_dayfirst=default_dayfirst,
+            )
+            parsed_dates.append(ts)
+            methods_count[method] = methods_count.get(method, 0) + 1
+            if "row_context" in method:
+                ambiguous_resolved_by_row_context += 1
+
+        audit_info["resolution_level"] = "Tier 1: Regular Column Format"
+
+    else:
+        # -------------------------------------------------------------
+        # TIER 2 EXECUTION: Row-by-Row Contextual Disambiguation
+        # -------------------------------------------------------------
         for idx, val in enumerate(series):
             row_df = row_hints[idx]
             ts, method = _parse_single_date(

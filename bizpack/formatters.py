@@ -4,6 +4,7 @@ Converts clean numeric data into boardroom-ready formatted strings.
 """
 
 from typing import Dict, Optional, Union
+from bizpack.currency import CODE_TO_SYMBOL
 import numpy as np
 import pandas as pd
 
@@ -18,7 +19,6 @@ def format_currency(
     Accepts currency symbols ('$', '€', '₹', '£') or ISO codes ('USD', 'INR', 'EUR', 'GBP').
     Example: 1250000.5 -> '$1,250,000.50' or '₹1,250,000.50'
     """
-    from bizpack.currency import CODE_TO_SYMBOL
     active_symbol = CODE_TO_SYMBOL.get(symbol.upper().strip(), symbol)
 
     def _fmt(val):
@@ -70,7 +70,6 @@ def format_accounting(
     - Positives: $1,250.00 or ₹1,250.00
     - Zeros: — (if dash_for_zero=True)
     """
-    from bizpack.currency import CODE_TO_SYMBOL
     active_symbol = CODE_TO_SYMBOL.get(symbol.upper().strip(), symbol)
 
     def _fmt(val):
@@ -117,9 +116,17 @@ def format_for_display(
         if fmt_lower == "currency":
             df[col] = format_currency(df[col], symbol=currency_symbol)
         elif fmt_lower in ("percentage", "percent"):
-            # Check if values are ratios <= 1.0 or already whole percentages
-            numeric_nonnull = pd.to_numeric(df[col], errors="coerce").dropna()
-            is_ratio = (numeric_nonnull.abs().max() <= 1.0) if len(numeric_nonnull) > 0 else True
+            # Prefer the ratio mode recorded during bk.clean() (exact, since
+            # percent_as_ratio is a single deterministic setting applied at
+            # parse time). Fall back to a value-range heuristic only when that
+            # metadata isn't available (e.g. formats passed in manually without
+            # going through clean_types).
+            ratio_mode = df.attrs.get("_percent_ratio_mode", {})
+            if col in ratio_mode:
+                is_ratio = ratio_mode[col]
+            else:
+                numeric_nonnull = pd.to_numeric(df[col], errors="coerce").dropna()
+                is_ratio = (numeric_nonnull.abs().max() <= 1.0) if len(numeric_nonnull) > 0 else True
             df[col] = format_percent(df[col], is_ratio=is_ratio)
         elif fmt_lower == "accounting":
             df[col] = format_accounting(df[col], symbol=currency_symbol)

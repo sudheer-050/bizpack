@@ -224,7 +224,7 @@ def audit(df: pd.DataFrame, print_report: bool = True) -> AuditReport:
                             "column": str(col),
                             "message": "Ambiguous dates (all day/month <= 12). High risk of silent month/day inversion.",
                         })
-                except Exception:
+                except (ValueError, TypeError):
                     pass
 
         # D. Spreadsheet Error Strings (#REF!, #N/A, null, -)
@@ -237,6 +237,34 @@ def audit(df: pd.DataFrame, print_report: bool = True) -> AuditReport:
                 "severity": "LOW",
                 "column": str(col),
                 "message": f"Contains {err_count} spreadsheet error string(s) (e.g. '#REF!', 'null', '-').",
+            })
+
+    # 5. Post-clean numeric/currency coercion failures (only present if `df`
+    # already went through bp.clean()/clean_types() -- surfaces values that
+    # silently became missing because they couldn't be parsed as numbers,
+    # e.g. an unrecognized currency code like "XYZ 500").
+    for col, coercion_info in df.attrs.get("numeric_coercion_issues", {}).items():
+        count = coercion_info.get("unparsed_count", 0)
+        if count > 0:
+            score -= min(15, count * 3)
+            samples = ", ".join(repr(s) for s in coercion_info.get("unparsed_samples", [])[:3])
+            issues.append({
+                "severity": "MEDIUM",
+                "column": str(col),
+                "message": f"{count} value(s) could not be parsed as numbers and were set to missing "
+                           f"(e.g. {samples}).",
+            })
+
+    for col, curr_audit in df.attrs.get("currency_conversions", {}).items():
+        count = curr_audit.get("unparsed_count", 0)
+        if count > 0:
+            score -= min(15, count * 3)
+            samples = ", ".join(repr(s) for s in curr_audit.get("unparsed_samples", [])[:3])
+            issues.append({
+                "severity": "MEDIUM",
+                "column": str(col),
+                "message": f"{count} value(s) could not be parsed as a currency amount and were set to "
+                           f"missing (e.g. {samples}).",
             })
 
     # Clamp score between 0 and 100

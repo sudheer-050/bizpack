@@ -113,22 +113,28 @@ def pareto(
     Perform 80/20 Pareto Analysis on any business dimension.
     Ranks segments by contribution, calculates cumulative totals, and flags the top drivers.
 
+    Ranking and cumulative share are based on absolute magnitude, so refunds/returns
+    (negative values) are treated as vital-few contributors instead of silently
+    netting against positive rows and distorting the cumulative percentages.
+
     Example:
     >>> pareto_df = bk.pareto(df, dim_col='customer_name', metric_col='revenue')
     """
     df = df.copy()
     summary = df.groupby(dim_col, as_index=False)[metric_col].sum()
-    summary = summary.sort_values(by=metric_col, ascending=False).reset_index(drop=True)
+    summary["_abs_metric"] = summary[metric_col].abs()
+    summary = summary.sort_values(by="_abs_metric", ascending=False).reset_index(drop=True)
 
-    total_sum = summary[metric_col].sum()
-    if total_sum <= 0:
+    total_abs = summary["_abs_metric"].sum()
+    if total_abs <= 0:
         summary["cumulative_" + metric_col] = summary[metric_col].cumsum()
         summary["cumulative_share"] = 0.0
         summary[f"is_top_{int(top_pct * 100)}"] = False
-        return summary
+        return summary.drop(columns=["_abs_metric"])
 
     summary["cumulative_" + metric_col] = summary[metric_col].cumsum()
-    summary["cumulative_share"] = summary["cumulative_" + metric_col] / total_sum
+    summary["cumulative_share"] = summary["_abs_metric"].cumsum() / total_abs
+    summary = summary.drop(columns=["_abs_metric"])
 
     # Flag top drivers
     # The item that crosses the threshold is included in top drivers

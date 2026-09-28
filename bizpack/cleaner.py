@@ -12,6 +12,17 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from bizpack._parsing import (
+    CURRENCY_SYMBOLS,
+    parse_business_number as _parse_business_number,
+)
+from bizpack.currency import (
+    standardize_currency_series,
+    detect_currency,
+    detect_header_currency,
+)
+from bizpack.dates import parse_dates_consistently
+
 # Default placeholder strings commonly found in business spreadsheets representing null/missing data
 DEFAULT_NULL_STRINGS: Set[str] = {
     "",
@@ -32,16 +43,6 @@ DEFAULT_NULL_STRINGS: Set[str] = {
     "nan",
     "?",
 }
-
-# Comprehensive list of global currency symbols and ISO codes (sorted by length descending)
-CURRENCY_SYMBOLS: List[str] = [
-    # Multi-character codes & symbols
-    "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "INR", "BRL", "MXN",
-    "SGD", "HKD", "NZD", "SEK", "NOK", "DKK", "ZAR", "PLN", "CZK", "HUF", "ILS",
-    "US$", "CA$", "AU$", "NZ$", "C$", "A$", "R$", "RS.", "Rs.", "RS", "Rs", "kr", "zł", "Kč", "Ft",
-    # Single-character symbols
-    "$", "€", "£", "¥", "₹", "₩", "₺", "₽", "₴", "₫", "฿", "₱", "₪",
-]
 
 # Keywords indicating summary/total rows at the bottom of a sheet
 TOTAL_ROW_KEYWORDS: List[str] = [
@@ -198,10 +199,12 @@ def _is_id_column(col_name: str, series: pd.Series) -> bool:
     that should preserve leading zeros and avoid numeric casting.
     """
     name_lower = col_name.lower()
-    id_suffixes = ("_id", "_code", "_num", "_no", "id", "zip", "zipcode", "ssn", "ein", "phone", "account")
-    for suffix in id_suffixes:
-        if name_lower == suffix or name_lower.endswith(suffix):
-            return True
+    # Whole-name matches or "_"-delimited suffixes only, so words that merely end in
+    # these letters (e.g. "valid", "paid", "avoid") aren't misclassified as ID columns.
+    id_names = ("id", "zip", "zipcode", "ssn", "ein", "phone", "account", "code", "num", "no")
+    id_suffixes = tuple(f"_{name}" for name in id_names)
+    if name_lower in id_names or name_lower.endswith(id_suffixes):
+        return True
 
     # Check for leading zeros in non-null strings
     non_nulls = series.dropna().astype(str).tolist()
@@ -213,120 +216,6 @@ def _is_id_column(col_name: str, series: pd.Series) -> bool:
         return True
 
     return False
-
-
-def _normalize_number_string(s: str) -> str:
-    """
-    Normalize international numeric strings into standard Python float format (e.g. '1234.56'):
-    - European formatting: '1.250,50' -> '1250.50', '1250,50' -> '1250.50'
-    - US/UK formatting: '1,250.50' -> '1250.50', '1250.50' -> '1250.50'
-    - Swiss apostrophe separator: "1'250.50" -> '1250.50'
-    - Space thousands separator: '1 250,50' or '1 250.50' -> '1250.50'
-    - Multiple European dots: '1.000.000' -> '1000000'
-    """
-    # 1. Remove Swiss apostrophe thousands separator: e.g. 1'250.50 -> 1250.50
-    s = s.replace("'", "")
-
-    # 2. Remove spaces between digits: e.g. "1 250,50" -> "1250,50"
-    s = re.sub(r"(?<=\d)\s+(?=\d)", "", s)
-
-    has_comma = "," in s
-    has_dot = "." in s
-
-    if has_comma and has_dot:
-        last_comma = s.rfind(",")
-        last_dot = s.rfind(".")
-        if last_comma > last_dot:
-            # European style: 1.250,50 or 1.250.000,50 -> dot is thousand, comma is decimal
-            s = s.replace(".", "").replace(",", ".")
-        else:
-            # US/UK style: 1,250.50 or 1,250,000.50 -> comma is thousand, dot is decimal
-            s = s.replace(",", "")
-    elif has_comma and not has_dot:
-        # Only comma exists: e.g. "1250,50", "45,99", or "1,250"
-        # If comma is followed by 1 or 2 digits at the end: European decimal!
-        if re.search(r",\d{1,2}$", s):
-            s = s.replace(",", ".")
-        else:
-            # Standard thousands separator: e.g. 1,000
-            s = s.replace(",", "")
-    elif has_dot and not has_comma:
-        # Only dot exists: e.g. "1250.50", "1.000.000"
-        if s.count(".") > 1:
-            # Multiple dots e.g. 1.000.000 -> European thousands separator
-            s = s.replace(".", "")
-
-    return s
-
-
-def _parse_business_number(val: Any, percent_as_ratio: bool = True) -> Tuple[Optional[float], Optional[str]]:
-    """
-    Attempt to parse a messy business string into a float.
-    Handles:
-    - Normal numbers: '1250.50', '1,250'
-    - European numbers: '1.250,50', '1250,50', '1 250,50 €'
-    - Global Currencies: '$', '€', '£', '¥', 'CHF', 'R$', 'kr', 'EUR', 'USD', etc.
-    - Accounting negatives: '(1,234.50)', '($1,234.50)', '(1.250,50 €)'
-    - Negatives: '-$50.00', '-50.00', '-€ 1.250,50', '50.00-'
-    - Percentages: '15.4%', '(2.5%)'
-    """
-    if pd.isna(val) or val is None:
-        return np.nan, None
-
-    s = str(val).strip()
-    if not s:
-        return np.nan, None
-
-    detected_type = "number"
-    is_negative = False
-
-    # Check accounting parentheses: e.g. (1,234), ($1,234), (1.250,50 €)
-    if "(" in s and ")" in s:
-        left_paren = s.find("(")
-        right_paren = s.rfind(")")
-        if left_paren < right_paren:
-            outside = (s[:left_paren] + s[right_paren + 1:]).strip()
-            # If outside has no digits, it's an accounting negative number
-            if not any(ch.isdigit() for ch in outside):
-                is_negative = True
-                detected_type = "accounting"
-                s = s[:left_paren] + s[left_paren + 1:right_paren] + s[right_paren + 1:]
-                s = s.strip()
-
-    # Check percentage
-    if s.endswith("%"):
-        detected_type = "percentage"
-        s = s[:-1].strip()
-
-    # Check for currency symbols anywhere (prefix, suffix, or mid-string)
-    for sym in CURRENCY_SYMBOLS:
-        if sym in s:
-            detected_type = "currency"
-            s = s.replace(sym, "")
-
-    # Check for negative/positive signs
-    s = s.strip()
-    if s.startswith("-"):
-        is_negative = True
-        s = s[1:].strip()
-    elif s.endswith("-"):
-        is_negative = True
-        s = s[:-1].strip()
-    elif s.startswith("+"):
-        s = s[1:].strip()
-
-    # Normalize international number formatting (European commas/periods, Swiss apostrophes, spaces)
-    s = _normalize_number_string(s).strip()
-
-    try:
-        num = float(s)
-        if is_negative:
-            num = -num
-        if detected_type == "percentage" and percent_as_ratio:
-            num = num / 100.0
-        return num, detected_type
-    except (ValueError, TypeError):
-        return None, None
 
 
 def clean_types(
@@ -384,22 +273,35 @@ def clean_types(
                 type_votes[d_type] = type_votes.get(d_type, 0) + 1
 
         match_ratio = numeric_count / len(sample)
-        if match_ratio >= threshold:
+
+        # Check if this column represents currency data (computed regardless of
+        # the strict threshold below, so a column that's clearly currency but
+        # has a few stray unparseable values -- e.g. a typo'd/unsupported symbol
+        # variant -- doesn't get silently dumped back as raw, unconverted text).
+        has_currency = (
+            (type_votes.get("currency", 0) > 0)
+            or any(detect_currency(v) is not None for v in sample.head(25))
+            or (detect_header_currency(str(col)) is not None)
+        )
+
+        # A column passes if it's dominantly numeric (the strict threshold), OR
+        # it has clear currency evidence and is still majority-parseable -- in
+        # that case we still convert it and let standardize_currency_series's
+        # own unparsed-value tracking flag the minority that failed, instead of
+        # bypassing the whole column with zero conversion and zero audit trail.
+        if match_ratio >= threshold or (has_currency and match_ratio >= 0.5):
             dominant_type = max(type_votes.items(), key=lambda x: x[1])[0] if type_votes else "number"
             formats_meta[col] = dominant_type
 
-            # Check if this column represents currency data
-            from bizpack.currency import (
-                standardize_currency_series,
-                detect_currency,
-                detect_header_currency,
-            )
-            has_currency = (
-                (dominant_type == "currency")
-                or (type_votes.get("currency", 0) > 0)
-                or any(detect_currency(v) is not None for v in sample.head(25))
-                or (detect_header_currency(str(col)) is not None)
-            )
+            if dominant_type in ("percent", "percentage"):
+                # Record the exact ratio mode used during parsing, so
+                # format_for_display() can restore it deterministically instead
+                # of re-guessing from the data (a value-range heuristic like
+                # "max abs <= 1.0" breaks on legitimate ratio columns that
+                # contain a >100% value, e.g. 1.50 for "150%").
+                if "_percent_ratio_mode" not in df.attrs:
+                    df.attrs["_percent_ratio_mode"] = {}
+                df.attrs["_percent_ratio_mode"][col] = percent_as_ratio
 
             if has_currency:
                 converted_series, orig_curr_series, audit = standardize_currency_series(
@@ -423,18 +325,41 @@ def clean_types(
                 continue
 
             # Standard numeric column (e.g. quantity, percentages, clean floats)
+            unparsed_count = 0
+            unparsed_samples: List[str] = []
+
             def _coerce(val):
+                nonlocal unparsed_count
                 num, _ = _parse_business_number(val, percent_as_ratio=percent_as_ratio)
-                return num if num is not None else np.nan
+                if num is None:
+                    if pd.notna(val):
+                        unparsed_count += 1
+                        if len(unparsed_samples) < 5:
+                            unparsed_samples.append(str(val))
+                    return np.nan
+                return num
 
             df[col] = df[col].map(_coerce).astype(float)
+
+            if unparsed_count:
+                if "numeric_coercion_issues" not in df.attrs:
+                    df.attrs["numeric_coercion_issues"] = {}
+                df.attrs["numeric_coercion_issues"][col] = {
+                    "unparsed_count": unparsed_count,
+                    "unparsed_samples": unparsed_samples,
+                }
             continue
 
-        # 2. Test for Boolean Columns (e.g. Y/N, Yes/No, True/False)
+        # 2. Test for Boolean Columns (e.g. Y/N, Yes/No, True/False, 1/0)
+        # "1"/"0" are only included here (not in the Business Numeric test above)
+        # because reaching this point already means the column failed the
+        # numeric-dominant threshold test -- i.e. it is NOT a plain numeric/count
+        # column, so a stray "1"/"0" mixed in with yes/no/true/false tokens is
+        # safe to treat as boolean rather than being silently left unconverted.
         lower_vals = sample.astype(str).str.lower().str.strip()
         bool_map = {
-            "y": True, "yes": True, "true": True, "t": True,
-            "n": False, "no": False, "false": False, "f": False,
+            "y": True, "yes": True, "true": True, "t": True, "1": True,
+            "n": False, "no": False, "false": False, "f": False, "0": False,
         }
         unique_lower = set(lower_vals.unique())
         if unique_lower.issubset(bool_map.keys()) and len(unique_lower) > 0:
@@ -444,7 +369,6 @@ def clean_types(
 
         # 3. Test for Datetime (with column-wide format deduction from other entries)
         try:
-            from bizpack.dates import parse_dates_consistently
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", category=UserWarning)
                 test_parsed, _ = parse_dates_consistently(
@@ -466,8 +390,14 @@ def clean_types(
                         df.attrs["date_formats"] = {}
                     df.attrs["date_formats"][col] = date_audit
                     continue
-        except Exception:
-            pass
+        except Exception as exc:
+            # Date detection is a best-effort heuristic over arbitrary user data; leave the
+            # column untouched on failure, but surface *why* rather than failing silently.
+            warnings.warn(
+                f"[BizPack] Skipped date detection for column '{col}': {exc!r}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
 
     # Save format metadata in df.attrs
     if "_biz_formats" not in df.attrs:
@@ -550,14 +480,9 @@ def _resolve_filepath(path_or_str: Any) -> Any:
     return path_or_str
 
 
-def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
-    """
-    Read a CSV file safely and automatically clean it with BizPack.
-    Supports currency standardization via target_currency='USD' or 'INR'.
-    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
-    Pass clean=False to read the raw dirty DataFrame.
-    """
-    clean_kwargs = {
+def _pop_clean_kwargs(kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    """Pop and return the `clean()` keyword arguments embedded in a read_csv/read_excel call."""
+    return {
         "headers": kwargs.pop("headers", True),
         "strings": kwargs.pop("strings", True),
         "totals": kwargs.pop("totals", True),
@@ -570,6 +495,16 @@ def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
         "keep_currency_col": kwargs.pop("keep_currency_col", False),
         "dayfirst": kwargs.pop("dayfirst", None),
     }
+
+
+def read_csv(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
+    """
+    Read a CSV file safely and automatically clean it with BizPack.
+    Supports currency standardization via target_currency='USD' or 'INR'.
+    Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
+    Pass clean=False to read the raw dirty DataFrame.
+    """
+    clean_kwargs = _pop_clean_kwargs(kwargs)
     clean_data = kwargs.pop("clean", True)
     if "dtype" not in kwargs and clean_data:
         kwargs["dtype"] = str
@@ -587,19 +522,7 @@ def read_excel(filepath_or_buffer: Any, **kwargs: Any) -> pd.DataFrame:
     Supports currency standardization via target_currency='USD' or 'INR'.
     Automatically deduces date format (DD/MM/YYYY vs MM/DD/YYYY) from column entries and currency.
     """
-    clean_kwargs = {
-        "headers": kwargs.pop("headers", True),
-        "strings": kwargs.pop("strings", True),
-        "totals": kwargs.pop("totals", True),
-        "empty": kwargs.pop("empty", True),
-        "types": kwargs.pop("types", True),
-        "percent_as_ratio": kwargs.pop("percent_as_ratio", True),
-        "target_currency": kwargs.pop("target_currency", None),
-        "rates": kwargs.pop("rates", None),
-        "prompt_currency": kwargs.pop("prompt_currency", True),
-        "keep_currency_col": kwargs.pop("keep_currency_col", False),
-        "dayfirst": kwargs.pop("dayfirst", None),
-    }
+    clean_kwargs = _pop_clean_kwargs(kwargs)
     clean_data = kwargs.pop("clean", True)
     if "dtype" not in kwargs and clean_data:
         kwargs["dtype"] = str
@@ -614,13 +537,17 @@ def clean_file(
     input_path: Union[str, Path],
     output_path: Optional[Union[str, Path]] = None,
     target_currency: Optional[str] = None,
+    verbose: bool = True,
     **kwargs: Any,
 ) -> pd.DataFrame:
     """
     Clean an entire spreadsheet file in ONE line.
     Automatically detects CSV vs Excel, standardizes mixed currencies by prompting
     in the output area, and saves to a brand new file without touching the original.
-    
+
+    Pass verbose=False to suppress the "Success!" console summary (useful when calling
+    clean_file() from an automated pipeline/script).
+
     Example:
     >>> import bizpack as bp
     >>> bp.clean_file("dirty_sales.csv")
@@ -653,8 +580,9 @@ def clean_file(
     else:
         df.to_csv(output_p, index=False)
 
-    print(f"\n[BizPack] Success! Clean file created: {output_p.name}")
-    print(f"Location: {output_p.resolve()}")
-    print(f"Records: {len(df):,} rows | Columns cleaned: {len(df.columns)}")
+    if verbose:
+        print(f"\n[BizPack] Success! Clean file created: {output_p.name}")
+        print(f"Location: {output_p.resolve()}")
+        print(f"Records: {len(df):,} rows | Columns cleaned: {len(df.columns)}")
     return df
 

@@ -6,6 +6,8 @@ Enables df.biz.clean(), df.biz.format(), df.biz.pareto(), etc.
 import pandas as pd
 from typing import Optional, Union, List, Dict
 from bizpack import cleaner, formulas, formatters
+from bizpack.currency import standardize_currency_df
+from bizpack.audit import audit as _audit_func
 
 
 @pd.api.extensions.register_dataframe_accessor("biz")
@@ -123,7 +125,6 @@ class BizAccessor:
         """
         Standardize currency columns across the DataFrame into a single unified currency (e.g. 'USD', 'INR', 'EUR').
         """
-        from bizpack.currency import standardize_currency_df
         return standardize_currency_df(
             self._obj,
             columns=columns,
@@ -137,6 +138,5 @@ class BizAccessor:
         """
         Run BizPack data health audit scorecard directly on this DataFrame.
         """
-        from bizpack.audit import audit as audit_func
-        return audit_func(self._obj, print_report=print_report)
+        return _audit_func(self._obj, print_report=print_report)
 

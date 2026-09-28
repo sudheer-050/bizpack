@@ -10,6 +10,18 @@ import sys
 import numpy as np
 import pandas as pd
 
+from bizpack._parsing import alpha_symbol_near_digit, parse_business_number as _parse_business_number
+
+# Short alphabetic currency abbreviations that also occur as ordinary word fragments
+# (e.g. "Ft." for "Fort", "Kroger" containing "Kr"). Only treated as a currency symbol
+# when adjacent to a digit, unlike the unambiguous unicode/punctuation symbols below.
+_AMBIGUOUS_ALPHA_SYMBOLS: Dict[str, str] = {
+    "zł": "PLN",
+    "Kč": "CZK",
+    "Ft": "HUF",
+    "kr": "SEK",
+}
+
 # Mapping of currency symbols & common prefixes to ISO 4217 3-letter codes
 SYMBOL_TO_CODE: Dict[str, str] = {
     "US$": "USD",
@@ -64,8 +76,12 @@ CODE_TO_SYMBOL: Dict[str, str] = {
     "ILS": "₪",
 }
 
-# Standard baseline exchange rates (relative to 1.0 USD)
-# Default values based on recent international market averages
+# Standard baseline exchange rates (relative to 1.0 USD).
+# NOTE: These are static snapshot approximations, NOT live market rates -- they will
+# drift from real-world values over time. For anything beyond rough/illustrative
+# conversion, pass explicit `rates=` to override, or wait for live-rate support
+# (see PROJECT_HANDOFF.md roadmap).
+RATES_AS_OF = "2026-01"
 DEFAULT_RATES_TO_USD: Dict[str, float] = {
     "USD": 1.0,
     "EUR": 1.08,           # 1 EUR = 1.08 USD
@@ -140,12 +156,9 @@ def detect_currency(val: Any) -> Optional[str]:
         return "PHP"
     if "₪" in s:
         return "ILS"
-    if "zł" in s:
-        return "PLN"
-    if "Kč" in s:
-        return "CZK"
-    if "Ft" in s:
-        return "HUF"
+    for alpha_sym, code in _AMBIGUOUS_ALPHA_SYMBOLS.items():
+        if alpha_sym in s and alpha_symbol_near_digit(alpha_sym, s):
+            return code
 
     # 2. Check Indian Rupee textual variants (Rs. or Rs followed by digits)
     if re.search(r"\bRS\.?\s*\d", s, re.IGNORECASE) or re.search(r"\d\s*RS\.?\b", s, re.IGNORECASE):
@@ -167,9 +180,11 @@ def detect_currency(val: Any) -> Optional[str]:
     if "$" in s:
         return "USD"
 
-    # 5. Check 3-letter ISO codes (as separate word token)
+    # 5. Check 3-letter ISO codes. Boundaries only exclude adjacent letters
+    # (not digits), so "EUR900" / "500USD" are recognized just like "EUR 900",
+    # while "EUROPE" or "NEURAL" are correctly rejected as false positives.
     for code in DEFAULT_RATES_TO_USD.keys():
-        if re.search(rf"\b{code}\b", s_upper):
+        if re.search(rf"(?<![A-Za-z]){code}(?![A-Za-z])", s_upper):
             return code
 
     return None
@@ -284,13 +299,14 @@ def standardize_currency_series(
     If multiple currencies exist and target_currency is not specified:
     - Prompts the user if interactive (or standardizes to dominant/default).
     """
-    from bizpack.cleaner import _parse_business_number
-
     # 1. Parse each cell's numeric value and currency symbol
     amounts: List[Optional[float]] = []
     detected_list: List[Optional[str]] = []
 
     header_curr = detect_header_currency(col_name) if col_name else None
+
+    unparsed_count = 0
+    unparsed_samples: List[str] = []
 
     for val in series:
         if pd.isna(val) or val is None:
@@ -300,6 +316,10 @@ def standardize_currency_series(
 
         curr = detect_currency(val)
         num, _ = _parse_business_number(val)
+        if num is None:
+            unparsed_count += 1
+            if len(unparsed_samples) < 5:
+                unparsed_samples.append(str(val))
         amounts.append(num)
         detected_list.append(curr)
 
@@ -374,6 +394,8 @@ def standardize_currency_series(
         "effective_rates_to_target": rates_used,
         "rows_converted": sum(1 for c in resolved_currencies if c and c != final_target),
         "total_rows": len(series),
+        "unparsed_count": unparsed_count,
+        "unparsed_samples": unparsed_samples,
     }
 
     return (
