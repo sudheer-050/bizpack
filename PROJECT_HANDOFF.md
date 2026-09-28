@@ -56,7 +56,7 @@ It returns standard `pandas.DataFrame` objects, introduces **zero heavy dependen
 
 - **Package Name on PyPI:** `bizpack` (formerly conceived as `bizkit`, which was occupied on PyPI; successfully rebranded and registered as `bizpack`).
 - **PyPI URL:** [https://pypi.org/project/bizpack/](https://pypi.org/project/bizpack/)
-- **Latest PyPI Version:** `0.1.2`
+- **Latest PyPI Version:** `0.1.3`
 - **GitHub Repository:** [https://github.com/sudheer-050/bizpack](https://github.com/sudheer-050/bizpack)
 - **Git Branch:** `master` (synchronized with `origin/master`)
 - **Author / Maintainer:** `sudheer-050`
@@ -65,6 +65,7 @@ It returns standard `pandas.DataFrame` objects, introduces **zero heavy dependen
 - **Active GitHub Releases:**
   - `v0.1.1`: Attached with wheel distributions, source tarballs, and the official demo MP4.
   - `v0.1.2`: Release featuring the 1-Line Data Health Scorecard (`bp.audit`) and Streamlit web playground.
+  - `v0.1.3`: Silent-failure hardening release — pareto negative-value handling, date row-context fixes, currency/percentage edge cases, and transparent audit trails for previously-silent parse failures. See `launch/RELEASE_NOTES_v0.1.3.md`.
 - **GitHub Topics / SEO Tags Configured:** `pandas`, `data-cleaning`, `spreadsheet`, `business-intelligence`, `financial-analysis`, `excel`, `python`, `data-engineering`, `analytics`, `data-quality`.
 
 ---
@@ -119,6 +120,16 @@ It returns standard `pandas.DataFrame` objects, introduces **zero heavy dependen
       - Fixed `KeyError: 'cumulative_pct'` in Pareto tab by referencing `cumulative_share` / `is_top_80`.
       - Fixed indentation syntax issue in `scripts/generate_demo_video.py`.
       - Eliminated nested `st.tabs` which broke Streamlit's React frontend; restructured into 4 top-level tabs with horizontal `st.radio` sub-navigation and bulletproof in-memory sample data fallback.
+12. **v0.1.3 Silent-Failure Hardening (Post-Submission Stress Test):**
+    - Ran four independently constructed synthetic "dirty" datasets through the full pipeline, hand-verifying every value, to stress-test the library before a submission.
+    - Fixed `pareto()` to rank/accumulate by absolute magnitude so negative (refund) rows don't distort `cumulative_share`.
+    - Fixed the date engine to consult row-level partner context even on ISO-dominated columns, instead of only on fully ambiguous columns.
+    - Fixed ISO currency codes glued to digits (e.g. `"EUR900"`) going undetected.
+    - Added support for mixed `1`/`0` boolean tokens alongside `yes/no`/`true/false`.
+    - Added `df.attrs`/`bp.audit()` tracking for previously-silent unparseable currency/numeric values.
+    - Fixed a whole-column silent bypass: a currency column with a few unparseable values (e.g. an unsupported symbol variant) used to be left 100% raw and unconverted; now the parseable majority converts and the rest is flagged.
+    - Fixed `format_for_display()` mis-formatting percentages on ratio columns containing a value over 100%, by recording the exact ratio mode at parse time instead of guessing from value range.
+    - Full details in `launch/RELEASE_NOTES_v0.1.3.md`.
 
 ---
 
@@ -128,7 +139,7 @@ It returns standard `pandas.DataFrame` objects, introduces **zero heavy dependen
 bizkit/  (Local workspace root: C:\Users\gsudh\.gemini\antigravity\scratch\bizkit)
 │
 ├── bizpack/                             # Core Python Package Source
-│   ├── __init__.py                      # Package entry point, exposes top-level API & __version__ = "0.1.2"
+│   ├── __init__.py                      # Package entry point, exposes top-level API & __version__ = "0.1.3"
 │   ├── __main__.py                      # CLI entrypoint (python -m bizpack input.csv)
 │   ├── cleaner.py                       # Master clean(), read_csv(), read_excel(), clean_file()
 │   ├── currency.py                      # Multi-currency detection, FX standardization, audit trail
